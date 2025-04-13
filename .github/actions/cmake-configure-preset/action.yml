@@ -142,7 +142,13 @@ runs:
       run: |
         WORKING_DIRECTORY="${{ inputs.working-directory }}"
         set CMAKE_ARGS=${{ steps.cmake-args.outputs.CMAKE_ARGS }}
-        cd "${WORKING_DIRECTORY}"
+
+        echo Configuring the project...
+        echo.
+        echo cd %WORKING_DIRECTORY%
+        echo.
+        cd %WORKING_DIRECTORY%
+
         echo Configuring the project...
         echo.
         echo cmake %CMAKE_ARGS%
@@ -155,8 +161,14 @@ runs:
       run: |
         WORKING_DIRECTORY="${{ inputs.working-directory }}"
         CMAKE_ARGS="${{ steps.cmake-args.outputs.CMAKE_ARGS }}"
+
+        echo "Changing Directory..."
+        echo ""
+        echo "cd ${WORKING_DIRECTORY}"
+        echo ""
         cd "${WORKING_DIRECTORY}"
-        echo "Configuring the project..."
+
+        echo "Configuring the CMake Project..."
         echo ""
         echo "cmake ${CMAKE_ARGS[@]}"
         echo ""
