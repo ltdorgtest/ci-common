@@ -110,7 +110,6 @@ runs:
         cd "${WORKING_DIRECTORY}"
         CROWDIN_STATUS_ARGS="${{ steps.crowdin-args.outputs.CROWDIN_ARGS }}"
         CROWDIN_STATUS_OUTPUTS=$(crowdin status ${CROWDIN_STATUS_ARGS[@]} 2>&1)
-        # CROWDIN_STATUS_PROGRESS=$(echo "${CROWDIN_STATUS_OUTPUTS}" | sed '/Fetching project info/d' | sed 's/\t/  /g')
         CROWDIN_STATUS_PROGRESS=$(echo "${CROWDIN_STATUS_OUTPUTS}")
         CROWDIN_STATUS_PROGRESS=$(echo "${CROWDIN_STATUS_PROGRESS}" | sed '/Loading configuration from/d')
         CROWDIN_STATUS_PROGRESS=$(echo "${CROWDIN_STATUS_PROGRESS}" | sed '/Fetching project info/d')
