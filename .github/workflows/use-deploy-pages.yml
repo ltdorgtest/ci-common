@@ -1,7 +1,7 @@
 # Distributed under the OSI-approved BSD 3-Clause License.
 # See accompanying file LICENSE.txt for details.
 
-name: use-deploy-gh-pages
+name: use-deploy-pages
 
 on:
   workflow_call:
@@ -125,7 +125,7 @@ jobs:
           git-config-email: ${{ inputs.ACTOR_EMAIL }}
           token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
 
-  deploy-gh-pages:
+  deploy-pages:
     needs: [ 'download-build-artifacts' ]
     if: ${{ ( always() ) &&
             ( !contains(needs.*.result, 'failure') ) &&
