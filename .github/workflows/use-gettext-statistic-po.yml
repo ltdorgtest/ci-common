@@ -130,6 +130,20 @@ jobs:
           job_name: '${{ inputs.CALLER_JOB }} / ${{ github.job }}'
           per_page: 100
 
+      - name: Get the Current Job's Context
+        id: gcjc
+        uses: qoomon/actions--context@v4
+        with:
+          token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
+      - run: |
+          echo "Job Name:     ${{ steps.gcjc.outputs.job_name }}"
+          echo "Job ID:       ${{ steps.gcjc.outputs.job_id }}"
+          echo "Job URL:      ${{ steps.gcjc.outputs.job_url }}"
+          echo "Run ID:       ${{ steps.gcjc.outputs.run_id }}"
+          echo "Run Attempt:  ${{ steps.gcjc.outputs.run_attempt }}"
+          echo "Run Number:   ${{ steps.gcjc.outputs.run_number }}"
+          echo "Run URL:      ${{ steps.gcjc.outputs.run_url }}"
+
       - name: Check Outputs of the Current Job's ID
         run: |
           echo "Current Job's URL = ${{ steps.gcji.outputs.html_url }}"
