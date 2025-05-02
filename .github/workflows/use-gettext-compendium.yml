@@ -1,7 +1,7 @@
 # Distributed under the OSI-approved BSD 3-Clause License.
 # See accompanying file LICENSE.txt for details.
 
-name: use-gettext-compend-po
+name: use-gettext-compendium
 
 on:
   workflow_call:
@@ -116,11 +116,11 @@ jobs:
           cache-version-compendium: ${{ steps.gocv.outputs.VERSION_COMPENDIUM }}
           cache-auto-depend: 'OFF'
 
-      - name: Build the 'gettext_compend_po' target
+      - name: Build the 'gettext_compendium' target
         uses: ltdorgtest/ci-common/.github/actions/cmake-build-target@main
         with:
           build-directory: out/build/${{ inputs.LANGUAGE }}
-          build-target: 'gettext_compend_po'
+          build-target: 'gettext_compendium'
 
       - name: Get the Current Job's ID
         id: gcji
