@@ -170,7 +170,7 @@ jobs:
           author_name: ${{ inputs.ACTOR_NAME }}
           author_email: ${{ inputs.ACTOR_EMAIL }}
           message: |
-            🔧 chore(${{ inputs.VERSION }}): update statistic info from Gettext
+            🔧 chore(${{ inputs.VERSION }}): update statistics from Gettext
 
             ${{ steps.gsi.outputs.STATISTICS_CNT }}
 
