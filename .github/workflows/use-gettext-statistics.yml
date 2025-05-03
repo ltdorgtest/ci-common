@@ -116,11 +116,11 @@ jobs:
           build-directory: out/build/all
           build-target: 'gettext_statistics'
 
-      - name: Get the Statistic Information from statistics.txt
+      - name: Get the Statistics Content from statistics.txt
         id: gsi
-        uses: ltdorgtest/ci-common/.github/actions/get-statistic-info-from-statistic-file@main
+        uses: ltdorgtest/ci-common/.github/actions/get-statistics-cnt-from-statistics-file@main
         with:
-          version: ${{ inputs.VERSION }}
+          statistics-file: 'l10n/${{ inputs.VERSION }}/statistics.txt'
 
       # - name: Get the Current Job's ID
       #   id: gcji
@@ -172,7 +172,7 @@ jobs:
           message: |
             🔧 chore(${{ inputs.VERSION }}): update statistic info from Gettext
 
-            ${{ steps.gsi.outputs.STATISTIC_INFO }}
+            ${{ steps.gsi.outputs.STATISTICS_CNT }}
 
             created by the GitHub Workflow:
 
