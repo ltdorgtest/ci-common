@@ -172,11 +172,11 @@ jobs:
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
           CROWDIN_BASE_URL: ${{ inputs.CROWDIN_BASE_URL }}
 
-      - name: Build the 'gettext_statistic_po' target
+      - name: Build the 'gettext_statistics' target
         uses: ltdorgtest/ci-common/.github/actions/cmake-build-target@main
         with:
           build-directory: out/build/${{ inputs.LANGUAGE }}
-          build-target: 'gettext_statistic_po'
+          build-target: 'gettext_statistics'
 
       # - name: Get the Current Job's ID
       #   id: gcji

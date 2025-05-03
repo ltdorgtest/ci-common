@@ -1,7 +1,7 @@
 # Distributed under the OSI-approved BSD 3-Clause License.
 # See accompanying file LICENSE.txt for details.
 
-name: use-gettext-statistic-po
+name: use-gettext-statistics
 
 on:
   workflow_call:
@@ -48,7 +48,7 @@ on:
           The personal access token of the GitHub actor.
 
 jobs:
-  gettext-statistic-po:
+  gettext-statistics:
     if: ${{ inputs.ENABLE_JOB == 'true' }}
     runs-on: ${{ inputs.RUNNER }}
     steps:
@@ -110,11 +110,11 @@ jobs:
           cache-version-compendium: ${{ steps.gocv.outputs.VERSION_COMPENDIUM }}
           cache-auto-depend: 'OFF'
 
-      - name: Build the 'gettext_statistic_po' target
+      - name: Build the 'gettext_statistics' target
         uses: ltdorgtest/ci-common/.github/actions/cmake-build-target@main
         with:
           build-directory: out/build/all
-          build-target: 'gettext_statistic_po'
+          build-target: 'gettext_statistics'
 
       - name: Get the Statistic Information from statistic.txt
         id: gsi
