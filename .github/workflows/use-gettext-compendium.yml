@@ -142,7 +142,7 @@ jobs:
         with:
           token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
 
-      - name:  Check Outputs of the Current Job's Context
+      - name: Check Outputs of the Current Job's Context
         shell: bash
         run: |
           echo "Job Name:     ${{ steps.gcjc.outputs.job_name }}"
