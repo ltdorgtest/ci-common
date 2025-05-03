@@ -116,7 +116,7 @@ jobs:
           build-directory: out/build/all
           build-target: 'gettext_statistics'
 
-      - name: Get the Statistic Information from statistic.txt
+      - name: Get the Statistic Information from statistics.txt
         id: gsi
         uses: ltdorgtest/ci-common/.github/actions/get-statistic-info-from-statistic-file@main
         with:

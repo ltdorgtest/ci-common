@@ -3,13 +3,13 @@
 
 name: get-statistic-info-from-statistic-file
 
-description: Get the Statistic Information from statistic.txt.
+description: Get the Statistic Information from statistics.txt.
 
 inputs:
   version:
     required: true  # [required]
     description: >
-      The version identifier used to locate the corresponding `statistic.txt` file.
+      The version identifier used to locate the corresponding `statistics.txt` file.
   working-directory:
     required: false
     default: '${{ github.workspace }}'
@@ -20,12 +20,12 @@ outputs:
   STATISTIC_INFO:
     value: ${{ steps.gsi.outputs.STATISTIC_INFO }}
     description: >
-      The content of the `statistic.txt` file for the specified version.
+      The content of the `statistics.txt` file for the specified version.
 
 runs:
   using: composite
   steps:
-    - name: Get the Statistic Information from statistic.txt
+    - name: Get the Statistic Information from statistics.txt
       id: gsi
       shell: bash
       run: |
@@ -34,7 +34,7 @@ runs:
 
         cd "${WORKING_DIRECTORY}"
 
-        STATISTIC_TXT_PATH=l10n/${VERSION}/statistic.txt
+        STATISTIC_TXT_PATH=l10n/${VERSION}/statistics.txt
         DELIMITER="$(openssl rand -hex 8)"
         echo "STATISTIC_INFO<<${DELIMITER}" >> ${GITHUB_OUTPUT}
         echo "$(<${STATISTIC_TXT_PATH})"    >> ${GITHUB_OUTPUT}
