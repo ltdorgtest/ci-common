@@ -82,7 +82,7 @@ jobs:
           submodules: false
           fetch-depth: 0
 
-      - name: Get Old Commit of the Submodule '${{ inputs.SUBMODULE }}'
+      - name: Get Old Commit of the '${{ inputs.SUBMODULE }}' Submodule
         id: gocs
         shell: bash
         run: |
@@ -95,7 +95,7 @@ jobs:
         run: |
           git submodule update --init --remote ${{ inputs.SUBMODULE }}
 
-      - name: Get New Commit of the Submodule '${{ inputs.SUBMODULE }}'
+      - name: Get New Commit of the '${{ inputs.SUBMODULE }}' Submodule
         id: gncs
         shell: bash
         run: |
@@ -103,27 +103,13 @@ jobs:
           echo "NEW_COMMIT=${NEW_COMMIT}" >> ${GITHUB_OUTPUT}
           echo "NEW_COMMIT: ${NEW_COMMIT}"
 
-      - name: Get Repository Url of the Submodule '${{ inputs.SUBMODULE }}'
+      - name: Get Repository Url of the '${{ inputs.SUBMODULE }}' Submodule
         id: grus
         shell: bash
         run: |
-          REPO_URL=$(git config --get submodule.${{ inputs.SUBMODULE }}.url)
-          echo "REPO_URL=${REPO_URL}" >> ${GITHUB_OUTPUT}
-          echo "REPO_URL: ${REPO_URL}"
-
-      # - name: Get the Current Job's ID
-      #   id: gcji
-      #   uses: Tiryoh/gha-jobid-action@v1
-      #   with:
-      #     github_token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
-      #     job_name: '${{ inputs.CALLER_JOB }} / ${{ github.job }}'
-      #     per_page: 100
-
-      # - name: Check Outputs of the Current Job's ID
-      #   shell: bash
-      #   run: |
-      #     echo "Current Job's URL = ${{ steps.gcji.outputs.html_url }}"
-      #     echo "Current Job's ID  = ${{ steps.gcji.outputs.job_id }}"
+          SUBMODULE_URL=$(git config --get submodule.${{ inputs.SUBMODULE }}.url)
+          echo "SUBMODULE_URL=${SUBMODULE_URL}" >> ${GITHUB_OUTPUT}
+          echo "SUBMODULE_URL: ${SUBMODULE_URL}"
 
       - name: Get the Current Job's Context
         id: gcjc
@@ -155,7 +141,7 @@ jobs:
           cwd: '.'
           add: '.'
           pull: '--rebase --autostash'
-          commit: '--signoff'
+          commit: '--signoff'           # required by https://github.com/apps/dco
           author_name: ${{ inputs.ACTOR_NAME }}
           author_email: ${{ inputs.ACTOR_EMAIL }}
           message: |
@@ -163,7 +149,7 @@ jobs:
 
             update the '${{ inputs.SUBMODULE }}' submodule to its latest commit.
 
-            - repository: ${{ steps.grus.outputs.REPO_URL }}
+            - repository: ${{ steps.grus.outputs.SUBMODULE_URL }}
             - old commit: ${{ steps.gocs.outputs.OLD_COMMIT }}
             - new commit: ${{ steps.gncs.outputs.NEW_COMMIT }}
 
@@ -171,7 +157,7 @@ jobs:
 
             - file: ${{ github.server_url }}/${{ github.repository }}/actions/workflows/${{ github.workflow }}.yml
             - run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-            - job: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/job/${{ steps.gcjc.outputs.job_url }}
+            - job: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/job/${{ steps.gcjc.outputs.job_id }}
 
       - name: Check Outputs of the Commit
         if: ${{ steps.acc.outputs.committed == 'true' }}
