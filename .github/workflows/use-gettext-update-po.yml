@@ -31,11 +31,6 @@ on:
         required: true  # [required]
         description: >
           The mode of updating .pot and .po files.
-      CALLER_JOB:
-        type: string
-        required: true  # [required]
-        description: >
-          The name of the caller job.
       ENABLE_JOB:
         type: string
         required: true  # [required]
@@ -86,7 +81,6 @@ jobs:
           echo "inputs.VERSION = ${{ inputs.VERSION }}"
           echo "inputs.LANGUAGE = ${{ inputs.LANGUAGE }}"
           echo "inputs.MODE_OF_UPDATE = ${{ inputs.MODE_OF_UPDATE }}"
-          echo "inputs.CALLER_JOB = ${{ inputs.CALLER_JOB }}"
           echo "inputs.ENABLE_JOB = ${{ inputs.ENABLE_JOB }}"
           echo "inputs.ACTOR_NAME = ${{ inputs.ACTOR_NAME }}"
           echo "inputs.ACTOR_EMAIL = ${{ inputs.ACTOR_EMAIL }}"

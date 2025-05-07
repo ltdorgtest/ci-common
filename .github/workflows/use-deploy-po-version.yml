@@ -21,11 +21,6 @@ on:
         required: true  # [required]
         description: >
           The version of the documentation.
-      CALLER_JOB:
-        type: string
-        required: true  # [required]
-        description: >
-          The name of the caller job.
       ENABLE_JOB:
         type: string
         required: true  # [required]
@@ -74,7 +69,6 @@ jobs:
           echo "inputs.RUNNER = ${{ inputs.RUNNER }}"
           echo "inputs.CHECKOUT = ${{ inputs.CHECKOUT }}"
           echo "inputs.VERSION = ${{ inputs.VERSION }}"
-          echo "inputs.CALLER_JOB = ${{ inputs.CALLER_JOB }}"
           echo "inputs.ENABLE_JOB = ${{ inputs.ENABLE_JOB }}"
           echo "inputs.ACTOR_NAME = ${{ inputs.ACTOR_NAME }}"
           echo "inputs.ACTOR_EMAIL = ${{ inputs.ACTOR_EMAIL }}"

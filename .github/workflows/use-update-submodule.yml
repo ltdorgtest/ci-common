@@ -21,11 +21,6 @@ on:
         required: true
         description: >
           The submodule to be updated (e.g., 'cmake/modules').
-      CALLER_JOB:
-        type: string
-        required: true
-        description: >
-          The name of the caller job.
       ENABLE_JOB:
         type: string
         required: true
@@ -67,7 +62,6 @@ jobs:
           echo "inputs.RUNNER = ${{ inputs.RUNNER }}"
           echo "inputs.CHECKOUT = ${{ inputs.CHECKOUT }}"
           echo "inputs.SUBMODULE = ${{ inputs.SUBMODULE }}"
-          echo "inputs.CALLER_JOB = ${{ inputs.CALLER_JOB }}"
           echo "inputs.ENABLE_JOB = ${{ inputs.ENABLE_JOB }}"
           echo "inputs.ACTOR_NAME = ${{ inputs.ACTOR_NAME }}"
           echo "inputs.ACTOR_EMAIL = ${{ inputs.ACTOR_EMAIL }}"

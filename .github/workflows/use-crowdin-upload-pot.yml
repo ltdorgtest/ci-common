@@ -21,11 +21,6 @@ on:
         required: true
         description: >
           The version of the documentation.
-      CALLER_JOB:
-        type: string
-        required: true
-        description: >
-          The name of the caller job.
       ENABLE_JOB:
         type: string
         required: true
@@ -103,11 +98,6 @@ jobs:
           ref: ${{ inputs.CHECKOUT }}
           token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
           submodules: true
-
-      # - name: Set up Environment Variables
-      #   shell: bash
-      #   run: |
-      #     echo "CROWDIN_PERSONAL_TOKEN=${{ secrets.CROWDIN_PERSONAL_TOKEN }}" >> ${GITHUB_ENV}
 
       # - name: Check whether '${{ inputs.VERSION }}' version should be uploaded to Crowdin
       #   shell: bash
