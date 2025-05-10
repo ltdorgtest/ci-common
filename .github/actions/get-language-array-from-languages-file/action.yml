@@ -3,7 +3,7 @@
 
 name: get-language-array-from-languages-file
 
-description: Get the Language Array from languages.json
+description: Get the Language Array from the languages.json file.
 
 inputs:
   language:
@@ -14,7 +14,7 @@ inputs:
     required: false
     default: 'languages.json'
     description: >
-      The filename of the languages.json.
+      The path of the languages.json file. Defaults to 'languages.json'.
   working-directory:
     required: false
     default: ${{ github.workspace }}
