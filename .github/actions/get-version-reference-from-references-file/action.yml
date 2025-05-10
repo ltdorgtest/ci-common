@@ -38,12 +38,12 @@ runs:
       shell: bash
       run: |
         JQ_FILTER="${{ inputs.jq-filter }}"
-        JSON_FILE=$(echo "${{ inputs.references-file }}" | sed 's#\\#/#g' | sed 's#^\([A-Za-z]\):#/\L\1#')
+        REFERENCES_FILE=$(echo "${{ inputs.references-file }}" | sed 's#\\#/#g' | sed 's#^\([A-Za-z]\):#/\L\1#')
         WORKING_DIRECTORY=$(echo "${{ inputs.working-directory }}" | sed 's#\\#/#g' | sed 's#^\([A-Za-z]\):#/\L\1#')
 
         cd ${WORKING_DIRECTORY}
 
-        VERSION_REFERENCE=$(jq "${JQ_FILTER}" "${JSON_FILE}")
+        VERSION_REFERENCE=$(jq "${JQ_FILTER}" "${REFERENCES_FILE}")
         DELIMITER="$(openssl rand -hex 8)"
         echo "VERSION_REFERENCE<<${DELIMITER}"  >> ${GITHUB_OUTPUT}
         echo "${VERSION_REFERENCE}"             >> ${GITHUB_OUTPUT}
