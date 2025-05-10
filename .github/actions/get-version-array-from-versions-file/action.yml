@@ -26,12 +26,12 @@ inputs:
     required: false
     default: 'versions.json'
     description: >
-      The path of the versions.json file. Defaults to 'versions.json'.
+      The path to the versions.json file. Defaults to 'versions.json'.
   working-directory:
     required: false
     default: ${{ github.workspace }}
     description: >
-      The directory from which commands will be executed or files located. Defaults to '${{ github.workspace }}'.
+      The directory from which commands will be executed or files located. Defaults to '\$\{\{ github.workspace \}\}'.
 
 outputs:
   VERSION_NUM:

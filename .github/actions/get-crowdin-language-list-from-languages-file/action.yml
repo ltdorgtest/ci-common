@@ -19,7 +19,7 @@ inputs:
     required: false
     default: 'languages.json'
     description: >
-      The filename of the languages.json.
+      The path to the languages.json file. Defaults to 'languages.json'.
   working-directory:
     required: false
     default: ${{ github.workspace }}
@@ -30,7 +30,7 @@ outputs:
   CROWDIN_LANGUAGE_LIST:
     value: ${{ steps.gcll.outputs.CROWDIN_LANGUAGE_LIST }}
     description: >
-      A comma-separated list of Crowdin languages.
+      A comma-separated list of the requested Crowdin languages.
 
 runs:
   using: composite

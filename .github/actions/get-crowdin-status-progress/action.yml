@@ -3,7 +3,7 @@
 
 name: get-crowdin-status-progress
 
-description: Get the Crowdin Status Progress
+description: Get the Crowdin Status Progress.
 
 inputs:
   crowdin-config-file:

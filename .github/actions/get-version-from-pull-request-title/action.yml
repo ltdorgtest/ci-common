@@ -8,12 +8,14 @@ description: Get the Version from the Pull Request Title.
 inputs:
   pr-title:
     required: true    # [required]
-    description: xxx
+    description: >
+      The title of the pull request, expected to contain a version in the format 'pot(<version>):'
 
 outputs:
   VERSION:
     value: ${{ steps.gvprt.outputs.VERSION }}
-    description: xxx
+    description: >
+      The version string extracted from the pull request title, based on the format 'pot(<version>):'.
 
 runs:
   using: composite

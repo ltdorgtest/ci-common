@@ -14,12 +14,12 @@ inputs:
   tms-label:
     required: true    # [required]
     description: >
-      The label added to the pull request lable list if the version is required to upload to the TMS.
+      The TMS label added to the pull request lable list if the version is required to upload to the TMS.
   versions-file:
     required: false
     default: 'versions.json'
     description: >
-      The path to the JSON file containing version data. Defaults to `versions.json`.
+      The path to the versions.json file. Defaults to 'versions.json'.
   working-directory:
     default: '${{ github.workspace }}'
     required: false
