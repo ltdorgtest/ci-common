@@ -8,12 +8,9 @@ description: Install Crowdin
 inputs:
   crowdin-version:
     required: false
-    description: 'Specific version of Crowdin to install.'
     default: ''
-  token:
-    required: false
-    description: xxx
-    default: '${{ github.token }}'
+    description: >
+      The specific version of Crowdin CLI to install. Defaults to an empty string.
 
 runs:
   using: composite

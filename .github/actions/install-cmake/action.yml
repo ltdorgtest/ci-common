@@ -9,11 +9,8 @@ inputs:
   cmake-version:
     required: false
     default: ''
-    description: 'Specific version of CMake to install.'
-  token:
-    required: false
-    default: '${{ github.token }}'
-    description: xxx
+    description: >
+      The specific version of CMake to install. Defaults to an empty string.
 
 runs:
   using: composite

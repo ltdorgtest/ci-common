@@ -8,12 +8,9 @@ description: Install Conda
 inputs:
   conda-version:
     required: false
-    description: 'Specific version of Conda to install.'
     default: ''
-  token:
-    required: false
-    description: xxx
-    default: '${{ github.token }}'
+    description: >
+      The specific version of Conda to install. Defaults to an empty string.
 
 runs:
   using: composite
