@@ -17,27 +17,27 @@ inputs:
     required: false
     default: '[]'
     description: >
-      A JSON array containing version values. Used when `matrix-type` is 'version' or 'version-language'.
+      The JSON array containing version values. Used when `matrix-type` is 'version' or 'version-language'.
   language-array:
     required: false
     default: '[]'
     description: >
-      A JSON array containing language values. Used when `matrix-type` is 'version-language'.
+      The JSON array containing language values. Used when `matrix-type` is 'version-language'.
   submodule-array:
     required: false
     default: '[]'
     description: >
-      A JSON array containing submodule values. Used when `matrix-type` is 'submodule'.
+      The JSON array containing submodule values. Used when `matrix-type` is 'submodule'.
 
 outputs:
-  MATRIX:
-    value: ${{ steps.gain.outputs.MATRIX }}
-    description: >
-      The generated job matrix in JSON format, wrapped in an "include" object.
   MATRIX_NUM:
     value: ${{ steps.gain.outputs.MATRIX_NUM }}
     description: >
       The total number of entries in the generated matrix.
+  MATRIX:
+    value: ${{ steps.gain.outputs.MATRIX }}
+    description: >
+      The generated job matrix in JSON format, wrapped in an "include" object.
 
 runs:
   using: composite

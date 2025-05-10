@@ -14,7 +14,7 @@ inputs:
     required: false
     default: 'languages.json'
     description: >
-      The path of the languages.json file. Defaults to 'languages.json'.
+      The path to the languages.json file. Defaults to 'languages.json'.
   working-directory:
     required: false
     default: ${{ github.workspace }}

@@ -14,7 +14,7 @@ inputs:
     required: false
     default: 'versions.json'
     description: >
-      The path to the JSON file containing version data.
+      The path to the JSON file containing version data. Defaults to 'versions.json'.
   working-directory:
     required: false
     default: '${{ github.workspace }}'
