@@ -29,7 +29,7 @@ outputs:
   LANGUAGE_ARRAY:
     value: ${{ steps.glll.outputs.LANGUAGE_ARRAY }}
     description: >
-      A JSON array containing the requested language(s), either a single language or all available ones depending on the input.
+      A JSON array containing the requested languages.
 
 runs:
   using: composite

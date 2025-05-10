@@ -37,11 +37,11 @@ outputs:
   VERSION_NUM:
     value: ${{ steps.gvav.outputs.VERSION_NUM }}
     description: >
-      The total count of version entries extracted from the JSON file.
+      The number of versions included in the VERSION_ARRAY.
   VERSION_ARRAY:
     value: ${{ steps.gvav.outputs.VERSION_ARRAY }}
     description: >
-      A JSON array containing the list of versions extracted based on the provided criteria and filters.
+      A JSON array containing the requested versions.
 
 runs:
   using: composite
