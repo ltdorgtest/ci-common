@@ -3,7 +3,7 @@
 
 name: get-submodule-array-from-gitmodules-file
 
-description: Get the Submodule Array from the .gitmodules file
+description: Get the Submodule Array from the .gitmodules file.
 
 inputs:
   submodule:
@@ -21,19 +21,19 @@ inputs:
 
 outputs:
   SUBMODULE_NUM:
-    value: ${{ steps.glll.outputs.SUBMODULE_NUM }}
+    value: ${{ steps.gslg.outputs.SUBMODULE_NUM }}
     description: >
       The number of submodules included in the SUBMODULE_ARRAY.
   SUBMODULE_ARRAY:
-    value: ${{ steps.glll.outputs.SUBMODULE_ARRAY }}
+    value: ${{ steps.gslg.outputs.SUBMODULE_ARRAY }}
     description: >
-       A JSON array containing the requested submodules.
+      The JSON array containing the requested submodules.
 
 runs:
   using: composite
   steps:
-    - name: Get the Submodule List from .gitmodules
-      id: glll
+    - name: Get the Submodule List from the .gitmodules file
+      id: gslg
       shell: bash
       run: |
         SUBMODULE="${{ inputs.submodule }}"
