@@ -1,16 +1,16 @@
 # Distributed under the OSI-approved BSD 3-Clause License.
 # See accompanying file LICENSE.txt for details.
 
-name: get-version-reference-from-json-file
+name: get-version-reference-from-references-file
 
-description: Get the Version Reference from the JSON file.
+description: Get the Version Reference from the references.json file.
 
 inputs:
   jq-filter:
     required: true    # [required]
     description: >
       The jq filter expression used to extract the desired version reference from the JSON file.
-  json-file:
+  references-file:
     required: true    # [required]
     description: >
       The path to the JSON file (typically references.json) from which to extract the version reference.
@@ -33,12 +33,12 @@ runs:
     # - https://github.com/peter-evans/create-pull-request/issues/2634#issuecomment-1870136711
     # - https://github.com/github/docs/issues/21529
     # - https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#multiline-strings
-    - name: Get the Version Reference from references.json
+    - name: Get the Version Reference from the references.json file
       id: gvi
       shell: bash
       run: |
         JQ_FILTER="${{ inputs.jq-filter }}"
-        JSON_FILE=$(echo "${{ inputs.json-file }}" | sed 's#\\#/#g' | sed 's#^\([A-Za-z]\):#/\L\1#')
+        JSON_FILE=$(echo "${{ inputs.references-file }}" | sed 's#\\#/#g' | sed 's#^\([A-Za-z]\):#/\L\1#')
         WORKING_DIRECTORY=$(echo "${{ inputs.working-directory }}" | sed 's#\\#/#g' | sed 's#^\([A-Za-z]\):#/\L\1#')
 
         cd ${WORKING_DIRECTORY}
