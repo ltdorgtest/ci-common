@@ -21,11 +21,11 @@ on:
         required: true  # [required]
         description: >
           The version of the documentation.
-      CREATE_RTD:
+      DEPLOY_RTD:
         type: string
         required: true  # [required]
         description: >
-          Whether to create RTD symbols (e.g., 'true' or 'false').
+          Whether to create RTD symbols for deployment (e.g., 'true' or 'false').
       ENABLE_JOB:
         type: string
         required: true  # [required]
@@ -74,7 +74,7 @@ jobs:
           echo "inputs.RUNNER = ${{ inputs.RUNNER }}"
           echo "inputs.CHECKOUT = ${{ inputs.CHECKOUT }}"
           echo "inputs.VERSION = ${{ inputs.VERSION }}"
-          echo "inputs.CREATE_RTD = ${{ inputs.CREATE_RTD }}"
+          echo "inputs.DEPLOY_RTD = ${{ inputs.DEPLOY_RTD }}"
           echo "inputs.ENABLE_JOB = ${{ inputs.ENABLE_JOB }}"
           echo "inputs.ACTOR_NAME = ${{ inputs.ACTOR_NAME }}"
           echo "inputs.ACTOR_EMAIL = ${{ inputs.ACTOR_EMAIL }}"
@@ -98,7 +98,7 @@ jobs:
           cache-version: ${{ inputs.VERSION }}
 
       - name: Build the 'create_rtd_symlinks' target
-        if: ${{ inputs.CREATE_RTD == 'true' }}
+        if: ${{ inputs.DEPLOY_RTD == 'true' }}
         uses: ltdorgtest/ci-common/.github/actions/cmake-build-target@main
         with:
           build-directory: out/build/all
