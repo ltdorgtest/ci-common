@@ -1,17 +1,19 @@
 # Distributed under the OSI-approved BSD 3-Clause License.
 # See accompanying file LICENSE.txt for details.
 
-name: get-version-ref-from-references-file
+name: get-version-reference-from-json-file
 
-description: Get the Version Reference from references.json
+description: Get the Version Reference from the JSON file.
 
 inputs:
   jq-filter:
     required: true    # [required]
-    description: xxx
-  jq-file:
+    description: >
+      The jq filter expression used to extract the desired version reference from the JSON file.
+  json-file:
     required: true    # [required]
-    description: xxx
+    description: >
+      The path to the JSON file (typically references.json) from which to extract the version reference.
   working-directory:
     required: false
     default: ${{ github.workspace }}
@@ -21,7 +23,8 @@ inputs:
 outputs:
   VERSION_REFERENCE:
     value: ${{ steps.gvi.outputs.VERSION_REFERENCE }}
-    description: xxx
+    description: >
+      The extracted version reference string based on the specified jq filter and input file.
 
 runs:
   using: composite
@@ -35,12 +38,12 @@ runs:
       shell: bash
       run: |
         JQ_FILTER="${{ inputs.jq-filter }}"
-        JQ_FILE=$(echo "${{ inputs.jq-file }}" | sed 's#\\#/#g' | sed 's#^\([A-Za-z]\):#/\L\1#')
+        JSON_FILE=$(echo "${{ inputs.json-file }}" | sed 's#\\#/#g' | sed 's#^\([A-Za-z]\):#/\L\1#')
         WORKING_DIRECTORY=$(echo "${{ inputs.working-directory }}" | sed 's#\\#/#g' | sed 's#^\([A-Za-z]\):#/\L\1#')
 
         cd ${WORKING_DIRECTORY}
 
-        VERSION_REFERENCE=$(jq "${JQ_FILTER}" "${JQ_FILE}")
+        VERSION_REFERENCE=$(jq "${JQ_FILTER}" "${JSON_FILE}")
         DELIMITER="$(openssl rand -hex 8)"
         echo "VERSION_REFERENCE<<${DELIMITER}"  >> ${GITHUB_OUTPUT}
         echo "${VERSION_REFERENCE}"             >> ${GITHUB_OUTPUT}

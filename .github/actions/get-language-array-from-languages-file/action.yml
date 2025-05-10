@@ -9,7 +9,7 @@ inputs:
   language:
     required: true    # [required]
     description: >
-      The language to fetch from the list, or 'all' to get all languages.
+      The language to fetch from the languages.json, or 'all' to get all languages.
   languages-file:
     required: false
     default: 'languages.json'
@@ -24,10 +24,12 @@ inputs:
 outputs:
   LANGUAGE_NUM:
     value: ${{ steps.glll.outputs.LANGUAGE_NUM }}
-    description: xxx
+    description: >
+      The number of languages included in the LANGUAGE_ARRAY.
   LANGUAGE_ARRAY:
     value: ${{ steps.glll.outputs.LANGUAGE_ARRAY }}
-    description: xxx
+    description: >
+      A JSON array containing the requested language(s), either a single language or all available ones depending on the input.
 
 runs:
   using: composite

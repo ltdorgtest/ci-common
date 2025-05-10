@@ -24,7 +24,8 @@ inputs:
 outputs:
   VERSION_GROUP:
     value: ${{ steps.gvgv.outputs.VERSION_GROUP }}
-    description: xxx
+    description: >
+      The name of the version group (key in versions.json) where the specified version is found. Empty if not found.
 
 runs:
   using: composite
@@ -37,7 +38,7 @@ runs:
         VERSIONS_FILE=$(echo "${{ inputs.versions-file }}" | sed 's#\\#/#g' | sed 's#^\([A-Za-z]\):#/\L\1#')
         WORKING_DIRECTORY=$(echo "${{ inputs.working-directory }}" | sed 's#\\#/#g' | sed 's#^\([A-Za-z]\):#/\L\1#')
 
-        cd ${WORKING_DIRECTORY}
+        cd "${WORKING_DIRECTORY}"
 
         VERSION_GROUPS=($(jq -r 'keys[]' "${VERSIONS_FILE}" | tr -d '\r'))
         FOUND_GROUP=""
@@ -56,6 +57,6 @@ runs:
           echo "${VERSION} is not found in any group"
         fi
 
-        echo "VERSION_GROUP=${FOUND_GROUP}" >> ${GITHUB_OUTPUT}
+        echo "VERSION_GROUP=${FOUND_GROUP}" >> "${GITHUB_OUTPUT}"
         echo "VERSION_GROUP:"
-        echo "${VERSION_GROUP}"
+        echo "${FOUND_GROUP}"

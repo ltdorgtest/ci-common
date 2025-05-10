@@ -50,7 +50,8 @@ inputs:
 outputs:
   CROWDIN_STATUS_PROGRESS:
     value: ${{ steps.gcsp.outputs.CROWDIN_STATUS_PROGRESS }}
-    description: xxx
+    description: >
+      The full output of the `crowdin status` command, with filtered logs and formatting applied.
 
 runs:
   using: composite
