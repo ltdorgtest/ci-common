@@ -16,6 +16,12 @@ on:
         required: true
         description: >
           The git reference to be checked out (e.g., '\$\{\{ github.ref \}\}').
+      CMAKE_VERSION:
+        type: string
+        required: false
+        default: ''
+        description: >
+          The version of the CMake command. Defaults to an empty string.
       VERSION:
         type: string
         required: true
@@ -68,6 +74,7 @@ jobs:
           echo "[Inputs]"
           echo "inputs.RUNNER = ${{ inputs.RUNNER }}"
           echo "inputs.CHECKOUT = ${{ inputs.CHECKOUT }}"
+          echo "inputs.CMAKE_VERSION = ${{ inputs.CMAKE_VERSION }}"
           echo "inputs.VERSION = ${{ inputs.VERSION }}"
           echo "inputs.ENABLE_JOB = ${{ inputs.ENABLE_JOB }}"
           echo "inputs.ACTOR_NAME = ${{ inputs.ACTOR_NAME }}"
@@ -85,6 +92,8 @@ jobs:
 
       - name: Install CMake
         uses: ltdorgtest/ci-common/.github/actions/install-cmake@main
+        with:
+          cmake-version: ${{ inputs.CMAKE_VERSION }}
 
       - name: Install Gettext
         uses: ltdorgtest/ci-common/.github/actions/install-gettext@main
