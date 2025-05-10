@@ -1,9 +1,9 @@
 # Distributed under the OSI-approved BSD 3-Clause License.
 # See accompanying file LICENSE.txt for details.
 
-name: get-statistics-cnt-from-statistics-file
+name: get-statistics-from-statistics-file
 
-description: Get the Statistics Content from statistics.txt.
+description: Get the Statistics from statistics.txt.
 
 inputs:
   statistics-file:
@@ -17,8 +17,8 @@ inputs:
       The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'. Defaults to '\$\{\{ github.workspace \}\}'.
 
 outputs:
-  STATISTICS_CNT:
-    value: ${{ steps.gsi.outputs.STATISTICS_CNT }}
+  STATISTICS:
+    value: ${{ steps.gsi.outputs.STATISTICS }}
     description: >
       The content of the `statistics.txt` file for the specified version.
 
@@ -35,9 +35,9 @@ runs:
         cd "${WORKING_DIRECTORY}"
 
         DELIMITER="$(openssl rand -hex 8)"
-        echo "STATISTICS_CNT<<${DELIMITER}" >> ${GITHUB_OUTPUT}
-        echo "$(<${STATISTICS_FILE})"       >> ${GITHUB_OUTPUT}
-        echo "${DELIMITER}"                 >> ${GITHUB_OUTPUT}
+        echo "STATISTICS<<${DELIMITER}" >> ${GITHUB_OUTPUT}
+        echo "$(<${STATISTICS_FILE})"   >> ${GITHUB_OUTPUT}
+        echo "${DELIMITER}"             >> ${GITHUB_OUTPUT}
 
-        echo "STATISTICS_CNT:"
+        echo "STATISTICS:"
         echo "$(<${STATISTICS_FILE})"

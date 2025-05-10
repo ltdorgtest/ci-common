@@ -110,9 +110,9 @@ jobs:
           build-directory: out/build/all
           build-target: 'gettext_statistics'
 
-      - name: Get the STATISTICS_CNT from statistics.txt
+      - name: Get the STATISTICS from statistics.txt
         id: gsi
-        uses: ltdorgtest/ci-common/.github/actions/get-statistics-cnt-from-statistics-file@main
+        uses: ltdorgtest/ci-common/.github/actions/get-statistics-from-statistics-file@main
         with:
           statistics-file: 'l10n/${{ inputs.VERSION }}/statistics.txt'
 
@@ -153,7 +153,7 @@ jobs:
           message: |
             🔧 chore(${{ inputs.VERSION }}): update statistics from Gettext
 
-            ${{ steps.gsi.outputs.STATISTICS_CNT }}
+            ${{ steps.gsi.outputs.STATISTICS }}
 
             created by the GitHub Actions:
 
