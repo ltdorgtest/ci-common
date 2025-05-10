@@ -10,37 +10,37 @@ inputs:
     required: false
     default: ''
     description: >
-      The path to the Crowdin configuration file.
+      The path to the Crowdin configuration file. Defaults to an empty string.
   crowdin-branch-name:
     required: false
     default: ''
     description: >
-      The name of the branch to upload sources in Crowdin.
+      The name of the branch to upload sources in Crowdin. Defaults to an empty string.
   crowdin-project-id:
     required: false
     default: ''
     description: >
-      The numeric ID of the project in Crowdin.
+      The numeric ID of the project in Crowdin. Defaults to an empty string.
   crowdin-personal-token:
     required: false
     default: ''
     description: >
-      The personal access token for authentication.
+      The personal access token for authentication. Defaults to an empty string.
   crowdin-no-progress:
     required: false
     default: 'false'
     description: >
-      Whether to disable progress on executed command.
+      Whether to disable progress on executed command. Defaults to 'false'.
   crowdin-verbose:
     required: false
     default: 'false'
     description: >
-      Whether to provide more information about the command execution.
+      Whether to provide more information about the command execution. Defaults to 'false'.
   crowdin-dryrun:
     required: false
     default: 'false'
     description: >
-      Whether to print a command output without execution.
+      Whether to print a command output without execution. Defaults to 'false'.
   working-directory:
     required: false
     default: '${{ github.workspace }}'

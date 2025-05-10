@@ -14,12 +14,12 @@ inputs:
     required: false
     default: '[default]'
     description: >
-      The build target of the CMake project.
+      The build target of the CMake project. Defaults to '[default]'.
   build-jobs:
     required: false
     default: '[default]'
     description: >
-      The maximum number of concurrent processes to use when building.
+      The maximum number of concurrent processes to use when building. Defaults to '[default]'.
   working-directory:
     required: false
     default: '${{ github.workspace }}'
