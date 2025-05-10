@@ -3,7 +3,7 @@
 
 name: get-statistics-from-statistics-file
 
-description: Get the Statistics from statistics.txt.
+description: Get the Statistics from the statistics.txt file.
 
 inputs:
   statistics-file:
@@ -25,7 +25,7 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Get the Statistics Content from statistics.txt
+    - name: Get the Statistics from the statistics.txt file
       id: gsi
       shell: bash
       run: |
