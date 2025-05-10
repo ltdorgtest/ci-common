@@ -210,7 +210,7 @@ jobs:
 
             ${{ steps.gtpp.outputs.CROWDIN_STATUS_PROGRESS }}
 
-            created by the GitHub Workflow:
+            created by the GitHub Actions:
 
             - file: ${{ github.server_url }}/${{ github.repository }}/actions/workflows/${{ github.workflow }}.yml
             - run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
