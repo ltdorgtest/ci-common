@@ -10,7 +10,7 @@ inputs:
   language:
     required: true    # [required]
     description: >
-      The language to fetch from the list, or 'all' to get all languages.
+      The language to fetch from the list, or 'all' to get a list of all languages.
   language-source:
     required: true    # [required]
     description: >

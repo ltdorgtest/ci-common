@@ -3,7 +3,7 @@
 
 name: get-other-caches-from-versions-file
 
-description: Get Other Caches from versions.json
+description: Get Other Caches from the versions.json file.
 
 inputs:
   version:
@@ -46,7 +46,7 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Get the Version Group from versions.json
+    - name: Get the Version Group from the versions.json file
       id: gvgv
       uses: ltdorgtest/ci-common/.github/actions/get-version-group-from-versions-file@main
       with:

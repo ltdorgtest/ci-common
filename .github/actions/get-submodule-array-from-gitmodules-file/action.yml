@@ -8,11 +8,13 @@ description: Get the Submodule Array from the .gitmodules file.
 inputs:
   submodule:
     required: true    # [required]
-    description: xxx
+    description: >
+      The name of the submodule, or 'all' to get a list of all submodules.
   gitmodules-file:
     required: false
     default: '.gitmodules'
-    description: xxx
+    description: >
+      The path to the .gitmodules file. Defaults to '.gitmodules'.
   working-directory:
     required: false
     default: ${{ github.workspace }}
