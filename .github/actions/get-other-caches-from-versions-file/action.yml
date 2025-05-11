@@ -26,22 +26,6 @@ outputs:
     value: ${{ steps.gocv.outputs.VERSION_COMPENDIUM }}
     description: >
       The VERSION_COMPENDIUM retrieved from versions.json, or '[default]' if not found.
-  VERSION_OF_PYTHON:
-    value: ${{ steps.gocv.outputs.VERSION_OF_PYTHON }}
-    description: >
-      The VERSION_OF_PYTHON retrieved from versions.json, or '[default]' if not found.
-  VERSION_OF_SPHINX:
-    value: ${{ steps.gocv.outputs.VERSION_OF_SPHINX }}
-    description: >
-      The VERSION_OF_SPHINX retrieved from versions.json, or '[default]' if not found.
-  VERSION_OF_DOXYGEN:
-    value: ${{ steps.gocv.outputs.VERSION_OF_DOXYGEN }}
-    description: >
-      The VERSION_OF_DOXYGEN retrieved from versions.json, or '[default]' if not found.
-  VERSION_OF_PROJ:
-    value: ${{ steps.gocv.outputs.VERSION_OF_PROJ }}
-    description: >
-      The VERSION_OF_PROJ retrieved from versions.json, or '[default]' if not found.
 
 runs:
   using: composite
