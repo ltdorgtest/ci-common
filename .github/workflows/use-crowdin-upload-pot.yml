@@ -22,6 +22,12 @@ on:
         default: ''
         description: >
           The version of the CMake command. Defaults to an empty string.
+      CROWDIN_VERSION:
+        type: string
+        required: false
+        default: ''
+        description: >
+          The version of the Crowdin CLI command. Defaults to an empty string.
       VERSION:
         type: string
         required: true  # [required]
@@ -89,6 +95,7 @@ jobs:
           echo "inputs.RUNNER = ${{ inputs.RUNNER }}"
           echo "inputs.CHECKOUT = ${{ inputs.CHECKOUT }}"
           echo "inputs.CMAKE_VERSION = ${{ inputs.CMAKE_VERSION }}"
+          echo "inputs.CROWDIN_VERSION = ${{ inputs.CROWDIN_VERSION }}"
           echo "inputs.VERSION = ${{ inputs.VERSION }}"
           echo "inputs.ENABLE_JOB = ${{ inputs.ENABLE_JOB }}"
           echo "inputs.ACTOR_NAME = ${{ inputs.ACTOR_NAME }}"
@@ -116,6 +123,8 @@ jobs:
 
       - name: Install Crowdin
         uses: ltdorgtest/ci-common/.github/actions/install-crowdin@main
+        with:
+          crowdin-version: ${{ inputs.CROWDIN_VERSION }}
 
       - name: Get Other Caches from versions.json
         id: gocv

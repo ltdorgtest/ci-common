@@ -29,7 +29,8 @@ on:
       DEPLOY_BRANCH:
         type: string
         required: true  # [required]
-        description: xxx
+        description: >
+          The name of the branch to which the build artifacts will be deployed (e.g., 'pages').
       ENABLE_JOB:
         type: string
         required: true  # [required]

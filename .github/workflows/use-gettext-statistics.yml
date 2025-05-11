@@ -8,12 +8,12 @@ on:
     inputs:
       RUNNER:
         type: string
-        required: true
+        required: true  # [required]
         description: >
           The runner image for executing the job (e.g., 'ubuntu-latest').
       CHECKOUT:
         type: string
-        required: true
+        required: true  # [required]
         description: >
           The git reference to be checked out (e.g., '\$\{\{ github.ref \}\}').
       CMAKE_VERSION:
@@ -24,27 +24,27 @@ on:
           The version of the CMake command. Defaults to an empty string.
       VERSION:
         type: string
-        required: true
+        required: true  # [required]
         description: >
           The version of the documentation.
       ENABLE_JOB:
         type: string
-        required: true
+        required: true  # [required]
         description: >
           Whether to enable the job (e.g., 'true' and 'false').
       ACTOR_NAME:
         type: string
-        required: true
+        required: true  # [required]
         description: >
           The user name of the GitHub actor.
       ACTOR_EMAIL:
-        required: true
+        required: true  # [required]
         type: string
         description: >
           The user email of the GitHub actor.
     secrets:
       ACTOR_GITHUB_TOKEN:
-        required: true
+        required: true  # [required]
         description: >
           The personal access token of the GitHub actor.
 

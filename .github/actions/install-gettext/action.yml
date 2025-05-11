@@ -5,12 +5,6 @@ name: install-gettext
 
 description: Install Gettext
 
-inputs:
-  token:
-    required: false
-    description: xxx
-    default: '${{ github.token }}'
-
 runs:
   using: composite
   steps:
