@@ -21,6 +21,7 @@ runs:
         auto-activate-base: true
         activate-environment: ""
         miniconda-version: ${{ inputs.conda-version }}
+        conda-remove-defaults: true
 
     - name: Check if Conda is installed (Linux/macOS)
       if: ${{ runner.os == 'Linux' || runner.os == 'macOS' }}
