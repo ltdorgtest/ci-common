@@ -13,7 +13,7 @@ inputs:
   references-file:
     required: true    # [required]
     description: >
-      The path to the JSON file (typically references.json) from which to extract the version reference.
+      The path to the references.json file from which to extract the version reference.
   working-directory:
     required: false
     default: ${{ github.workspace }}
@@ -41,7 +41,7 @@ runs:
         REFERENCES_FILE=$(echo "${{ inputs.references-file }}" | sed 's#\\#/#g' | sed 's#^\([A-Za-z]\):#/\L\1#')
         WORKING_DIRECTORY=$(echo "${{ inputs.working-directory }}" | sed 's#\\#/#g' | sed 's#^\([A-Za-z]\):#/\L\1#')
 
-        cd ${WORKING_DIRECTORY}
+        cd "${WORKING_DIRECTORY}"
 
         VERSION_REFERENCE=$(jq "${JQ_FILTER}" "${REFERENCES_FILE}")
         DELIMITER="$(openssl rand -hex 8)"
