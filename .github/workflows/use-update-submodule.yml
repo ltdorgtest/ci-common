@@ -135,7 +135,6 @@ jobs:
           cwd: '.'
           add: '.'
           pull: '--rebase --autostash'
-          commit: '--signoff'           # required by https://github.com/apps/dco
           author_name: ${{ inputs.ACTOR_NAME }}
           author_email: ${{ inputs.ACTOR_EMAIL }}
           message: |
