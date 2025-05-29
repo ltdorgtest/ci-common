@@ -3,7 +3,7 @@
 
 name: get-version-array-from-versions-file
 
-description: Get the Version List from versions.json
+description: Get the Version List from the versions.json file.
 
 inputs:
   type:
