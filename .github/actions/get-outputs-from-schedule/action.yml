@@ -12,10 +12,10 @@ inputs:
       The schedule string to match against predefined CRON_XXX environment variables.
 
 outputs:
-  TYPE:
-    value: ${{ steps.gos.outputs.TYPE }}
+  MODE:
+    value: ${{ steps.gos.outputs.MODE }}
     description: >
-      The type of the schedule match. Defaults to 'group'.
+      The mode of the schedule match. Defaults to 'group'.
   VERSION:
     value: ${{ steps.gos.outputs.VERSION }}
     description: >
@@ -51,13 +51,13 @@ runs:
           exit 1
         fi
 
-        TYPE="group"
+        MODE="group"
         VERSION=""
         LANGUAGE="all"
 
-        echo "TYPE=${TYPE}" >> ${GITHUB_OUTPUT}
-        echo "TYPE:"
-        echo "${TYPE}"
+        echo "MODE=${MODE}" >> ${GITHUB_OUTPUT}
+        echo "MODE:"
+        echo "${MODE}"
 
         echo "VERSION=${VERSION}" >> ${GITHUB_OUTPUT}
         echo "VERSION:"
