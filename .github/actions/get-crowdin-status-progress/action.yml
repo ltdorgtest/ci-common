@@ -110,8 +110,7 @@ runs:
         WORKING_DIRECTORY=$(echo "${{ inputs.working-directory }}" | sed 's#\\#/#g' | sed 's#^\([A-Za-z]\):#/\L\1#')
         cd "${WORKING_DIRECTORY}"
         CROWDIN_STATUS_ARGS="${{ steps.crowdin-args.outputs.CROWDIN_ARGS }}"
-        CROWDIN_STATUS_OUTPUTS=$(crowdin status ${CROWDIN_STATUS_ARGS[@]} 2>&1)
-        CROWDIN_STATUS_PROGRESS=$(echo "${CROWDIN_STATUS_OUTPUTS}")
+        CROWDIN_STATUS_PROGRESS=$(crowdin status ${CROWDIN_STATUS_ARGS[@]} 2>&1)
         CROWDIN_STATUS_PROGRESS=$(echo "${CROWDIN_STATUS_PROGRESS}" | sed '/Loading configuration from/d')
         CROWDIN_STATUS_PROGRESS=$(echo "${CROWDIN_STATUS_PROGRESS}" | sed '/Fetching project info/d')
         CROWDIN_STATUS_PROGRESS=$(echo "${CROWDIN_STATUS_PROGRESS}" | sed 's/\t/  /g')
