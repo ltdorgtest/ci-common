@@ -9,22 +9,22 @@ inputs:
   build-directory:
     required: true    # [required]
     description: >
-      The build directory of the CMake project.
+      [Required] The build directory of the CMake project.
   build-target:
     required: false
     default: '[default]'
     description: >
-      The build target of the CMake project. Defaults to '[default]'.
+      [Optional] The build target of the CMake project. Defaults to '[default]'.
   build-jobs:
     required: false
     default: '[default]'
     description: >
-      The maximum number of concurrent processes to use when building. Defaults to '[default]'.
+      [Optional] The maximum number of concurrent processes to use when building. Defaults to '[default]'.
   working-directory:
     required: false
     default: '${{ github.workspace }}'
     description: >
-      The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
+      [Optional] The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
 
 runs:
   using: composite
