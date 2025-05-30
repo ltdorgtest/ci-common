@@ -7,19 +7,19 @@ description: Get Other Caches from the versions.json file.
 
 inputs:
   version:
-    required: true    # [required]
+    required: true    # [Required]
     description: >
-      The version to search for in the specified versions.json file.
+      [Required] The version to search for in the specified versions.json file.
   versions-file:
     required: false
     default: 'versions.json'
     description: >
-      The path to the JSON file containing version data. Defaults to 'versions.json'.
+      [Optional] The path to the JSON file containing version data. Defaults to 'versions.json'.
   working-directory:
     required: false
     default: '${{ github.workspace }}'
     description: >
-      The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
+      [Optional] The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
 
 outputs:
   VERSION_COMPENDIUM:

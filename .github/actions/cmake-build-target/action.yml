@@ -7,7 +7,7 @@ description: Build the CMake Target
 
 inputs:
   build-directory:
-    required: true    # [required]
+    required: true    # [Required]
     description: >
       [Required] The build directory of the CMake project.
   build-target:

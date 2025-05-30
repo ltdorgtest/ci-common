@@ -10,97 +10,97 @@ inputs:
     required: false
     default: '.'
     description: >
-      The source directory of the CMake project. Defaults to '.'.
+      [Optional] The source directory of the CMake project. Defaults to '.'.
   config-preset:
     required: false
     default: 'all'
     description: >
-      The name of the CMake preset to use. Defaults to '[default]'.
+      [Optional] The name of the CMake preset to use. Defaults to '[default]'.
   cache-version:
     required: false
     default: '[default]'
     description: >
-      The value for the VERSION cache entry. Defaults to '[default]'.
+      [Optional] The value for the VERSION cache entry. Defaults to '[default]'.
   cache-version-compendium:
     required: false
     default: '[default]'
     description: >
-      The value for the VERSION_COMPENDIUM cache entry. Defaults to '[default]'.
+      [Optional] The value for the VERSION_COMPENDIUM cache entry. Defaults to '[default]'.
   cache-auto-depend:
     required: false
     default: '[default]'
     description: >
-      The value for the AUTO_DEPEND cache entry. Defaults to '[default]'.
+      [Optional] The value for the AUTO_DEPEND cache entry. Defaults to '[default]'.
   cache-remove-redundant:
     required: false
     default: '[default]'
     description: >
-      The value for the REMOVE_REDUNDANT cache entry. Defaults to '[default]'.
+      [Optional] The value for the REMOVE_REDUNDANT cache entry. Defaults to '[default]'.
   cache-mode-of-update:
     required: false
     default: '[default]'
     description: >
-      The value for the MODE_OF_UPDATE cache entry. Defaults to '[default]'.
+      [Optional] The value for the MODE_OF_UPDATE cache entry. Defaults to '[default]'.
   cache-mode-of-install:
     required: false
     default: '[default]'
     description: >
-      The value for the MODE_OF_INSTALL cache entry. Defaults to '[default]'.
+      [Optional] The value for the MODE_OF_INSTALL cache entry. Defaults to '[default]'.
   cache-baseurl-href:
     required: false
     default: '[default]'
     description: >
-      The value for the BASEURL_HREF cache entry. Defaults to '[default]'.
+      [Optional] The value for the BASEURL_HREF cache entry. Defaults to '[default]'.
   cache-version-of-python:
     required: false
     default: '[default]'
     description: >
-      The value for the VERSION_OF_PYTHON cache entry. Defaults to '[default]'.
+      [Optional] The value for the VERSION_OF_PYTHON cache entry. Defaults to '[default]'.
   cache-version-of-sphinx:
     required: false
     default: '[default]'
     description: >
-      The value for the VERSION_OF_SPHINX cache entry. Defaults to '[default]'.
+      [Optional] The value for the VERSION_OF_SPHINX cache entry. Defaults to '[default]'.
   cache-version-of-doxygen:
     required: false
     default: '[default]'
     description: >
-      The value for the VERSION_OF_DOXYGEN cache entry. Defaults to '[default]'.
+      [Optional] The value for the VERSION_OF_DOXYGEN cache entry. Defaults to '[default]'.
   cache-version-of-proj:
     required: false
     default: '[default]'
     description: >
-      The value for the VERSION_OF_PROJ cache entry. Defaults to '[default]'.
+      [Optional] The value for the VERSION_OF_PROJ cache entry. Defaults to '[default]'.
   cache-sphinx-builder:
     required: false
     default: '[default]'
     description: >
-      The value for the SPHINX_BUILDER cache entry. Defaults to '[default]'.
+      [Optional] The value for the SPHINX_BUILDER cache entry. Defaults to '[default]'.
   cache-sphinx-job-number:
     required: false
     default: '[default]'
     description: >
-      The value for the SPHINX_JOB_NUMBER cache entry. Defaults to '[default]'.
+      [Optional] The value for the SPHINX_JOB_NUMBER cache entry. Defaults to '[default]'.
   cache-sphinx-verbose-level:
     required: false
     default: '[default]'
     description: >
-      The value for the SPHINX_VERBOSE_LEVEL cache entry. Defaults to '[default]'.
+      [Optional] The value for the SPHINX_VERBOSE_LEVEL cache entry. Defaults to '[default]'.
   cache-gettext-wrap-width:
     required: false
     default: '[default]'
     description: >
-      The value for the GETTEXT_WRAP_WIDTH cache entry. Defaults to '[default]'.
+      [Optional] The value for the GETTEXT_WRAP_WIDTH cache entry. Defaults to '[default]'.
   cache-gettext-additional-targets:
     required: false
     default: '[default]'
     description: >
-      The value for the GETTEXT_ADDITIONAL_TARGETS cache entry. Defaults to '[default]'.
+      [Optional] The value for the GETTEXT_ADDITIONAL_TARGETS cache entry. Defaults to '[default]'.
   working-directory:
     required: false
     default: '${{ github.workspace }}'
     description: >
-      The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
+      [Optional] The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
 
 runs:
   using: composite

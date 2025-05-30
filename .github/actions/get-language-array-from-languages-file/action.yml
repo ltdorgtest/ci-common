@@ -7,19 +7,19 @@ description: Get the Language Array from the languages.json file.
 
 inputs:
   language:
-    required: true    # [required]
+    required: true    # [Required]
     description: >
-      The language to fetch from the languages.json, or 'all' to get all languages.
+      [Required] The language to fetch from the languages.json, or 'all' to get all languages.
   languages-file:
     required: false
     default: 'languages.json'
     description: >
-      The path to the languages.json file. Defaults to 'languages.json'.
+      [Optional] The path to the languages.json file. Defaults to 'languages.json'.
   working-directory:
     required: false
     default: ${{ github.workspace }}
     description: >
-      The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
+      [Optional] The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
 
 outputs:
   LANGUAGE_NUM:

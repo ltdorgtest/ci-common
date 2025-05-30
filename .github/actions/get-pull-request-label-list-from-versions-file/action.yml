@@ -21,8 +21,8 @@ inputs:
     description: >
       The path to the versions.json file. Defaults to 'versions.json'.
   working-directory:
-    default: '${{ github.workspace }}'
     required: false
+    default: '${{ github.workspace }}'
     description: >
       The directory from which to run commands or locate files. Defaults to `'\$\{\{ github.workspace \}\}'`.
 

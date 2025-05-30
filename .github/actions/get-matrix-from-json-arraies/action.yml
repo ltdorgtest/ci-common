@@ -7,9 +7,9 @@ description: Get MATRIX from the JSON Arraies.
 
 inputs:
   matrix-type:
-    required: true    # [required]
+    required: true    # [Required]
     description: >
-      Specifies the type of matrix to generate. Possible values:
+      [Required] Specifies the type of matrix to generate. Possible values:
       - 'version': Generates a matrix based on the version list.
       - 'submodule': Generates a matrix based on the submodule list.
       - 'version-language': Generates a matrix combining the version and language lists.
@@ -17,17 +17,17 @@ inputs:
     required: false
     default: '[]'
     description: >
-      The JSON array containing version values. Used when `matrix-type` is 'version' or 'version-language'.
+      [Optional] The JSON array containing version values. Used when `matrix-type` is 'version' or 'version-language'.
   language-array:
     required: false
     default: '[]'
     description: >
-      The JSON array containing language values. Used when `matrix-type` is 'version-language'.
+      [Optional] The JSON array containing language values. Used when `matrix-type` is 'version-language'.
   submodule-array:
     required: false
     default: '[]'
     description: >
-      The JSON array containing submodule values. Used when `matrix-type` is 'submodule'.
+      [Optional] The JSON array containing submodule values. Used when `matrix-type` is 'submodule'.
 
 outputs:
   MATRIX_NUM:

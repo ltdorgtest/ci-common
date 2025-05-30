@@ -12,7 +12,7 @@ inputs:
     description: >
       [Optional] The path to the Crowdin configuration file. Defaults to an empty string.
   crowdin-branch-name:
-    required: true
+    required: true    # [Required]
     description: >
       [Required] The name of the branch to delete in Crowdin.
   crowdin-project-id:
