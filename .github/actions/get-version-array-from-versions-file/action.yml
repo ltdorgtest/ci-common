@@ -7,31 +7,31 @@ description: Get the Version List from the versions.json file.
 
 inputs:
   mode:
-    required: true    # [required]
+    required: true    # [Required]
     description: >
-      Specifies the extraction mode. Accepted values are "group" for aggregating versions across a version group, or "single" for fetching a specific version.
+      [Required] Specifies the extraction mode. Accepted values are "group" for aggregating versions across a version group, or "single" for fetching a specific version.
   version:
-    required: true    # [required]
+    required: true    # [Required]
     description: >
-       The version identifier to search for when operating in "single" mode.
+      [Required] The version identifier to search for when operating in "single" mode.
   version-group:
-    required: true    # [required]
+    required: true    # [Required]
     description: >
-      The version group used for extraction when in "group" mode.
+      [Required] The version group used for extraction when in "group" mode.
   version-filter:
-    required: true    # [required]
+    required: true    # [Required]
     description: >
-      Possible values are: 'all', 'gettext', and 'crowdin'. This input filters the version objects based on their 'VERSION_COMPENDIUM' content.
+      [Required] Possible values are: 'all', 'gettext', and 'crowdin'. This input filters the version objects based on their 'VERSION_COMPENDIUM' content.
   versions-file:
     required: false
     default: 'versions.json'
     description: >
-      The path to the versions.json file. Defaults to 'versions.json'.
+      [Optional] The path to the versions.json file. Defaults to 'versions.json'.
   working-directory:
     required: false
     default: ${{ github.workspace }}
     description: >
-      The directory from which commands will be executed or files located. Defaults to '\$\{\{ github.workspace \}\}'.
+      [Optional] The directory from which commands will be executed or files located. Defaults to '\$\{\{ github.workspace \}\}'.
 
 outputs:
   VERSION_NUM:

@@ -7,14 +7,14 @@ description: Get the Statistics from the statistics.txt file.
 
 inputs:
   statistics-file:
-    required: true  # [required]
+    required: true    # [Required]
     description: >
-      The version identifier used to locate the corresponding `statistics.txt` file.
+      [Required] The version identifier used to locate the corresponding `statistics.txt` file.
   working-directory:
     required: false
     default: '${{ github.workspace }}'
     description: >
-      The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'. Defaults to '\$\{\{ github.workspace \}\}'.
+      [Optional] The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
 
 outputs:
   STATISTICS:
