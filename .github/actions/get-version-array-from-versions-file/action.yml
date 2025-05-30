@@ -3,17 +3,17 @@
 
 name: get-version-array-from-versions-file
 
-description: Get the Version List from the versions.json file.
+description: Get the Version Arrary from the versions.json file.
 
 inputs:
   mode:
     required: true    # [Required]
     description: >
-      [Required] Specifies the extraction mode. Accepted values are "group" for aggregating versions across a version group, or "single" for fetching a specific version.
+      [Required] The mode of extracting versions. Accepted values are "group" for aggregating versions across a version group, or "single" for fetching a specific version.
   version:
     required: true    # [Required]
     description: >
-      [Required] The version identifier to search for when operating in "single" mode.
+      [Required] The version to used for extraction when in "single" mode.
   version-group:
     required: true    # [Required]
     description: >
