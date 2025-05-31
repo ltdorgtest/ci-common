@@ -7,9 +7,9 @@ description: Get Outputs from Schedule
 
 inputs:
   schedule:
-    required: true  # [required]
+    required: true  # [Required]
     description: >
-      The schedule string to match against predefined CRON_XXX environment variables.
+      [Required] The schedule string to match against predefined CRON_XXX environment variables.
 
 outputs:
   MODE:

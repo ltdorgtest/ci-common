@@ -7,7 +7,7 @@ description: Get the Version Group from versions.json
 
 inputs:
   version:
-    required: true    # [required]
+    required: true    # [Required]
     description: >
       The version to search for in the specified versions.json file.
   versions-file:

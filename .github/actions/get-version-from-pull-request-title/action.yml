@@ -7,9 +7,9 @@ description: Get the Version from the Pull Request Title.
 
 inputs:
   pull-request-title:
-    required: true    # [required]
+    required: true    # [Required]
     description: >
-      The title of the pull request, expected to contain a version in the format 'pot(<version>):'
+      [Required] The title of the pull request, expected to contain a version in the format 'pot(<version>):'
 
 outputs:
   VERSION:

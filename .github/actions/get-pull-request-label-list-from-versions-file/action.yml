@@ -8,23 +8,23 @@ description: >
 
 inputs:
   version:
-    required: true    # [required]
+    required: true    # [Required]
     description: >
-      The version to search for in the specified `versions.json` file.
+      [Required] The version to search for in the specified `versions.json` file.
   tms-label:
-    required: true    # [required]
+    required: true    # [Required]
     description: >
-      The TMS label added to the pull request lable list if the version is required to upload to the TMS.
+      [Required] The TMS label added to the pull request lable list if the version is required to upload to the TMS.
   versions-file:
     required: false
     default: 'versions.json'
     description: >
-      The path to the versions.json file. Defaults to 'versions.json'.
+      [Optional] The path to the versions.json file. Defaults to 'versions.json'.
   working-directory:
     required: false
     default: '${{ github.workspace }}'
     description: >
-      The directory from which to run commands or locate files. Defaults to `'\$\{\{ github.workspace \}\}'`.
+      [Optional] The directory from which to run commands or locate files. Defaults to `'\$\{\{ github.workspace \}\}'`.
 
 outputs:
   PULL_REQUEST_LABEL_LIST:

@@ -7,11 +7,11 @@ description: Get the Version Reference from the references.json file.
 
 inputs:
   jq-filter:
-    required: true    # [required]
+    required: true    # [Required]
     description: >
       The jq filter expression used to extract the desired version reference from the JSON file.
   references-file:
-    required: true    # [required]
+    required: true    # [Required]
     description: >
       The path to the references.json file from which to extract the version reference.
   working-directory:
