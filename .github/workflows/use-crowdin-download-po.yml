@@ -139,7 +139,7 @@ jobs:
         with:
           crowdin-version: ${{ inputs.CROWDIN_VERSION }}
 
-      - name: Get Other Caches from versions.json
+      - name: Get Other Caches from the versions.json file
         id: gocv
         uses: ltdorgtest/ci-common/.github/actions/get-other-caches-from-versions-file@main
         with:
