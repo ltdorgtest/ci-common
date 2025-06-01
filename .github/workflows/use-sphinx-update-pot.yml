@@ -1,0 +1,227 @@
+# Distributed under the OSI-approved BSD 3-Clause License.
+# See accompanying file LICENSE.txt for details.
+
+name: use-sphinx-update-pot
+
+on:
+  workflow_call:
+    inputs:
+      RUNNER:
+        type: string
+        required: true  # [required]
+        description: >
+          The runner image for executing the job (e.g., 'ubuntu-latest').
+      CHECKOUT:
+        type: string
+        required: true  # [required]
+        description: >
+          The git reference to be checked out (e.g., '\$\{\{ github.ref \}\}').
+      VERSION:
+        type: string
+        required: true  # [required]
+        description: >
+          The version of the documentation.
+      MODE_OF_UPDATE:
+        type: string
+        required: true  # [required]
+        description: >
+          The mode of updating .pot and .po files.
+      ENABLE_JOB:
+        type: string
+        required: true  # [required]
+        description: >
+          Whether to enable the job.
+      CREATE_PR:
+        type: string
+        required: true  # [required]
+        description: >
+          Whether to create a pull request.
+      ACTOR_NAME:
+        type: string
+        required: true  # [required]
+        description: >
+          The user name of the GitHub actor.
+      ACTOR_EMAIL:
+        required: true  # [required]
+        type: string
+        description: >
+          The user email of the GitHub actor.
+    secrets:
+      ACTOR_GITHUB_TOKEN:
+        required: true  # [required]
+        description: >
+          The personal access token of the GitHub actor.
+
+jobs:
+  sphinx-update-pot:
+    if: ${{ inputs.ENABLE_JOB == 'true' }}
+    runs-on: ${{ inputs.RUNNER }}
+    steps:
+      - name: Print Contexts/Inputs/Secrets
+        shell: bash
+        run: |
+          echo "[Contexts]"
+          echo "github.job = ${{ github.job }}"
+          echo "github.ref = ${{ github.ref }}"
+          echo "github.ref_name = ${{ github.ref_name }}"
+          echo "github.event_name = ${{ github.event_name }}"
+          echo "github.event.action = ${{ github.event.action }}"
+          echo "github.event.number = ${{ github.event.number }}"
+          echo "[Inputs]"
+          echo "inputs.RUNNER = ${{ inputs.RUNNER }}"
+          echo "inputs.CHECKOUT = ${{ inputs.CHECKOUT }}"
+          echo "inputs.VERSION = ${{ inputs.VERSION }}"
+          echo "inputs.MODE_OF_UPDATE = ${{ inputs.MODE_OF_UPDATE }}"
+          echo "inputs.ENABLE_JOB = ${{ inputs.ENABLE_JOB }}"
+          echo "inputs.CREATE_PR = ${{ inputs.CREATE_PR }}"
+          echo "inputs.ACTOR_NAME = ${{ inputs.ACTOR_NAME }}"
+          echo "inputs.ACTOR_EMAIL = ${{ inputs.ACTOR_EMAIL }}"
+          echo "[Secrets]"
+          echo "secrets.ACTOR_GITHUB_TOKEN = ${{ secrets.ACTOR_GITHUB_TOKEN }}"
+
+      - name: Checkout to '${{ github.ref }}'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.CHECKOUT }}
+          token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
+          submodules: true
+          fetch-depth: 0
+
+      - name: Install CMake
+        uses: ltdorgtest/ci-common/.github/actions/install-cmake@main
+
+      - name: Install Conda
+        uses: ltdorgtest/ci-common/.github/actions/install-conda@main
+
+      - name: Install Gettext
+        uses: ltdorgtest/ci-common/.github/actions/install-gettext@main
+
+      - name: Get Other Caches from versions.json
+        id: gocv
+        uses: ltdorgtest/ci-common/.github/actions/get-other-caches-from-versions-file@main
+        with:
+          version: ${{ inputs.VERSION }}
+          versions-file: 'versions.json'
+
+      - name: Configure the 'all' preset for '${{ inputs.VERSION }}' version
+        uses: ltdorgtest/ci-common/.github/actions/cmake-configure-preset@main
+        with:
+          config-preset: 'all'
+          cache-version: ${{ inputs.VERSION }}
+          cache-version-compendium: ${{ steps.gocv.outputs.VERSION_COMPENDIUM }}
+          cache-mode-of-update: ${{ inputs.MODE_OF_UPDATE }}
+          cache-auto-depend: 'OFF'
+
+      - name: Get VERSION_REFERENCE of '.pot' Before Building
+        id: pot-before
+        uses: ltdorgtest/ci-common/.github/actions/get-version-reference-from-references-file@main
+        with:
+          jq-filter: '.pot'
+          references-file: 'l10n/${{ inputs.VERSION }}/references.json'
+
+      - name: Build the 'prepare_repositories' target
+        uses: ltdorgtest/ci-common/.github/actions/cmake-build-target@main
+        with:
+          build-directory: out/build/all
+          build-target: 'prepare_repositories'
+
+      - name: Build the 'install_requirements' target
+        uses: ltdorgtest/ci-common/.github/actions/cmake-build-target@main
+        with:
+          build-directory: out/build/all
+          build-target: 'install_requirements'
+
+      - name: Build the 'sphinx_update_pot' target
+        uses: ltdorgtest/ci-common/.github/actions/cmake-build-target@main
+        with:
+          build-directory: out/build/all
+          build-target: 'sphinx_update_pot'
+
+      - name: Get VERSION_REFERENCE of '.pot' After Building
+        id: pot-after
+        uses: ltdorgtest/ci-common/.github/actions/get-version-reference-from-references-file@main
+        with:
+          jq-filter: '.pot'
+          references-file: 'l10n/${{ inputs.VERSION }}/references.json'
+
+      - name: Get PULL_REQUEST_LABEL_LIST from versions.json
+        id: gllpr
+        uses: ltdorgtest/ci-common/.github/actions/get-pull-request-label-list-from-versions-file@main
+        with:
+          version: ${{ inputs.VERSION }}
+          tms-label: 'crowdin'
+
+      - name: Get the Current Job's Context
+        id: gcjc
+        uses: qoomon/actions--context@v4
+        with:
+          token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
+
+      - name: Check Outputs of the Current Job's Context
+        shell: bash
+        run: |
+          echo "Job Name:     ${{ steps.gcjc.outputs.job_name }}"
+          echo "Job ID:       ${{ steps.gcjc.outputs.job_id }}"
+          echo "Job URL:      ${{ steps.gcjc.outputs.job_url }}"
+          echo "Run ID:       ${{ steps.gcjc.outputs.run_id }}"
+          echo "Run Attempt:  ${{ steps.gcjc.outputs.run_attempt }}"
+          echo "Run Number:   ${{ steps.gcjc.outputs.run_number }}"
+          echo "Run URL:      ${{ steps.gcjc.outputs.run_url }}"
+
+      - name: Set up mutex for 'l10n' branch
+        uses: ben-z/gh-action-mutex@v1.0.0-alpha.9
+        with:
+          branch: 'mutex/l10n'
+          repo-token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
+
+      - name: Add and Commit the Change
+        id: acc
+        if: ${{ inputs.CREATE_PR == 'true' }}
+        uses: EndBug/add-and-commit@v9
+        with:
+          cwd: './l10n'
+          add: './${{ inputs.VERSION }}'
+          push: 'origin sphinx/pot/${{ inputs.VERSION }} --set-upstream --force'
+          commit: '--signoff'
+          new_branch: sphinx/pot/${{ inputs.VERSION }}
+          author_name: ${{ inputs.ACTOR_NAME }}
+          author_email: ${{ inputs.ACTOR_EMAIL }}
+          message: |
+            🌐 pot(${{ inputs.VERSION }}): update .pot from Sphinx
+
+            update .pot files for '${{ inputs.VERSION }}' version from Sphinx.
+
+            before: ${{ steps.pot-before.outputs.VERSION_REFERENCE }}
+            after: ${{ steps.pot-after.outputs.VERSION_REFERENCE }}
+
+      - name: Check Outputs of the Commit
+        if: ${{ inputs.CREATE_PR == 'true' && steps.acc.outputs.committed == 'true' }}
+        shell: bash
+        run: |
+          echo "Commit's SHA = ${{ steps.acc.outputs.commit_long_sha }}"
+          echo "Commit's URL = ${{ github.server_url }}/${{ github.repository }}/commit/${{ steps.acc.outputs.commit_long_sha }}"
+
+      - name: Create a Pull Request
+        id: cpr
+        if: ${{ inputs.CREATE_PR == 'true' && steps.acc.outputs.committed == 'true' }}
+        uses: devops-infra/action-pull-request@v0.5.5
+        with:
+          github_token: ${{ secrets.ACTOR_GITHUB_TOKEN }}  # required
+          source_branch: sphinx/pot/${{ inputs.VERSION }}
+          target_branch: l10n
+          label: ${{ steps.gllpr.outputs.PULL_REQUEST_LABEL_LIST }}
+          title: |
+            🌐 pot(${{ inputs.VERSION }}): update .pot from Sphinx
+          body: |
+            created by the GitHub Actions:
+
+            - workflow: ${{ github.server_url }}/${{ github.repository }}/actions/workflows/${{ github.workflow }}.yml
+            - run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            - job: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/job/${{ steps.gcjc.outputs.job_id }}
+
+      - name: Check Outputs of the Pull Request
+        if: ${{ inputs.CREATE_PR == 'true' && steps.acc.outputs.committed == 'true' }}
+        shell: bash
+        run: |
+          echo "Pull Request's Number = ${{ steps.cpr.outputs.pr_number }}"
+          echo "Pull Request's URL    = ${{ steps.cpr.outputs.url }}"
