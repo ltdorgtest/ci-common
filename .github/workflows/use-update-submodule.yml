@@ -10,12 +10,12 @@ on:
         type: string
         required: true  # [Required]
         description: >
-          [Required] The runner image for executing the job (e.g., 'ubuntu-latest').
+          [Required] The runner image for executing the job.
       CHECKOUT:
         type: string
         required: true  # [Required]
         description: >
-          [Required] The git reference to be checked out (e.g., '\$\{\{ github.ref \}\}').
+          [Required] The git reference to be checked out.
       SUBMODULE:
         type: string
         required: true  # [Required]
@@ -138,7 +138,7 @@ jobs:
           author_name: ${{ inputs.ACTOR_NAME }}
           author_email: ${{ inputs.ACTOR_EMAIL }}
           message: |
-            📦️ build(deps): update '${{ inputs.SUBMODULE }}' submodule to latest
+            📦️ build(deps): update submodule '${{ inputs.SUBMODULE }}' to latest
 
             update the '${{ inputs.SUBMODULE }}' submodule to its latest commit.
 

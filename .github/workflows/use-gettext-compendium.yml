@@ -10,12 +10,12 @@ on:
         type: string
         required: true  # [Required]
         description: >
-          [Required] The runner image for executing the job (e.g., 'ubuntu-latest').
+          [Required] The runner image for executing the job.
       CHECKOUT:
         type: string
         required: true  # [Required]
         description: >
-          [Required] The git reference to be checked out (e.g., '\$\{\{ github.ref \}\}').
+          [Required] The git reference to be checked out.
       CMAKE_VERSION:
         type: string
         required: false
@@ -36,7 +36,7 @@ on:
         type: string
         required: true  # [Required]
         description: >
-          [Required] Whether to enable the job ('true' or 'false').
+          [Required] Whether to enable the job (`true` or `false`).
       ACTOR_NAME:
         type: string
         required: true  # [Required]
