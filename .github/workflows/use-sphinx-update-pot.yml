@@ -10,47 +10,53 @@ on:
         type: string
         required: true  # [required]
         description: >
-          The runner image for executing the job (e.g., 'ubuntu-latest').
+          [Required] The runner image for executing the job.
       CHECKOUT:
         type: string
         required: true  # [required]
         description: >
-          The git reference to be checked out (e.g., '\$\{\{ github.ref \}\}').
+          [Required] The git reference to be checked out.
+      CMAKE_VERSION:
+        type: string
+        required: false
+        default: ''
+        description: >
+          [Optional] The version of the CMake command. Defaults to an empty string.
       VERSION:
         type: string
         required: true  # [required]
         description: >
-          The version of the documentation.
+          [Required] The version of the documentation.
       MODE_OF_UPDATE:
         type: string
         required: true  # [required]
         description: >
-          The mode of updating .pot and .po files.
+          [Required] The mode of updating .pot and .po files.
       ENABLE_JOB:
         type: string
         required: true  # [required]
         description: >
-          Whether to enable the job.
+          [Required] Whether to enable the job.
       CREATE_PR:
         type: string
         required: true  # [required]
         description: >
-          Whether to create a pull request.
+          [Required] Whether to create a pull request.
       ACTOR_NAME:
         type: string
         required: true  # [required]
         description: >
-          The user name of the GitHub actor.
+          [Required] The user name of the GitHub actor.
       ACTOR_EMAIL:
         required: true  # [required]
         type: string
         description: >
-          The user email of the GitHub actor.
+          [Required] The user email of the GitHub actor.
     secrets:
       ACTOR_GITHUB_TOKEN:
         required: true  # [required]
         description: >
-          The personal access token of the GitHub actor.
+          [Required] The personal access token of the GitHub actor.
 
 jobs:
   sphinx-update-pot:
@@ -70,6 +76,7 @@ jobs:
           echo "[Inputs]"
           echo "inputs.RUNNER = ${{ inputs.RUNNER }}"
           echo "inputs.CHECKOUT = ${{ inputs.CHECKOUT }}"
+          echo "inputs.CMAKE_VERSION = ${{ inputs.CMAKE_VERSION }}"
           echo "inputs.VERSION = ${{ inputs.VERSION }}"
           echo "inputs.MODE_OF_UPDATE = ${{ inputs.MODE_OF_UPDATE }}"
           echo "inputs.ENABLE_JOB = ${{ inputs.ENABLE_JOB }}"
@@ -89,6 +96,8 @@ jobs:
 
       - name: Install CMake
         uses: ltdorgtest/ci-common/.github/actions/install-cmake@main
+        with:
+          cmake-version: ${{ inputs.CMAKE_VERSION }}
 
       - name: Install Conda
         uses: ltdorgtest/ci-common/.github/actions/install-conda@main
