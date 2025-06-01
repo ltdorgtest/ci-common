@@ -9,7 +9,7 @@ inputs:
   schedule:
     required: true  # [Required]
     description: >
-      [Required] The schedule string to match against predefined CRON_XXX environment variables.
+      [Required] The schedule string to match against predefined `CRON_XXX` environment variables.
 
 outputs:
   MODE:
