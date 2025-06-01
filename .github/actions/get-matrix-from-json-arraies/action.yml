@@ -9,7 +9,7 @@ inputs:
   matrix-type:
     required: true    # [Required]
     description: >
-      [Required] Specifies the type of matrix to generate. Possible values:
+      [Required] The type of matrix to generate. Possible values:
       `version`: Generates a matrix based on the version list.
       `submodule`: Generates a matrix based on the submodule list.
       `version-language`: Generates a matrix combining the version and language lists.
