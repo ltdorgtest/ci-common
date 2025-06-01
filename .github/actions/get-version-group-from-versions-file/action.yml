@@ -3,7 +3,7 @@
 
 name: get-version-group-from-versions-file
 
-description: Get the Version Group from versions.json
+description: Get the Version Group from the `versions.json` file.
 
 inputs:
   version:

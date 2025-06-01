@@ -3,7 +3,7 @@
 
 name: get-version-reference-from-references-file
 
-description: Get the Version Reference from the references.json file.
+description: Get the Version Reference from the `references.json` file.
 
 inputs:
   jq-filter:

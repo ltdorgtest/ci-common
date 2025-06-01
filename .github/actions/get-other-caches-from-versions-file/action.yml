@@ -3,7 +3,7 @@
 
 name: get-other-caches-from-versions-file
 
-description: Get Other Caches from the versions.json file.
+description: Get Other Caches from the `versions.json` file.
 
 inputs:
   version:

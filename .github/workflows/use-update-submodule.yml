@@ -20,7 +20,7 @@ on:
         type: string
         required: true  # [Required]
         description: >
-          [Required] The submodule to be updated (e.g., 'cmake/modules').
+          [Required] The submodule to be updated (e.g., 'cmake/modules', 'cmake/flyout').
       ENABLE_JOB:
         type: string
         required: true  # [Required]

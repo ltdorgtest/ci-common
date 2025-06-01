@@ -3,7 +3,7 @@
 
 name: get-language-array-from-languages-file
 
-description: Get the Language Array from the languages.json file.
+description: Get the Language Array from the `languages.json` file.
 
 inputs:
   language:
