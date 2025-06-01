@@ -15,7 +15,7 @@ on:
         type: string
         required: true  # [Required]
         description: >
-          [Required] The git reference to be checked out (e.g., '\$\{\{ github.ref \}\}').
+          [Required] The git reference to be checked out (e.g., `\$\{\{ github.ref \}\}`).
       CMAKE_VERSION:
         type: string
         required: false
