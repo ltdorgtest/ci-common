@@ -10,24 +10,24 @@ inputs:
     required: true    # [Required]
     description: >
       [Required] Specifies the type of matrix to generate. Possible values:
-      * `version`: Generates a matrix based on the version list.
-      * `submodule`: Generates a matrix based on the submodule list.
-      * `version-language`: Generates a matrix combining the version and language lists.
+      `version`: Generates a matrix based on the version list.
+      `submodule`: Generates a matrix based on the submodule list.
+      `version-language`: Generates a matrix combining the version and language lists.
   version-array:
     required: false
     default: '[]'
     description: >
-      [Optional] The JSON array containing version values. Used when `matrix-type` is 'version' or 'version-language'.
+      [Optional] The JSON array containing version values. Used when `matrix-type` is `version` or `version-language`.
   language-array:
     required: false
     default: '[]'
     description: >
-      [Optional] The JSON array containing language values. Used when `matrix-type` is 'version-language'.
+      [Optional] The JSON array containing language values. Used when `matrix-type` is `version-language`.
   submodule-array:
     required: false
     default: '[]'
     description: >
-      [Optional] The JSON array containing submodule values. Used when `matrix-type` is 'submodule'.
+      [Optional] The JSON array containing submodule values. Used when `matrix-type` is `submodule`.
 
 outputs:
   MATRIX_NUM:
