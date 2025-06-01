@@ -16,6 +16,11 @@ on:
         required: true  # [Required]
         description: >
           [Required] The git reference to be checked out.
+      LICENSE_FILE:
+        type: string
+        required: true  # [Required]
+        description: >
+          [Required] The filepath of the LICENSE file.
       ENABLE_JOB:
         type: string
         required: true  # [Required]
@@ -56,6 +61,7 @@ jobs:
           echo "[Inputs]"
           echo "inputs.RUNNER = ${{ inputs.RUNNER }}"
           echo "inputs.CHECKOUT = ${{ inputs.CHECKOUT }}"
+          echo "inputs.LICENSE_FILE = ${{ inputs.LICENSE_FILE }}"
           echo "inputs.ENABLE_JOB = ${{ inputs.ENABLE_JOB }}"
           echo "inputs.ACTOR_NAME = ${{ inputs.ACTOR_NAME }}"
           echo "inputs.ACTOR_EMAIL = ${{ inputs.ACTOR_EMAIL }}"
@@ -92,6 +98,7 @@ jobs:
         uses: FantasticFiasco/action-update-license-year@v3
         with:
           token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
+          path: ${{ inputs.LICENSE_FILE }}
           branchName: license-{{currentYear}}
           commitAuthorName: ${{ inputs.ACTOR_NAME }}
           commitAuthorEmail: ${{ inputs.ACTOR_EMAIL }}
