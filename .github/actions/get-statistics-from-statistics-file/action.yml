@@ -3,7 +3,7 @@
 
 name: get-statistics-from-statistics-file
 
-description: Get the Statistics from the statistics.txt file.
+description: Get Statistics from the `statistics.txt` file.
 
 inputs:
   statistics-file:
