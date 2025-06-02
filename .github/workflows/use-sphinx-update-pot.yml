@@ -198,10 +198,10 @@ jobs:
           message: |
             🌐 pot(${{ inputs.VERSION }}): update .pot from Sphinx
 
-            update .pot files for '${{ inputs.VERSION }}' version from Sphinx.
+            Update .pot files for '${{ inputs.VERSION }}' version from Sphinx.
 
-            before: ${{ steps.pot-before.outputs.VERSION_REFERENCE }}
-            after: ${{ steps.pot-after.outputs.VERSION_REFERENCE }}
+            Before: ${{ steps.pot-before.outputs.VERSION_REFERENCE }}
+            After: ${{ steps.pot-after.outputs.VERSION_REFERENCE }}
 
       - name: Check Outputs of the Commit
         if: ${{ inputs.CREATE_PR == 'true' && steps.acc.outputs.committed == 'true' }}
@@ -222,7 +222,7 @@ jobs:
           title: |
             🌐 pot(${{ inputs.VERSION }}): update .pot from Sphinx
           body: |
-            created by the GitHub Actions:
+            Created by the GitHub Actions:
 
             - workflow: ${{ github.server_url }}/${{ github.repository }}/actions/workflows/${{ github.workflow }}.yml
             - run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
