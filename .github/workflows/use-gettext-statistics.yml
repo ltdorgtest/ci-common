@@ -8,12 +8,12 @@ on:
     inputs:
       RUNNER:
         type: string
-        required: true  # [Required]
+        required: true    # [Required]
         description: >
           [Required] The runner image for executing the job.
       CHECKOUT:
         type: string
-        required: true  # [Required]
+        required: true    # [Required]
         description: >
           [Required] The git reference to be checked out.
       CMAKE_VERSION:
@@ -24,27 +24,27 @@ on:
           [Optional] The version of the CMake command. Defaults to an empty string.
       VERSION:
         type: string
-        required: true  # [Required]
+        required: true    # [Required]
         description: >
           [Required] The version of the documentation.
       ENABLE_JOB:
         type: string
-        required: true  # [Required]
+        required: true    # [Required]
         description: >
           [Required] Whether to enable the job (e.g., 'true' and 'false').
       ACTOR_NAME:
         type: string
-        required: true  # [Required]
+        required: true    # [Required]
         description: >
           [Required] The user name of the GitHub actor.
       ACTOR_EMAIL:
         type: string
-        required: true  # [Required]
+        required: true    # [Required]
         description: >
           [Required] The user email of the GitHub actor.
     secrets:
       ACTOR_GITHUB_TOKEN:
-        required: true  # [Required]
+        required: true    # [Required]
         description: >
           [Required] The personal access token of the GitHub actor.
 
