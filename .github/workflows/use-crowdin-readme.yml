@@ -1,7 +1,7 @@
 # Distributed under the OSI-approved BSD 3-Clause License.
 # See accompanying file LICENSE.txt for details.
 
-name: use-crowdin-document
+name: use-crowdin-readme
 
 on:
   workflow_call:
@@ -73,7 +73,7 @@ on:
           [Required] The personal access token for Crowdin authentication.
 
 jobs:
-  crowdin-document:
+  crowdin-readme:
     if: ${{ inputs.ENABLE_JOB == 'true' }}
     runs-on: ${{ inputs.RUNNER }}
     steps:
