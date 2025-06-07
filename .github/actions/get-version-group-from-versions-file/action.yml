@@ -10,16 +10,16 @@ inputs:
     required: false
     default: '${{ github.workspace }}'
     description: >
-      The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
+      [Optional] The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
   version:
     required: true    # [Required]
     description: >
-      The version to search for in the specified versions.json file.
+      [Required] The version to search for in the specified `versions.json` file.
   versions-file:
     required: false
     default: 'versions.json'
     description: >
-      The path to the versions.json file containing version data.
+      [Optional] The path to the `versions.json` file. Defaults to 'versions.json'.
 
 outputs:
   VERSION_GROUP:
