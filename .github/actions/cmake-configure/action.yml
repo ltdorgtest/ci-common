@@ -96,16 +96,21 @@ inputs:
     default: '[default]'
     description: >
       [Optional] The value for the SPHINX_VERBOSE_LEVEL cache entry. Defaults to '[default]'.
+  cache-sphinx-gettext-compact:
+    required: false
+    default: '[default]'
+    description: >
+      [Optional] The value for the SPHINX_GETTEXT_COMPACT cache entry. Defaults to '[default]'.
+  cache-sphinx-gettext-targets:
+    required: false
+    default: '[default]'
+    description: >
+      [Optional] The value for the SPHINX_GETTEXT_TARGETS cache entry. Defaults to '[default]'.
   cache-gettext-wrap-width:
     required: false
     default: '[default]'
     description: >
       [Optional] The value for the GETTEXT_WRAP_WIDTH cache entry. Defaults to '[default]'.
-  cache-gettext-additional-targets:
-    required: false
-    default: '[default]'
-    description: >
-      [Optional] The value for the GETTEXT_ADDITIONAL_TARGETS cache entry. Defaults to '[default]'.
 
 runs:
   using: composite
