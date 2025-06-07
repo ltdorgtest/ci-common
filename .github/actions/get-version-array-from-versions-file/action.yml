@@ -6,6 +6,11 @@ name: get-version-array-from-versions-file
 description: Get the Version Arrary from the `versions.json` file.
 
 inputs:
+  working-directory:
+    required: false
+    default: ${{ github.workspace }}
+    description: >
+      [Optional] The directory from which commands will be executed or files located. Defaults to '\$\{\{ github.workspace \}\}'.
   mode:
     required: true    # [Required]
     description: >
@@ -27,11 +32,6 @@ inputs:
     default: 'versions.json'
     description: >
       [Optional] The path to the versions.json file. Defaults to 'versions.json'.
-  working-directory:
-    required: false
-    default: ${{ github.workspace }}
-    description: >
-      [Optional] The directory from which commands will be executed or files located. Defaults to '\$\{\{ github.workspace \}\}'.
 
 outputs:
   VERSION_NUM:

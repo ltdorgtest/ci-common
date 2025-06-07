@@ -6,6 +6,11 @@ name: get-crowdin-status-progress
 description: Get the Crowdin Status Progress.
 
 inputs:
+  working-directory:
+    required: false
+    default: '${{ github.workspace }}'
+    description: >
+      [Optional] The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
   crowdin-config-file:
     required: false
     default: ''
@@ -41,11 +46,6 @@ inputs:
     default: 'false'
     description: >
       [Optional] Whether to print a command output without execution. Defaults to 'false'.
-  working-directory:
-    required: false
-    default: '${{ github.workspace }}'
-    description: >
-      [Optional] The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
 
 outputs:
   CROWDIN_STATUS_PROGRESS:

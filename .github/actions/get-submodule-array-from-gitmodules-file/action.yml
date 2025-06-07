@@ -6,6 +6,11 @@ name: get-submodule-array-from-gitmodules-file
 description: Get the Submodule Array from the `.gitmodules` file.
 
 inputs:
+  working-directory:
+    required: false
+    default: ${{ github.workspace }}
+    description: >
+      [Optional] The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
   submodule:
     required: true    # [Required]
     description: >
@@ -15,11 +20,6 @@ inputs:
     default: '.gitmodules'
     description: >
       [Optional] The path to the .gitmodules file. Defaults to '.gitmodules'.
-  working-directory:
-    required: false
-    default: ${{ github.workspace }}
-    description: >
-      [Optional] The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
 
 outputs:
   SUBMODULE_NUM:

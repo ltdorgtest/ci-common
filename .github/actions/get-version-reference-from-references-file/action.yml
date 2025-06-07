@@ -6,6 +6,11 @@ name: get-version-reference-from-references-file
 description: Get the Version Reference from the `references.json` file.
 
 inputs:
+  working-directory:
+    required: false
+    default: ${{ github.workspace }}
+    description: >
+      The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
   jq-filter:
     required: true    # [Required]
     description: >
@@ -14,11 +19,6 @@ inputs:
     required: true    # [Required]
     description: >
       The path to the references.json file from which to extract the version reference.
-  working-directory:
-    required: false
-    default: ${{ github.workspace }}
-    description: >
-      The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
 
 outputs:
   VERSION_REFERENCE:

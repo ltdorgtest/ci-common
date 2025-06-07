@@ -6,6 +6,11 @@ name: get-language-array-from-languages-file
 description: Get the Language Array from the `languages.json` file.
 
 inputs:
+  working-directory:
+    required: false
+    default: ${{ github.workspace }}
+    description: >
+      [Optional] The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
   language:
     required: true    # [Required]
     description: >
@@ -15,11 +20,6 @@ inputs:
     default: 'languages.json'
     description: >
       [Optional] The path to the languages.json file. Defaults to 'languages.json'.
-  working-directory:
-    required: false
-    default: ${{ github.workspace }}
-    description: >
-      [Optional] The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
 
 outputs:
   LANGUAGE_NUM:

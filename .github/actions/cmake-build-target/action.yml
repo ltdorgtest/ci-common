@@ -6,6 +6,11 @@ name: cmake-build-target
 description: Build the CMake Target
 
 inputs:
+  working-directory:
+    required: false
+    default: '${{ github.workspace }}'
+    description: >
+      [Optional] The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
   build-directory:
     required: true    # [Required]
     description: >
@@ -20,11 +25,6 @@ inputs:
     default: '[default]'
     description: >
       [Optional] The maximum number of concurrent processes to use when building. Defaults to '[default]'.
-  working-directory:
-    required: false
-    default: '${{ github.workspace }}'
-    description: >
-      [Optional] The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
 
 runs:
   using: composite

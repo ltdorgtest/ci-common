@@ -6,6 +6,11 @@ name: get-other-caches-from-versions-file
 description: Get Other Caches from the `versions.json` file.
 
 inputs:
+  working-directory:
+    required: false
+    default: '${{ github.workspace }}'
+    description: >
+      [Optional] The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
   version:
     required: true    # [Required]
     description: >
@@ -15,11 +20,6 @@ inputs:
     default: 'versions.json'
     description: >
       [Optional] The path to the JSON file containing version data. Defaults to 'versions.json'.
-  working-directory:
-    required: false
-    default: '${{ github.workspace }}'
-    description: >
-      [Optional] The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
 
 outputs:
   VERSION_COMPENDIUM:

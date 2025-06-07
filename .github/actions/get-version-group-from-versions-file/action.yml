@@ -6,6 +6,11 @@ name: get-version-group-from-versions-file
 description: Get the Version Group from the `versions.json` file.
 
 inputs:
+  working-directory:
+    required: false
+    default: '${{ github.workspace }}'
+    description: >
+      The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
   version:
     required: true    # [Required]
     description: >
@@ -15,11 +20,6 @@ inputs:
     default: 'versions.json'
     description: >
       The path to the versions.json file containing version data.
-  working-directory:
-    required: false
-    default: '${{ github.workspace }}'
-    description: >
-      The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
 
 outputs:
   VERSION_GROUP:

@@ -6,6 +6,11 @@ name: cmake-configure
 description: Configure the CMake project
 
 inputs:
+  working-directory:
+    required: false
+    default: '${{ github.workspace }}'
+    description: >
+      [Optional] The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
   source-directory:
     required: false
     default: '[default]'
@@ -101,11 +106,6 @@ inputs:
     default: '[default]'
     description: >
       [Optional] The value for the GETTEXT_ADDITIONAL_TARGETS cache entry. Defaults to '[default]'.
-  working-directory:
-    required: false
-    default: '${{ github.workspace }}'
-    description: >
-      [Optional] The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
 
 runs:
   using: composite

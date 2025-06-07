@@ -6,6 +6,11 @@ name: crowdin-branch-delete
 description: Delete the branch in Crowdin
 
 inputs:
+  working-directory:
+    required: false
+    default: '${{ github.workspace }}'
+    description: >
+      [Optional] The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
   crowdin-config-file:
     required: false
     default: ''
@@ -35,11 +40,6 @@ inputs:
     default: 'false'
     description: >
       [Optional] Whether to provide more information about the command execution. Defaults to 'false'.
-  working-directory:
-    required: false
-    default: '${{ github.workspace }}'
-    description: >
-      [Optional] The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
 
 runs:
   using: composite

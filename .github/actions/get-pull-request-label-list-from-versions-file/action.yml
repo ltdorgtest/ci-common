@@ -7,6 +7,11 @@ description: >
   Get the label list for the pull request from `versions.json` file.
 
 inputs:
+  working-directory:
+    required: false
+    default: '${{ github.workspace }}'
+    description: >
+      [Optional] The directory from which to run commands or locate files. Defaults to `'\$\{\{ github.workspace \}\}'`.
   version:
     required: true    # [Required]
     description: >
@@ -20,11 +25,6 @@ inputs:
     default: 'versions.json'
     description: >
       [Optional] The path to the versions.json file. Defaults to 'versions.json'.
-  working-directory:
-    required: false
-    default: '${{ github.workspace }}'
-    description: >
-      [Optional] The directory from which to run commands or locate files. Defaults to `'\$\{\{ github.workspace \}\}'`.
 
 outputs:
   PULL_REQUEST_LABEL_LIST:
