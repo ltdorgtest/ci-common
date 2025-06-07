@@ -8,12 +8,17 @@ description: Configure the CMake preset
 inputs:
   source-directory:
     required: false
-    default: '.'
+    default: '[default]'
     description: >
-      [Optional] The source directory of the CMake project. Defaults to '.'.
+      [Optional] The source directory of the CMake project. Defaults to '[default]'.
+  build-directory:
+    required: false
+    default: '[default]'
+    description: >
+      [Optional] The build directory of the CMake project. Defaults to '[default]'.
   config-preset:
     required: false
-    default: 'all'
+    default: '[default]'
     description: >
       [Optional] The name of the CMake preset to use. Defaults to '[default]'.
   cache-version:
@@ -118,9 +123,17 @@ runs:
           VALUE=$(echo "${INPUTS_JSON}" | jq -r --arg key "${KEY}" '.[$key]')
           CMAKE_ARG=""
           if [[ "${KEY}" == "source-directory" ]]; then
-            CMAKE_ARG="-S=${VALUE}"
+            if [[ "${VALUE}" != "[default]" ]]; then
+              CMAKE_ARG="-S=${VALUE}"
+            fi
+          elif [[ "${KEY}" == "build-directory" ]]; then
+            if [[ "${VALUE}" != "[default]" ]]; then
+              CMAKE_ARG="-B=${VALUE}"
+            fi
           elif [[ "${KEY}" == "config-preset" ]]; then
-            CMAKE_ARG="--preset=${VALUE}"
+            if [[ "${VALUE}" != "[default]" ]]; then
+              CMAKE_ARG="--preset=${VALUE}"
+            fi
           elif [[ "${KEY}" =~ ^cache- ]]; then
             if [[ "${VALUE}" != "[default]" ]]; then
               # Convert lowercase to uppercase by tr since BSD-sed cannot support '\U'. (for macOS bash)
