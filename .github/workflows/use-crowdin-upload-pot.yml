@@ -133,7 +133,7 @@ jobs:
           version: ${{ inputs.VERSION }}
 
       - name: Configure the 'all' preset for the '${{ inputs.VERSION }}' version
-        uses: ltdorgtest/ci-common/.github/actions/cmake-configure-preset@main
+        uses: ltdorgtest/ci-common/.github/actions/cmake-configure@main
         with:
           config-preset: 'all'
           cache-version: ${{ inputs.VERSION }}

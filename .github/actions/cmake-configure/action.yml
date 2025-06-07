@@ -1,9 +1,9 @@
 # Distributed under the OSI-approved BSD 3-Clause License.
 # See accompanying file LICENSE.txt for details.
 
-name: cmake-configure-preset
+name: cmake-configure
 
-description: Configure the CMake preset
+description: Configure the CMake project
 
 inputs:
   source-directory:

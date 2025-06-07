@@ -129,7 +129,7 @@ jobs:
           versions-file: 'versions.json'
 
       - name: Configure the '${{ inputs.LANGUAGE }}' preset for '${{ inputs.VERSION }}' version
-        uses: ltdorgtest/ci-common/.github/actions/cmake-configure-preset@main
+        uses: ltdorgtest/ci-common/.github/actions/cmake-configure@main
         with:
           config-preset: ${{ inputs.LANGUAGE }}
           cache-version: ${{ inputs.VERSION }}
