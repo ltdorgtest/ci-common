@@ -82,11 +82,19 @@ jobs:
           token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
           submodules: false
 
-      - uses: wow-actions/contributors-list@v1
+      # - uses: wow-actions/contributors-list@v1
+      #   with:
+      #     GITHUB_TOKEN: ${{ secrets.ACTOR_GITHUB_TOKEN }}
+      #     round: true
+      #     svgPath: 'out/${{ inputs.DEPLOY_BRANCH }}/github-contributors.svg'
+
+      - run: mkdir -p out/${{ inputs.DEPLOY_BRANCH }}
+      - name: Generate Contributors Images
+        uses: jaywcjlove/github-action-contributors@main
         with:
-          GITHUB_TOKEN: ${{ secrets.ACTOR_GITHUB_TOKEN }}
-          round: true
-          svgPath: '${{ github.workspace }}/out/${{ inputs.DEPLOY_BRANCH }}/github-contributors.svg'
+          filter-author: (renovate\[bot\]|renovate-bot|dependabot\[bot\])
+          output: out/${{ inputs.DEPLOY_BRANCH }}/github-contributors.svg
+          avatarSize: 42
 
       - name: Set up mutex for the '${{ inputs.DEPLOY_BRANCH }}' branch
         uses: ben-z/gh-action-mutex@v1.0.0-alpha.9
