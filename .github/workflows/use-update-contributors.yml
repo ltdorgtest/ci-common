@@ -1,0 +1,107 @@
+# Distributed under the OSI-approved BSD 3-Clause License.
+# See accompanying file LICENSE.txt for details.
+
+name: use-update-contributors
+
+on:
+  workflow_call:
+    inputs:
+      RUNNER:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] The runner image for executing the job.
+      CHECKOUT:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] The git reference to be checked out.
+      DEPLOY_BRANCH:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] The name of the branch to which the build artifacts will be deployed (e.g., 'pages').
+      ENABLE_JOB:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] Whether to enable the job.
+      ACTOR_NAME:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] The user name of the GitHub actor.
+      ACTOR_EMAIL:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] The user email of the GitHub actor.
+    secrets:
+      ACTOR_GITHUB_TOKEN:
+        required: true
+        description: >
+          [Required] The personal access token of the GitHub actor.
+
+jobs:
+  update-contributors:
+    if: ${{ inputs.ENABLE_JOB == 'true' }}
+    runs-on: ${{ inputs.RUNNER }}
+    steps:
+      - name: Print Contexts/Inputs/Secrets
+        shell: bash
+        run: |
+          echo "[Contexts]"
+          echo "github.job = ${{ github.job }}"
+          echo "github.ref = ${{ github.ref }}"
+          echo "github.ref_name = ${{ github.ref_name }}"
+          echo "github.event_name = ${{ github.event_name }}"
+          echo "github.event.action = ${{ github.event.action }}"
+          echo "github.event.number = ${{ github.event.number }}"
+          echo "github.workflow = ${{ github.workflow }}"
+          echo "github.workflow_ref = ${{ github.workflow_ref }}"
+          echo "github.run_id = ${{ github.run_id }}"
+          echo "github.run_number = ${{ github.run_number }}"
+          echo "github.run_attempt = ${{ github.run_attempt }}"
+          echo "github.server_url = ${{ github.server_url }}"
+          echo "github.repository = ${{ github.repository }}"
+          echo "github.workspace = ${{ github.workspace }}"
+          echo "[Inputs]"
+          echo "inputs.RUNNER = ${{ inputs.RUNNER }}"
+          echo "inputs.CHECKOUT = ${{ inputs.CHECKOUT }}"
+          echo "inputs.DEPLOY_BRANCH = ${{ inputs.DEPLOY_BRANCH }}"
+          echo "inputs.ENABLE_JOB = ${{ inputs.ENABLE_JOB }}"
+          echo "inputs.ACTOR_NAME = ${{ inputs.ACTOR_NAME }}"
+          echo "inputs.ACTOR_EMAIL = ${{ inputs.ACTOR_EMAIL }}"
+          echo "[Secrets]"
+          echo "secrets.ACTOR_GITHUB_TOKEN = ${{ secrets.ACTOR_GITHUB_TOKEN }}"
+
+      - name: Checkout to '${{ inputs.CHECKOUT }}'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.CHECKOUT }}
+          token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
+          submodules: false
+
+      - uses: wow-actions/contributors-list@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.ACTOR_GITHUB_TOKEN }}
+          round: true
+          svgPath: 'out/${{ inputs.DEPLOY_BRANCH }}/github-contributors.svg'
+
+      - name: Set up mutex for the '${{ inputs.DEPLOY_BRANCH }}' branch
+        uses: ben-z/gh-action-mutex@v1.0.0-alpha.9
+        with:
+          branch: 'mutex/${{ inputs.DEPLOY_BRANCH }}'
+          repo-token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
+
+      - name: Deploy to the '${{ inputs.DEPLOY_BRANCH }}' branch
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: ${{ inputs.DEPLOY_BRANCH }}
+          folder: 'out/${{ inputs.DEPLOY_BRANCH }}'
+          target-folder: '.'
+          single-commit: true
+          clean: false
+          git-config-name: ${{ inputs.ACTOR_NAME }}
+          git-config-email: ${{ inputs.ACTOR_EMAIL }}
+          token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
