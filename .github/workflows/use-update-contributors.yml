@@ -94,7 +94,7 @@ jobs:
         with:
           filter-author: (renovate\[bot\]|renovate-bot|dependabot\[bot\]|ltdrobot)
           output: out/${{ inputs.DEPLOY_BRANCH }}/github-contributors.svg
-          avatarSize: 50
+          avatarSize: 75
           token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
 
       - name: Set up mutex for the '${{ inputs.DEPLOY_BRANCH }}' branch
