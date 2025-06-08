@@ -86,7 +86,7 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.ACTOR_GITHUB_TOKEN }}
           round: true
-          svgPath: 'out/${{ inputs.DEPLOY_BRANCH }}/github-contributors.svg'
+          svgPath: '${{ github.workspace }}/out/${{ inputs.DEPLOY_BRANCH }}/github-contributors.svg'
 
       - name: Set up mutex for the '${{ inputs.DEPLOY_BRANCH }}' branch
         uses: ben-z/gh-action-mutex@v1.0.0-alpha.9
