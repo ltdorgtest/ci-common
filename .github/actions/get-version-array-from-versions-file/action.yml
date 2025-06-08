@@ -26,12 +26,12 @@ inputs:
   version-filter:
     required: true    # [Required]
     description: >
-      [Required] Possible values are: 'all', 'gettext', and 'crowdin'. This input filters the version objects based on their 'VERSION_COMPENDIUM' content.
+      [Required] This input filters the version objects based on their 'VERSION_COMPENDIUM' content. Possible values are: 'all', 'gettext', and 'crowdin'.
   versions-file:
     required: false
     default: 'versions.json'
     description: >
-      [Optional] The path to the versions.json file. Defaults to 'versions.json'.
+      [Optional] The path to the `versions.json` file. Defaults to 'versions.json'.
 
 outputs:
   VERSION_NUM:

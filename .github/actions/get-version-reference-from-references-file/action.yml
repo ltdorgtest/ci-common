@@ -10,15 +10,16 @@ inputs:
     required: false
     default: ${{ github.workspace }}
     description: >
-      The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
+      [Optional] The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
   jq-filter:
     required: true    # [Required]
     description: >
-      The jq filter expression used to extract the desired version reference from the JSON file.
+      [Required] The jq filter expression used to extract the desired version reference from the JSON file.
   references-file:
-    required: true    # [Required]
+    required: false
+    default: 'references.json'
     description: >
-      The path to the references.json file from which to extract the version reference.
+      [Optional] The path to the references.json file. Defaults to 'references.json'.
 
 outputs:
   VERSION_REFERENCE:
