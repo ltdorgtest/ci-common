@@ -6,16 +6,23 @@ name: use-crowdin-readme
 on:
   workflow_call:
     inputs:
+      ENABLE_JOB:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] Whether to enable the job (e.g., 'true' and 'false').
       RUNNER:
         type: string
-        required: true    # [Required]
+        required: true
+        default: 'ubuntu-latest'
         description: >
-          [Required] The runner image for executing the job.
+          [Optional] The runner image for executing the job. Defaults to 'ubuntu-latest'.
       CHECKOUT:
         type: string
-        required: true    # [Required]
+        required: false
+        default: '${{ github.ref }}'
         description: >
-          [Required] The git reference to be checked out.
+          [Optional] The git reference to be checked out. Defaults to '\$\{\{ github.ref \}\}'
       CROWDIN_VERSION:
         type: string
         required: false
@@ -37,11 +44,6 @@ on:
         required: true    # [Required]
         description: >
           [Required] The source language of the documentation.
-      ENABLE_JOB:
-        type: string
-        required: true    # [Required]
-        description: >
-          [Required] Whether to enable the job (e.g., 'true' and 'false').
       ACTOR_NAME:
         type: string
         required: true    # [Required]
