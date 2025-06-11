@@ -28,7 +28,7 @@ on:
         type: string
         required: true    # [Required]
         description: >
-          The version of the documentation.
+          [Required] The version of the documentation.
       LANGUAGE:
         type: string
         required: true    # [Required]
