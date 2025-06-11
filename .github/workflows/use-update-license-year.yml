@@ -8,9 +8,10 @@ on:
     inputs:
       ENABLE:
         type: string
-        required: true    # [Required]
+        required: false
+        default: 'true'
         description: >
-          [Required] Whether to enable the job (e.g., 'true' and 'false').
+          [Optional] Whether to enable the job (e.g., 'true' or 'false'). Defaults to 'true'.
       RUNNER:
         type: string
         required: false
