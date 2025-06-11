@@ -13,9 +13,10 @@ on:
           [Required] The runner image for executing the job.
       CHECKOUT:
         type: string
-        required: true    # [Required]
+        required: false
+        default: '${{ github.ref }}'
         description: >
-          [Required] The git reference to be checked out.
+          [Optional] The git reference to be checked out. Defaults to '\$\{\{ github.ref \}\}'
       DEPLOY_BRANCH:
         type: string
         required: true    # [Required]
