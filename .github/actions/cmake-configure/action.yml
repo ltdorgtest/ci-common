@@ -3,7 +3,7 @@
 
 name: cmake-configure
 
-description: Configure the CMake project
+description: Configure the CMake Project
 
 inputs:
   working-directory:
@@ -154,7 +154,7 @@ runs:
         echo "CMAKE_ARGS:"
         echo "${CMAKE_ARGS[@]}"
 
-    - name: Configure the project (Windows)
+    - name: Configure the CMake Project (Windows)
       if: ${{ runner.os == 'Windows' }}
       shell: cmd
       run: |
@@ -173,7 +173,7 @@ runs:
         echo.
         cmake %CMAKE_ARGS%
 
-    - name: Configure the project (Linux/macOS)
+    - name: Configure the CMake Project (Linux/macOS)
       if: ${{ runner.os == 'Linux' || runner.os == 'macOS' }}
       shell: bash
       run: |
