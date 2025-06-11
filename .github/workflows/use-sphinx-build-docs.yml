@@ -33,42 +33,42 @@ on:
         type: string
         required: true    # [Required]
         description: >
-          The language of the documentation.
+          [Required] The language of the documentation.
       MODE_OF_UPDATE:
         type: string
         required: true    # [Required]
         description: >
-          The mode of updating .pot and .po files.
+          [Required] The mode of updating .pot and .po files.
       BASEURL_HREF:
         type: string
         required: true    # [Required]
         description: >
-          The base URL for the deployed HTML documentation.
+          [Required] The base URL for the deployed HTML documentation.
       SPHINX_BUILDER:
         type: string
         required: true    # [Required]
         description: >
-          The Sphinx builder used for building documentation.
+          [Required] The Sphinx builder used for building documentation.
       DEPLOY_PAGES:
         type: string
         required: true    # [Required]
         description: >
-          Whether to deploy the build artifacts to pages (e.g., 'true' or 'false').
+          [Required] Whether to deploy the build artifacts to pages (e.g., 'true' or 'false').
       ACTOR_NAME:
         type: string
         required: true    # [Required]
         description: >
-          The user name of the GitHub actor.
+          [Required] The user name of the GitHub actor.
       ACTOR_EMAIL:
         type: string
         required: true    # [Required]
         description: >
-          The user email of the GitHub actor.
+          [Required] The user email of the GitHub actor.
     secrets:
       ACTOR_GITHUB_TOKEN:
         required: true    # [Required]
         description: >
-          The personal access token of the GitHub actor.
+          [Required] The personal access token of the GitHub actor.
 
 jobs:
   sphinx-build-docs:
