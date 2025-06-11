@@ -10,16 +10,16 @@ inputs:
     required: false
     default: '${{ github.workspace }}'
     description: >
-      [Optional] The root directory from which to run commands or find files. Defaults to '\$\{\{ github.workspace \}\}'.
+      [Optional] The directory from which to run commands or locate files. Defaults to '\$\{\{ github.workspace \}\}'.
+  crowdin-branch-name:
+    required: true    # [Required]
+    description: >
+      [Required] The name of the branch to download translations in Crowdin.
   crowdin-config-file:
     required: false
     default: ''
     description: >
       [Optional] The path to the Crowdin configuration file. Defaults to an empty string.
-  crowdin-branch-name:
-    required: true    # [Required]
-    description: >
-      [Required] The name of the branch to download translations in Crowdin.
   crowdin-project-id:
     required: false
     default: ''
