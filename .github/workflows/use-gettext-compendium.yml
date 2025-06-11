@@ -6,7 +6,7 @@ name: use-gettext-compendium
 on:
   workflow_call:
     inputs:
-      ENABLE_JOB:
+      ENABLE:
         type: string
         required: true    # [Required]
         description: >
@@ -57,7 +57,7 @@ on:
 
 jobs:
   gettext-compend-po:
-    if: ${{ inputs.ENABLE_JOB == 'true' }}
+    if: ${{ inputs.ENABLE == 'true' }}
     runs-on: ${{ inputs.RUNNER }}
     steps:
       - name: Print Contexts/Inputs/Secrets
@@ -79,12 +79,12 @@ jobs:
           echo "github.repository = ${{ github.repository }}"
           echo "github.workspace = ${{ github.workspace }}"
           echo "[Inputs]"
+          echo "inputs.ENABLE = ${{ inputs.ENABLE }}"
           echo "inputs.RUNNER = ${{ inputs.RUNNER }}"
           echo "inputs.CHECKOUT = ${{ inputs.CHECKOUT }}"
           echo "inputs.CMAKE_VERSION = ${{ inputs.CMAKE_VERSION }}"
           echo "inputs.VERSION = ${{ inputs.VERSION }}"
           echo "inputs.LANGUAGE = ${{ inputs.LANGUAGE }}"
-          echo "inputs.ENABLE_JOB = ${{ inputs.ENABLE_JOB }}"
           echo "inputs.ACTOR_NAME = ${{ inputs.ACTOR_NAME }}"
           echo "inputs.ACTOR_EMAIL = ${{ inputs.ACTOR_EMAIL }}"
           echo "[Secrets]"

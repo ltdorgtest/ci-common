@@ -6,7 +6,7 @@ name: use-update-license-year
 on:
   workflow_call:
     inputs:
-      ENABLE_JOB:
+      ENABLE:
         type: string
         required: true    # [Required]
         description: >
@@ -46,7 +46,7 @@ on:
 
 jobs:
   update-license-year:
-    if: ${{ inputs.ENABLE_JOB == 'true' }}
+    if: ${{ inputs.ENABLE == 'true' }}
     runs-on: ${{ inputs.RUNNER }}
     steps:
       - name: Print Contexts/Inputs/Secrets
@@ -61,10 +61,10 @@ jobs:
           echo "github.event_name = ${{ github.event_name }}"
           echo "github.run_id = ${{ github.run_id }}"
           echo "[Inputs]"
+          echo "inputs.ENABLE = ${{ inputs.ENABLE }}"
           echo "inputs.RUNNER = ${{ inputs.RUNNER }}"
           echo "inputs.CHECKOUT = ${{ inputs.CHECKOUT }}"
           echo "inputs.LICENSE_FILE = ${{ inputs.LICENSE_FILE }}"
-          echo "inputs.ENABLE_JOB = ${{ inputs.ENABLE_JOB }}"
           echo "inputs.ACTOR_NAME = ${{ inputs.ACTOR_NAME }}"
           echo "inputs.ACTOR_EMAIL = ${{ inputs.ACTOR_EMAIL }}"
           echo "[Secrets]"
