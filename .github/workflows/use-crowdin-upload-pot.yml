@@ -10,10 +10,10 @@ on:
         type: string
         required: true    # [Required]
         description: >
-          [Required] Whether to enable the job (e.g., 'true' and 'false').
+          [Required] Whether to enable the job (e.g., 'true' or 'false').
       RUNNER:
         type: string
-        required: true
+        required: false
         default: 'ubuntu-latest'
         description: >
           [Optional] The runner image for executing the job. Defaults to 'ubuntu-latest'.
