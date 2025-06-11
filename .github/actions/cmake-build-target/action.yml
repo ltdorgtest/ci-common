@@ -58,7 +58,7 @@ runs:
         echo "CMAKE_ARGS:"
         echo "${CMAKE_ARGS[@]}"
 
-    - name: Build CMake Target
+    - name: Build the CMake Target
       shell: bash
       run: |
         WORKING_DIRECTORY=$(echo "${{ inputs.working-directory }}" | sed 's#\\#/#g' | sed 's#^\([A-Za-z]\):#/\L\1#')
