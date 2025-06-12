@@ -14,12 +14,12 @@ inputs:
   language:
     required: true    # [Required]
     description: >
-      [Required] The language to fetch from the languages.json, or 'all' to get all languages.
+      [Required] The language ('ll_CC') to fetch from the `languages.json` file, or 'all' to get all languages.
   languages-file:
     required: false
     default: 'languages.json'
     description: >
-      [Optional] The path to the languages.json file. Defaults to 'languages.json'.
+      [Optional] The path to the `languages.json` file. Defaults to 'languages.json'.
 
 outputs:
   LANGUAGE_NUM:

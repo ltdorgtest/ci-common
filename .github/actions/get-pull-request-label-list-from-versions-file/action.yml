@@ -24,7 +24,7 @@ inputs:
     required: false
     default: 'versions.json'
     description: >
-      [Optional] The path to the versions.json file. Defaults to 'versions.json'.
+      [Optional] The path to the `versions.json` file. Defaults to 'versions.json'.
 
 outputs:
   PULL_REQUEST_LABEL_LIST:

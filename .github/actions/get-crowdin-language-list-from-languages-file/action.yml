@@ -23,7 +23,7 @@ inputs:
     required: false
     default: 'languages.json'
     description: >
-      [Optional] The path to the languages.json file. Defaults to 'languages.json'.
+      [Optional] The path to the `languages.json` file. Defaults to 'languages.json'.
 
 outputs:
   CROWDIN_LANGUAGE_LIST:
