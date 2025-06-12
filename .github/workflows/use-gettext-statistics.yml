@@ -108,7 +108,7 @@ jobs:
           version: ${{ inputs.VERSION }}
           versions-file: 'versions.json'
 
-      - name: Configure the 'all' preset for '${{ inputs.VERSION }}' version
+      - name: Configure with 'all' preset for '${{ inputs.VERSION }}' version
         uses: ltdorgtest/ci-common/.github/actions/cmake-configure@main
         with:
           config-preset: 'all'
