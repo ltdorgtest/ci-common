@@ -19,7 +19,7 @@ inputs:
     required: false
     default: '.gitmodules'
     description: >
-      [Optional] The path to the .gitmodules file. Defaults to '.gitmodules'.
+      [Optional] The path to the `.gitmodules` file. Defaults to '.gitmodules'.
 
 outputs:
   SUBMODULE_NUM:

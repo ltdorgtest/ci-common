@@ -14,13 +14,13 @@ inputs:
   statistics-file:
     required: true    # [Required]
     description: >
-      [Required] The version identifier used to locate the corresponding `statistics.txt` file.
+      [Required] The path to the `statistics.txt` file.
 
 outputs:
   STATISTICS:
     value: ${{ steps.gsi.outputs.STATISTICS }}
     description: >
-      The content of the `statistics.txt` file for the specified version.
+      The content of the `statistics.txt` file.
 
 runs:
   using: composite
