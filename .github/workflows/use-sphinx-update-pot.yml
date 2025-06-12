@@ -30,6 +30,12 @@ on:
         default: ''
         description: >
           [Optional] The version of the CMake command. Defaults to an empty string.
+      CONDA_VERSION:
+        type: string
+        required: false
+        default: ''
+        description: >
+          [Optional] The version of the Conda command. Defaults to an empty string.
       VERSION:
         type: string
         required: true    # [Required]
@@ -81,6 +87,7 @@ jobs:
           echo "inputs.RUNNER = ${{ inputs.RUNNER }}"
           echo "inputs.CHECKOUT = ${{ inputs.CHECKOUT }}"
           echo "inputs.CMAKE_VERSION = ${{ inputs.CMAKE_VERSION }}"
+          echo "inputs.CONDA_VERSION = ${{ inputs.CONDA_VERSION }}"
           echo "inputs.VERSION = ${{ inputs.VERSION }}"
           echo "inputs.MODE_OF_UPDATE = ${{ inputs.MODE_OF_UPDATE }}"
           echo "inputs.CREATE_PR = ${{ inputs.CREATE_PR }}"
@@ -104,11 +111,13 @@ jobs:
 
       - name: Install Conda
         uses: ltdorgtest/ci-common/.github/actions/install-conda@main
+        with:
+          conda-version: ${{ inputs.CONDA_VERSION }}
 
       - name: Install Gettext
         uses: ltdorgtest/ci-common/.github/actions/install-gettext@main
 
-      - name: Get Other Caches from versions.json
+      - name: Get Other Caches from the versions.json file
         id: gocv
         uses: ltdorgtest/ci-common/.github/actions/get-other-caches-from-versions-file@main
         with:
