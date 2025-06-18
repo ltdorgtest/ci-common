@@ -146,11 +146,11 @@ jobs:
           CROWDIN_BASE_URL: ${{ inputs.CROWDIN_BASE_URL }}
 
       #
-      # If the '${{ inputs.VERSION }}' is NOT 'document', then...
+      # If the '${{ inputs.VERSION }}' is NOT 'docs', then...
       #
 
       - name: Delete the '${{ inputs.VERSION }}' branch in Crowdin
-        if: ${{ inputs.VERSION != 'document' }}
+        if: ${{ inputs.VERSION != 'docs' }}
         uses: ltdorgtest/ci-common/.github/actions/crowdin-branch-delete@main
         with:
           crowdin-branch-name: ${{ inputs.VERSION }}
@@ -160,11 +160,11 @@ jobs:
           CROWDIN_BASE_URL: ${{ inputs.CROWDIN_BASE_URL }}
 
       #
-      # If the '${{ inputs.VERSION }}' is 'document', then...
+      # If the '${{ inputs.VERSION }}' is 'docs', then...
       #
 
       - name: Download Translations of the '${{ inputs.VERSION }}' branch from Crowdin
-        if: ${{ inputs.VERSION == 'document' && steps.gcll.outputs.CROWDIN_LANGUAGE_LIST != '' }}
+        if: ${{ inputs.VERSION == 'docs' && steps.gcll.outputs.CROWDIN_LANGUAGE_LIST != '' }}
         uses: ltdorgtest/ci-common/.github/actions/crowdin-download-translations@main
         with:
           crowdin-branch-name: ${{ inputs.VERSION }}
@@ -179,7 +179,7 @@ jobs:
 
       - name: Get CROWDIN_STATUS_PROGRESS of the '${{ inputs.VERSION }}' branch
         id: gtpp
-        if: ${{ inputs.VERSION == 'document' }}
+        if: ${{ inputs.VERSION == 'docs' }}
         uses: ltdorgtest/ci-common/.github/actions/get-crowdin-status-progress@main
         with:
           crowdin-branch-name: ${{ inputs.VERSION }}
@@ -208,7 +208,7 @@ jobs:
           echo "Run URL:      ${{ steps.gcjc.outputs.run_url }}"
 
       - name: Set up mutex for the 'main' branch
-        if: ${{ inputs.VERSION == 'document' }}
+        if: ${{ inputs.VERSION == 'docs' }}
         uses: ben-z/gh-action-mutex@v1.0.0-alpha.9
         with:
           branch: 'mutex/main'
@@ -216,7 +216,7 @@ jobs:
 
       - name: Add and Commit Changes
         id: acc
-        if: ${{ inputs.VERSION == 'document' }}
+        if: ${{ inputs.VERSION == 'docs' }}
         uses: EndBug/add-and-commit@v9
         with:
           cwd: '.'
@@ -236,7 +236,7 @@ jobs:
             - job: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/job/${{ steps.gcjc.outputs.job_id }}
 
       - name: Check Outputs of the Commit
-        if: ${{ inputs.VERSION == 'document' && steps.acc.outputs.committed == 'true' }}
+        if: ${{ inputs.VERSION == 'docs' && steps.acc.outputs.committed == 'true' }}
         shell: bash
         run: |
           echo "Commit's SHA = ${{ steps.acc.outputs.commit_long_sha }}"
