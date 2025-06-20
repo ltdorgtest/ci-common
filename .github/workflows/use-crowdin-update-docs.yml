@@ -74,6 +74,14 @@ on:
         required: true    # [Required]
         description: >
           [Required] The personal access token for Crowdin authentication.
+      GPG_PRIVATE_KEY:
+        required: true    # [Required]
+        description: >
+          [Required] The ASCII-armored GPG private key used for commit signing.
+      GPG_PASSPHRASE:
+        required: true    # [Required]
+        description: >
+          [Required] The passphrase for the GPG private key used for commit signing.
 
 jobs:
   crowdin-update-docs:
@@ -113,6 +121,8 @@ jobs:
           echo "[Secrets]"
           echo "secrets.ACTOR_GITHUB_TOKEN = ${{ secrets.ACTOR_GITHUB_TOKEN }}"
           echo "secrets.CROWDIN_PERSONAL_TOKEN = ${{ secrets.CROWDIN_PERSONAL_TOKEN }}"
+          echo "secrets.GPG_PRIVATE_KEY = ${{ secrets.GPG_PRIVATE_KEY }}"
+          echo "secrets.GPG_PASSPHRASE = ${{ secrets.GPG_PASSPHRASE }}"
 
       - name: Checkout to '${{ inputs.CHECKOUT }}'
         uses: actions/checkout@v4
@@ -120,6 +130,16 @@ jobs:
           ref: ${{ inputs.CHECKOUT }}
           token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
           fetch-depth: 0
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: List all GPG keys
+        run: |
+          gpg --list-secret-keys
 
       - name: Install Crowdin
         uses: ltdorgtest/ci-common/.github/actions/install-crowdin@main
