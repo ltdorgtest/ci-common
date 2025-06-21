@@ -65,6 +65,11 @@ on:
         required: true    # [Required]
         description: >
           [Required] The base URL of Crowdin server for API requests execution.
+      GPG_FINGERPRINT:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] The fingerprint used for identifying the GPG signing key.
     secrets:
       ACTOR_GITHUB_TOKEN:
         required: true    # [Required]
@@ -77,11 +82,11 @@ on:
       GPG_PRIVATE_KEY:
         required: true    # [Required]
         description: >
-          [Required] The ASCII-armored GPG private key used for commit signing.
+          [Required] The ASCII-armored GPG private key.
       GPG_PASSPHRASE:
         required: true    # [Required]
         description: >
-          [Required] The passphrase for the GPG private key used for commit signing.
+          [Required] The passphrase of the GPG private key.
 
 jobs:
   crowdin-update-docs:
@@ -118,6 +123,7 @@ jobs:
           echo "inputs.ACTOR_EMAIL = ${{ inputs.ACTOR_EMAIL }}"
           echo "inputs.CROWDIN_PROJECT_ID = ${{ inputs.CROWDIN_PROJECT_ID }}"
           echo "inputs.CROWDIN_BASE_URL = ${{ inputs.CROWDIN_BASE_URL }}"
+          echo "inputs.GPG_FINGERPRINT = ${{ inputs.GPG_FINGERPRINT }}"
           echo "[Secrets]"
           echo "secrets.ACTOR_GITHUB_TOKEN = ${{ secrets.ACTOR_GITHUB_TOKEN }}"
           echo "secrets.CROWDIN_PERSONAL_TOKEN = ${{ secrets.CROWDIN_PERSONAL_TOKEN }}"
@@ -136,12 +142,13 @@ jobs:
         with:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          fingerprint: ${{ inputs.GPG_FINGERPRINT }}
           git_user_signingkey: true
           git_commit_gpgsign: true
 
       - name: List all GPG keys
         run: |
-          gpg --list-secret-keys
+          gpg --list-secret-keys --with-subkey-fingerprints
 
       - name: Install Crowdin
         uses: ltdorgtest/ci-common/.github/actions/install-crowdin@main
@@ -263,4 +270,6 @@ jobs:
         run: |
           echo "Commit's SHA = ${{ steps.acc.outputs.commit_long_sha }}"
           echo "Commit's URL = ${{ github.server_url }}/${{ github.repository }}/commit/${{ steps.acc.outputs.commit_long_sha }}"
+          echo "Outputs of Ruuning command: git log --show-signature -1"
+          echo ""
           git log --show-signature -1
