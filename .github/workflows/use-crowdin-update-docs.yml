@@ -148,7 +148,7 @@ jobs:
 
       - name: List all GPG keys
         run: |
-          gpg --list-secret-keys --with-subkey-fingerprints
+          gpg --list-secret-keys
 
       - name: Install Crowdin
         uses: ltdorgtest/ci-common/.github/actions/install-crowdin@main
@@ -260,9 +260,9 @@ jobs:
 
             Created by the GitHub Actions:
 
-            - file: ${{ github.server_url }}/${{ github.repository }}/actions/workflows/${{ github.workflow }}.yml
-            - run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-            - job: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/job/${{ steps.gcjc.outputs.job_id }}
+            - File: ${{ github.server_url }}/${{ github.repository }}/actions/workflows/${{ github.workflow }}.yml
+            - Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            - Job: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/job/${{ steps.gcjc.outputs.job_id }}
 
       - name: Check Outputs of the Commit
         if: ${{ inputs.VERSION == 'docs' && steps.acc.outputs.committed == 'true' }}

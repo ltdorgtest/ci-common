@@ -237,8 +237,8 @@ jobs:
             Created by the GitHub Actions:
 
             - workflow: ${{ github.server_url }}/${{ github.repository }}/actions/workflows/${{ github.workflow }}.yml
-            - run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-            - job: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/job/${{ steps.gcjc.outputs.job_id }}
+            - Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            - Job: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/job/${{ steps.gcjc.outputs.job_id }}
 
       - name: Check Outputs of the Pull Request
         if: ${{ inputs.CREATE_PR == 'true' && steps.acc.outputs.committed == 'true' }}
