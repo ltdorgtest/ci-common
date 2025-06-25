@@ -137,7 +137,7 @@ jobs:
           token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
           fetch-depth: 0
 
-      - name: Import GPG key
+      - name: Import GPG key for Signing Commit
         uses: crazy-max/ghaction-import-gpg@v6
         with:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}

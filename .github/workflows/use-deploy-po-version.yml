@@ -50,11 +50,24 @@ on:
         required: true    # [Required]
         description: >
           [Required] The user email of the GitHub actor.
+      GPG_FINGERPRINT:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] The fingerprint used for identifying the GPG signing key.
     secrets:
       ACTOR_GITHUB_TOKEN:
         required: true    # [Required]
         description: >
           [Required] The personal access token of the GitHub actor.
+      GPG_PRIVATE_KEY:
+        required: true    # [Required]
+        description: >
+          [Required] The ASCII-armored GPG private key.
+      GPG_PASSPHRASE:
+        required: true    # [Required]
+        description: >
+          [Required] The passphrase of the GPG private key.
 
 jobs:
   deploy-po-version:
@@ -88,8 +101,11 @@ jobs:
           echo "inputs.DEPLOY_RTD = ${{ inputs.DEPLOY_RTD }}"
           echo "inputs.ACTOR_NAME = ${{ inputs.ACTOR_NAME }}"
           echo "inputs.ACTOR_EMAIL = ${{ inputs.ACTOR_EMAIL }}"
+          echo "inputs.GPG_FINGERPRINT = ${{ inputs.GPG_FINGERPRINT }}"
           echo "[Secrets]"
           echo "secrets.ACTOR_GITHUB_TOKEN = ${{ secrets.ACTOR_GITHUB_TOKEN }}"
+          echo "secrets.GPG_PRIVATE_KEY = ${{ secrets.GPG_PRIVATE_KEY }}"
+          echo "secrets.GPG_PASSPHRASE = ${{ secrets.GPG_PASSPHRASE }}"
 
       - name: Checkout to '${{ inputs.CHECKOUT }}'
         uses: actions/checkout@v4
@@ -97,6 +113,19 @@ jobs:
           ref: ${{ inputs.CHECKOUT }}
           token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
           submodules: true
+
+      - name: Import GPG key for Signing Commit
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          fingerprint: ${{ inputs.GPG_FINGERPRINT }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
+      - name: List all GPG keys
+        run: |
+          gpg --list-secret-keys
 
       - name: Install CMake
         uses: ltdorgtest/ci-common/.github/actions/install-cmake@main
