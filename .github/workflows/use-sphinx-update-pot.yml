@@ -112,88 +112,88 @@ jobs:
           echo "secrets.GPG_PRIVATE_KEY = ${{ secrets.GPG_PRIVATE_KEY }}"
           echo "secrets.GPG_PASSPHRASE = ${{ secrets.GPG_PASSPHRASE }}"
 
-      - name: Checkout to '${{ github.ref }}'
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.CHECKOUT }}
-          token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
-          submodules: true
-          fetch-depth: 0
+      # - name: Checkout to '${{ github.ref }}'
+      #   uses: actions/checkout@v4
+      #   with:
+      #     ref: ${{ inputs.CHECKOUT }}
+      #     token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
+      #     submodules: true
+      #     fetch-depth: 0
 
-      - name: Import GPG key for Signing Commit
-        uses: crazy-max/ghaction-import-gpg@v6
-        with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.GPG_PASSPHRASE }}
-          fingerprint: ${{ inputs.GPG_FINGERPRINT }}
-          git_user_signingkey: true
-          git_commit_gpgsign: true
+      # - name: Import GPG key for Signing Commit
+      #   uses: crazy-max/ghaction-import-gpg@v6
+      #   with:
+      #     gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+      #     passphrase: ${{ secrets.GPG_PASSPHRASE }}
+      #     fingerprint: ${{ inputs.GPG_FINGERPRINT }}
+      #     git_user_signingkey: true
+      #     git_commit_gpgsign: true
 
-      - name: List all GPG keys
-        shell: bash
-        run: |
-          gpg --list-secret-keys
+      # - name: List all GPG keys
+      #   shell: bash
+      #   run: |
+      #     gpg --list-secret-keys
 
-      - name: Install CMake
-        uses: ltdorgtest/ci-common/.github/actions/install-cmake@main
-        with:
-          cmake-version: ${{ inputs.CMAKE_VERSION }}
+      # - name: Install CMake
+      #   uses: ltdorgtest/ci-common/.github/actions/install-cmake@main
+      #   with:
+      #     cmake-version: ${{ inputs.CMAKE_VERSION }}
 
-      - name: Install Conda
-        uses: ltdorgtest/ci-common/.github/actions/install-conda@main
-        with:
-          conda-version: ${{ inputs.CONDA_VERSION }}
+      # - name: Install Conda
+      #   uses: ltdorgtest/ci-common/.github/actions/install-conda@main
+      #   with:
+      #     conda-version: ${{ inputs.CONDA_VERSION }}
 
-      - name: Install Gettext
-        uses: ltdorgtest/ci-common/.github/actions/install-gettext@main
+      # - name: Install Gettext
+      #   uses: ltdorgtest/ci-common/.github/actions/install-gettext@main
 
-      - name: Get Other Caches from the versions.json file
-        id: gocv
-        uses: ltdorgtest/ci-common/.github/actions/get-other-caches-from-versions-file@main
-        with:
-          version: ${{ inputs.VERSION }}
-          versions-file: 'versions.json'
+      # - name: Get Other Caches from the versions.json file
+      #   id: gocv
+      #   uses: ltdorgtest/ci-common/.github/actions/get-other-caches-from-versions-file@main
+      #   with:
+      #     version: ${{ inputs.VERSION }}
+      #     versions-file: 'versions.json'
 
-      - name: Configure with 'all' preset for '${{ inputs.VERSION }}' version
-        uses: ltdorgtest/ci-common/.github/actions/cmake-configure@main
-        with:
-          config-preset: 'all'
-          cache-version: ${{ inputs.VERSION }}
-          cache-version-compendium: ${{ steps.gocv.outputs.VERSION_COMPENDIUM }}
-          cache-mode-of-update: ${{ inputs.MODE_OF_UPDATE }}
-          cache-auto-depend: 'OFF'
+      # - name: Configure with 'all' preset for '${{ inputs.VERSION }}' version
+      #   uses: ltdorgtest/ci-common/.github/actions/cmake-configure@main
+      #   with:
+      #     config-preset: 'all'
+      #     cache-version: ${{ inputs.VERSION }}
+      #     cache-version-compendium: ${{ steps.gocv.outputs.VERSION_COMPENDIUM }}
+      #     cache-mode-of-update: ${{ inputs.MODE_OF_UPDATE }}
+      #     cache-auto-depend: 'OFF'
 
-      - name: Get VERSION_REFERENCE of '.pot' Before Building
-        id: pot-before
-        uses: ltdorgtest/ci-common/.github/actions/get-version-reference-from-references-file@main
-        with:
-          jq-filter: '.pot'
-          references-file: 'l10n/${{ inputs.VERSION }}/references.json'
+      # - name: Get VERSION_REFERENCE of '.pot' Before Building
+      #   id: pot-before
+      #   uses: ltdorgtest/ci-common/.github/actions/get-version-reference-from-references-file@main
+      #   with:
+      #     jq-filter: '.pot'
+      #     references-file: 'l10n/${{ inputs.VERSION }}/references.json'
 
-      - name: Build the 'prepare_repositories' target
-        uses: ltdorgtest/ci-common/.github/actions/cmake-build-target@main
-        with:
-          build-directory: out/build/all
-          build-target: 'prepare_repositories'
+      # - name: Build the 'prepare_repositories' target
+      #   uses: ltdorgtest/ci-common/.github/actions/cmake-build-target@main
+      #   with:
+      #     build-directory: out/build/all
+      #     build-target: 'prepare_repositories'
 
-      - name: Build the 'install_requirements' target
-        uses: ltdorgtest/ci-common/.github/actions/cmake-build-target@main
-        with:
-          build-directory: out/build/all
-          build-target: 'install_requirements'
+      # - name: Build the 'install_requirements' target
+      #   uses: ltdorgtest/ci-common/.github/actions/cmake-build-target@main
+      #   with:
+      #     build-directory: out/build/all
+      #     build-target: 'install_requirements'
 
-      - name: Build the 'sphinx_update_pot' target
-        uses: ltdorgtest/ci-common/.github/actions/cmake-build-target@main
-        with:
-          build-directory: out/build/all
-          build-target: 'sphinx_update_pot'
+      # - name: Build the 'sphinx_update_pot' target
+      #   uses: ltdorgtest/ci-common/.github/actions/cmake-build-target@main
+      #   with:
+      #     build-directory: out/build/all
+      #     build-target: 'sphinx_update_pot'
 
-      - name: Get VERSION_REFERENCE of '.pot' After Building
-        id: pot-after
-        uses: ltdorgtest/ci-common/.github/actions/get-version-reference-from-references-file@main
-        with:
-          jq-filter: '.pot'
-          references-file: 'l10n/${{ inputs.VERSION }}/references.json'
+      # - name: Get VERSION_REFERENCE of '.pot' After Building
+      #   id: pot-after
+      #   uses: ltdorgtest/ci-common/.github/actions/get-version-reference-from-references-file@main
+      #   with:
+      #     jq-filter: '.pot'
+      #     references-file: 'l10n/${{ inputs.VERSION }}/references.json'
 
       # - name: Get PULL_REQUEST_LABEL_LIST from versions.json
       #   id: gllpr
