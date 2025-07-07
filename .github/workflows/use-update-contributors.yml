@@ -91,7 +91,7 @@ jobs:
       #     round: true
       #     svgPath: 'out/${{ inputs.DEPLOY_BRANCH }}/github-contributors.svg'
 
-      - Run: mkdir -p out/${{ inputs.DEPLOY_BRANCH }}
+      - run: mkdir -p out/${{ inputs.DEPLOY_BRANCH }}
       - name: Generate Contributors Images
         uses: jaywcjlove/github-action-contributors@main
         with:
