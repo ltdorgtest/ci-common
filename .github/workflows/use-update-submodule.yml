@@ -1,5 +1,5 @@
 # Distributed under the OSI-approved BSD 3-Clause License.
-# See accompanying file LICENSE.txt for details.
+# See accompanying file LICENSE-BSD for details.
 
 name: use-update-submodule
 
@@ -170,13 +170,13 @@ jobs:
           author_name: ${{ inputs.ACTOR_NAME }}
           author_email: ${{ inputs.ACTOR_EMAIL }}
           message: |
-            📦️ build(deps): update submodule '${{ inputs.SUBMODULE }}' to latest
+            📦️ build(gitmodule): update submodule '${{ inputs.SUBMODULE }}' to latest
 
-            update the '${{ inputs.SUBMODULE }}' submodule to its latest commit.
+            Updated the '${{ inputs.SUBMODULE }}' submodule to its latest commit.
 
-            - repository: ${{ steps.grus.outputs.SUBMODULE_URL }}
-            - old commit: ${{ steps.gocs.outputs.OLD_COMMIT }}
-            - new commit: ${{ steps.gncs.outputs.NEW_COMMIT }}
+            - Repository: ${{ steps.grus.outputs.SUBMODULE_URL }}
+            - Old commit: ${{ steps.gocs.outputs.OLD_COMMIT }}
+            - New commit: ${{ steps.gncs.outputs.NEW_COMMIT }}
 
             Created by the GitHub Actions:
 
