@@ -159,10 +159,10 @@ jobs:
             ( !contains(needs.*.result, 'cancelled') ) &&
             ( inputs.ENABLE == 'true' ) }}
     runs-on: ${{ inputs.RUNNER }}
-    # Refer to: https://stackoverflow.com/a/76883315
-    permissions:
-      id-token: write
-      pages: write
+    # # Refer to: https://stackoverflow.com/a/76883315
+    # permissions:
+    #   id-token: write
+    #   pages: write
     steps:
       - name: Print Contexts/Inputs/Secrets
         shell: bash
