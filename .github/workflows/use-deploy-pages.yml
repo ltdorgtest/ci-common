@@ -23,12 +23,18 @@ on:
         required: false
         default: '${{ github.ref }}'
         description: >
-          [Optional] The git reference to be checked out. Defaults to '\$\{\{ github.ref \}\}'
+          [Optional] The git reference to be checked out. Defaults to '\$\{\{ github.ref \}\}'.
       BUILD_RUN_ID:
         type: string
         required: true    # [Required]
         description: >
           [Required] The numeric ID of the workflow run that uploaded the build artifacts.
+      DEPLOY_TYPE:
+        type: string
+        required: false
+        default: 'gh-pages'
+        description: >
+          The type of the deployment platform (e.g., 'gh-pages'). Defaults to 'gh-pages'.
       DEPLOY_ONLY:
         type: string
         required: true    # [Required]
@@ -96,6 +102,7 @@ jobs:
           echo "inputs.RUNNER = ${{ inputs.RUNNER }}"
           echo "inputs.CHECKOUT = ${{ inputs.CHECKOUT }}"
           echo "inputs.BUILD_RUN_ID = ${{ inputs.BUILD_RUN_ID }}"
+          echo "inputs.DEPLOY_TYPE = ${{ inputs.DEPLOY_TYPE }}"
           echo "inputs.DEPLOY_ONLY = ${{ inputs.DEPLOY_ONLY }}"
           echo "inputs.DEPLOY_BRANCH = ${{ inputs.DEPLOY_BRANCH }}"
           echo "inputs.ACTOR_NAME = ${{ inputs.ACTOR_NAME }}"
@@ -152,17 +159,18 @@ jobs:
           git-config-email: ${{ inputs.ACTOR_EMAIL }}
           token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
 
-  deploy-pages:
+  deploy-gh-pages:
     needs: [ 'download-build-artifacts' ]
     if: ${{ ( always() ) &&
             ( !contains(needs.*.result, 'failure') ) &&
             ( !contains(needs.*.result, 'cancelled') ) &&
-            ( inputs.ENABLE == 'true' ) }}
+            ( inputs.ENABLE == 'true' ) &&
+            ( inputs.DEPLOY_TYPE == 'gh-pages' ) }}
     runs-on: ${{ inputs.RUNNER }}
-    # # Refer to: https://stackoverflow.com/a/76883315
-    # permissions:
-    #   id-token: write
-    #   pages: write
+    # Refer to: https://stackoverflow.com/a/76883315
+    permissions:
+      id-token: write
+      pages: write
     steps:
       - name: Print Contexts/Inputs/Secrets
         shell: bash
@@ -186,6 +194,7 @@ jobs:
           echo "inputs.RUNNER = ${{ inputs.RUNNER }}"
           echo "inputs.CHECKOUT = ${{ inputs.CHECKOUT }}"
           echo "inputs.BUILD_RUN_ID = ${{ inputs.BUILD_RUN_ID }}"
+          echo "inputs.DEPLOY_TYPE = ${{ inputs.DEPLOY_TYPE }}"
           echo "inputs.DEPLOY_ONLY = ${{ inputs.DEPLOY_ONLY }}"
           echo "inputs.DEPLOY_BRANCH = ${{ inputs.DEPLOY_BRANCH }}"
           echo "inputs.ENABLE = ${{ inputs.ENABLE }}"
