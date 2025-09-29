@@ -1,0 +1,278 @@
+# Distributed under the OSI-approved BSD 3-Clause License.
+# See accompanying file LICENSE-BSD for details.
+
+name: use-mdbook-update-pot
+
+on:
+  workflow_call:
+    inputs:
+      ENABLE:
+        type: string
+        required: false
+        default: 'true'
+        description: >
+          [Optional] Whether to enable the job (e.g., 'true' or 'false'). Defaults to 'true'.
+      RUNNER:
+        type: string
+        required: false
+        default: 'ubuntu-latest'
+        description: >
+          [Optional] The runner image for executing the job. Defaults to 'ubuntu-latest'.
+      CHECKOUT:
+        type: string
+        required: false
+        default: '${{ github.ref }}'
+        description: >
+          [Optional] The git reference to be checked out. Defaults to '\$\{\{ github.ref \}\}'
+      CMAKE_VERSION:
+        type: string
+        required: false
+        default: ''
+        description: >
+          [Optional] The version of the CMake command. Defaults to an empty string.
+      CONDA_VERSION:
+        type: string
+        required: false
+        default: ''
+        description: >
+          [Optional] The version of the Conda command. Defaults to an empty string.
+      VERSION:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] The version of the documentation.
+      MODE_OF_UPDATE:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] The mode of updating .pot and .po files.
+      CREATE_PR:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] Whether to create a pull request.
+      ACTOR_NAME:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] The user name of the GitHub actor.
+      ACTOR_EMAIL:
+        required: true    # [Required]
+        type: string
+        description: >
+          [Required] The user email of the GitHub actor.
+      GPG_FINGERPRINT:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] The fingerprint used for identifying the GPG signing key.
+    secrets:
+      ACTOR_GITHUB_TOKEN:
+        required: true    # [Required]
+        description: >
+          [Required] The personal access token of the GitHub actor.
+      GPG_PRIVATE_KEY:
+        required: true    # [Required]
+        description: >
+          [Required] The ASCII-armored GPG private key.
+      GPG_PASSPHRASE:
+        required: true    # [Required]
+        description: >
+          [Required] The passphrase of the GPG private key.
+
+jobs:
+  mdbook-update-pot:
+    if: ${{ inputs.ENABLE == 'true' }}
+    runs-on: ${{ inputs.RUNNER }}
+    steps:
+      - name: Print Contexts/Inputs/Secrets
+        shell: bash
+        run: |
+          echo "[Contexts]"
+          echo "github.job = ${{ github.job }}"
+          echo "github.ref = ${{ github.ref }}"
+          echo "github.ref_name = ${{ github.ref_name }}"
+          echo "github.event_name = ${{ github.event_name }}"
+          echo "github.event.action = ${{ github.event.action }}"
+          echo "github.event.number = ${{ github.event.number }}"
+          echo "[Inputs]"
+          echo "inputs.ENABLE = ${{ inputs.ENABLE }}"
+          echo "inputs.RUNNER = ${{ inputs.RUNNER }}"
+          echo "inputs.CHECKOUT = ${{ inputs.CHECKOUT }}"
+          echo "inputs.CMAKE_VERSION = ${{ inputs.CMAKE_VERSION }}"
+          echo "inputs.CONDA_VERSION = ${{ inputs.CONDA_VERSION }}"
+          echo "inputs.VERSION = ${{ inputs.VERSION }}"
+          echo "inputs.MODE_OF_UPDATE = ${{ inputs.MODE_OF_UPDATE }}"
+          echo "inputs.CREATE_PR = ${{ inputs.CREATE_PR }}"
+          echo "inputs.ACTOR_NAME = ${{ inputs.ACTOR_NAME }}"
+          echo "inputs.ACTOR_EMAIL = ${{ inputs.ACTOR_EMAIL }}"
+          echo "inputs.GPG_FINGERPRINT = ${{ inputs.GPG_FINGERPRINT }}"
+          echo "[Secrets]"
+          echo "secrets.ACTOR_GITHUB_TOKEN = ${{ secrets.ACTOR_GITHUB_TOKEN }}"
+          echo "secrets.GPG_PRIVATE_KEY = ${{ secrets.GPG_PRIVATE_KEY }}"
+          echo "secrets.GPG_PASSPHRASE = ${{ secrets.GPG_PASSPHRASE }}"
+
+      - name: Checkout to '${{ github.ref }}'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.CHECKOUT }}
+          token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
+          submodules: true
+          fetch-depth: 0
+
+      - name: Import GPG key for Signing Commit
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          fingerprint: ${{ inputs.GPG_FINGERPRINT }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
+      - name: List all GPG keys
+        shell: bash
+        run: |
+          gpg --list-secret-keys
+
+      - name: Install CMake
+        uses: ltdorgtest/ci-common/.github/actions/install-cmake@main
+        with:
+          cmake-version: ${{ inputs.CMAKE_VERSION }}
+
+      - name: Install Conda
+        uses: ltdorgtest/ci-common/.github/actions/install-conda@main
+        with:
+          conda-version: ${{ inputs.CONDA_VERSION }}
+
+      - name: Install Gettext
+        uses: ltdorgtest/ci-common/.github/actions/install-gettext@main
+
+      - name: Get Other Caches from the versions.json file
+        id: gocv
+        uses: ltdorgtest/ci-common/.github/actions/get-other-caches-from-versions-file@main
+        with:
+          version: ${{ inputs.VERSION }}
+          versions-file: 'versions.json'
+
+      - name: Configure with 'all' preset for '${{ inputs.VERSION }}' version
+        uses: ltdorgtest/ci-common/.github/actions/cmake-configure@main
+        with:
+          config-preset: 'all'
+          cache-version: ${{ inputs.VERSION }}
+          cache-version-compendium: ${{ steps.gocv.outputs.VERSION_COMPENDIUM }}
+          cache-mode-of-update: ${{ inputs.MODE_OF_UPDATE }}
+          cache-auto-depend: 'OFF'
+
+      - name: Get VERSION_REFERENCE of '.pot' Before Building
+        id: pot-before
+        uses: ltdorgtest/ci-common/.github/actions/get-version-reference-from-references-file@main
+        with:
+          jq-filter: '.pot'
+          references-file: 'l10n/${{ inputs.VERSION }}/references.json'
+
+      - name: Build the 'prepare_repositories' target
+        uses: ltdorgtest/ci-common/.github/actions/cmake-build-target@main
+        with:
+          build-directory: out/build/all
+          build-target: 'prepare_repositories'
+
+      - name: Build the 'install_requirements' target
+        uses: ltdorgtest/ci-common/.github/actions/cmake-build-target@main
+        with:
+          build-directory: out/build/all
+          build-target: 'install_requirements'
+
+      - name: Build the 'mdbook_update_pot' target
+        uses: ltdorgtest/ci-common/.github/actions/cmake-build-target@main
+        with:
+          build-directory: out/build/all
+          build-target: 'mdbook_update_pot'
+
+      - name: Get VERSION_REFERENCE of '.pot' After Building
+        id: pot-after
+        uses: ltdorgtest/ci-common/.github/actions/get-version-reference-from-references-file@main
+        with:
+          jq-filter: '.pot'
+          references-file: 'l10n/${{ inputs.VERSION }}/references.json'
+
+      - name: Get PULL_REQUEST_LABEL_LIST from versions.json
+        id: gllpr
+        uses: ltdorgtest/ci-common/.github/actions/get-pull-request-label-list-from-versions-file@main
+        with:
+          version: ${{ inputs.VERSION }}
+          tms-label: 'crowdin'
+
+      - name: Get the Current Job's Context
+        id: gcjc
+        uses: qoomon/actions--context@v4
+        with:
+          token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
+
+      - name: Check Outputs of the Current Job's Context
+        shell: bash
+        run: |
+          echo "Job Name:     ${{ steps.gcjc.outputs.job_name }}"
+          echo "Job ID:       ${{ steps.gcjc.outputs.job_id }}"
+          echo "Job URL:      ${{ steps.gcjc.outputs.job_url }}"
+          echo "Run ID:       ${{ steps.gcjc.outputs.run_id }}"
+          echo "Run Attempt:  ${{ steps.gcjc.outputs.run_attempt }}"
+          echo "Run Number:   ${{ steps.gcjc.outputs.run_number }}"
+          echo "Run URL:      ${{ steps.gcjc.outputs.run_url }}"
+
+      - name: Set up mutex for 'l10n' branch
+        uses: ben-z/gh-action-mutex@v1.0.0-alpha.9
+        with:
+          branch: 'mutex/l10n'
+          repo-token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
+
+      - name: Add and Commit the Change
+        id: acc
+        if: ${{ inputs.CREATE_PR == 'true' }}
+        uses: EndBug/add-and-commit@v9
+        with:
+          cwd: './l10n'
+          add: './${{ inputs.VERSION }}'
+          push: 'origin mdbook/pot/${{ inputs.VERSION }} --set-upstream --force'
+          commit: '--signoff'
+          new_branch: mdbook/pot/${{ inputs.VERSION }}
+          author_name: ${{ inputs.ACTOR_NAME }}
+          author_email: ${{ inputs.ACTOR_EMAIL }}
+          message: |
+            🌐 pot(${{ inputs.VERSION }}): update .pot from mdBook
+
+            Update .pot files for '${{ inputs.VERSION }}' version from mdBook.
+
+            Before: ${{ steps.pot-before.outputs.VERSION_REFERENCE }}
+            After: ${{ steps.pot-after.outputs.VERSION_REFERENCE }}
+
+            Created by the GitHub Actions:
+
+            - workflow: ${{ github.server_url }}/${{ github.repository }}/actions/workflows/${{ github.workflow }}.yml
+            - Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            - Job: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/job/${{ steps.gcjc.outputs.job_id }}
+
+      - name: Check Outputs of the Commit
+        if: ${{ inputs.CREATE_PR == 'true' && steps.acc.outputs.committed == 'true' }}
+        shell: bash
+        run: |
+          echo "Commit's SHA = ${{ steps.acc.outputs.commit_long_sha }}"
+          echo "Commit's URL = ${{ github.server_url }}/${{ github.repository }}/commit/${{ steps.acc.outputs.commit_long_sha }}"
+
+      - name: Create a Pull Request
+        id: cpr
+        if: ${{ inputs.CREATE_PR == 'true' && steps.acc.outputs.committed == 'true' }}
+        uses: devops-infra/action-pull-request@v0.5.5
+        with:
+          github_token: ${{ secrets.ACTOR_GITHUB_TOKEN }}  # required
+          source_branch: mdbook/pot/${{ inputs.VERSION }}
+          target_branch: l10n
+          label: ${{ steps.gllpr.outputs.PULL_REQUEST_LABEL_LIST }}
+          title: |
+            🌐 pot(${{ inputs.VERSION }}): update .pot from mdBook
+
+      - name: Check Outputs of the Pull Request
+        if: ${{ inputs.CREATE_PR == 'true' && steps.acc.outputs.committed == 'true' }}
+        shell: bash
+        run: |
+          echo "Pull Request's Number = ${{ steps.cpr.outputs.pr_number }}"
+          echo "Pull Request's URL    = ${{ steps.cpr.outputs.url }}"

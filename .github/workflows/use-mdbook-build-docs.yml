@@ -1,0 +1,198 @@
+# Distributed under the OSI-approved BSD 3-Clause License.
+# See accompanying file LICENSE-BSD for details.
+
+name: use-mdbook-build-docs
+
+on:
+  workflow_call:
+    inputs:
+      ENABLE:
+        type: string
+        required: false
+        default: 'true'
+        description: >
+          [Optional] Whether to enable the job (e.g., 'true' or 'false'). Defaults to 'true'.
+      RUNNER:
+        type: string
+        required: false
+        default: 'ubuntu-latest'
+        description: >
+          [Optional] The runner image for executing the job. Defaults to 'ubuntu-latest'.
+      CHECKOUT:
+        type: string
+        required: false
+        default: '${{ github.ref }}'
+        description: >
+          [Optional] The git reference to be checked out. Defaults to '\$\{\{ github.ref \}\}'
+      CMAKE_VERSION:
+        type: string
+        required: false
+        default: ''
+        description: >
+          [Optional] The version of the CMake command. Defaults to an empty string.
+      CONDA_VERSION:
+        type: string
+        required: false
+        default: ''
+        description: >
+          [Optional] The version of the Conda command. Defaults to an empty string.
+      VERSION:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] The version of the documentation.
+      LANGUAGE:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] The language of the documentation.
+      MODE_OF_UPDATE:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] The mode of updating .pot and .po files.
+      BASEURL_HREF:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] The base URL for the deployed HTML documentation.
+      MDBOOK_RENDERER:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] The mdBook builder used for building documentation.
+      DEPLOY_PAGES:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] Whether to deploy the build artifacts to pages (e.g., 'true' or 'false').
+      ACTOR_NAME:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] The user name of the GitHub actor.
+      ACTOR_EMAIL:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] The user email of the GitHub actor.
+    secrets:
+      ACTOR_GITHUB_TOKEN:
+        required: true    # [Required]
+        description: >
+          [Required] The personal access token of the GitHub actor.
+
+jobs:
+  mdbook-build-docs:
+    if: ${{ inputs.ENABLE == 'true' }}
+    runs-on: ${{ inputs.RUNNER }}
+    steps:
+      - name: Print Contexts/Inputs/Secrets
+        shell: bash
+        run: |
+          echo "[Contexts]"
+          echo "github.job = ${{ github.job }}"
+          echo "github.ref = ${{ github.ref }}"
+          echo "github.ref_name = ${{ github.ref_name }}"
+          echo "github.event_name = ${{ github.event_name }}"
+          echo "github.event.action = ${{ github.event.action }}"
+          echo "github.event.number = ${{ github.event.number }}"
+          echo "github.workflow = ${{ github.workflow }}"
+          echo "github.workflow_ref = ${{ github.workflow_ref }}"
+          echo "github.run_id = ${{ github.run_id }}"
+          echo "github.run_number = ${{ github.run_number }}"
+          echo "github.run_attempt = ${{ github.run_attempt }}"
+          echo "github.server_url = ${{ github.server_url }}"
+          echo "github.repository = ${{ github.repository }}"
+          echo "github.workspace = ${{ github.workspace }}"
+          echo "[Inputs]"
+          echo "inputs.ENABLE = ${{ inputs.ENABLE }}"
+          echo "inputs.RUNNER = ${{ inputs.RUNNER }}"
+          echo "inputs.CHECKOUT = ${{ inputs.CHECKOUT }}"
+          echo "inputs.CMAKE_VERSION = ${{ inputs.CMAKE_VERSION }}"
+          echo "inputs.CONDA_VERSION = ${{ inputs.CONDA_VERSION }}"
+          echo "inputs.VERSION = ${{ inputs.VERSION }}"
+          echo "inputs.LANGUAGE = ${{ inputs.LANGUAGE }}"
+          echo "inputs.MODE_OF_UPDATE = ${{ inputs.MODE_OF_UPDATE }}"
+          echo "inputs.BASEURL_HREF = ${{ inputs.BASEURL_HREF }}"
+          echo "inputs.MDBOOK_RENDERER = ${{ inputs.MDBOOK_RENDERER }}"
+          echo "inputs.DEPLOY_PAGES = ${{ inputs.DEPLOY_PAGES }}"
+          echo "inputs.ACTOR_NAME = ${{ inputs.ACTOR_NAME }}"
+          echo "inputs.ACTOR_EMAIL = ${{ inputs.ACTOR_EMAIL }}"
+          echo "[Secrets]"
+          echo "secrets.ACTOR_GITHUB_TOKEN = ${{ secrets.ACTOR_GITHUB_TOKEN }}"
+
+      - name: Checkout to '${{ inputs.CHECKOUT }}'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.CHECKOUT }}
+          token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
+          submodules: true
+
+      - name: Install CMake
+        uses: ltdorgtest/ci-common/.github/actions/install-cmake@main
+        with:
+          cmake-version: ${{ inputs.CMAKE_VERSION }}
+
+      - name: Install Conda
+        uses: ltdorgtest/ci-common/.github/actions/install-conda@main
+        with:
+          conda-version: ${{ inputs.CONDA_VERSION }}
+
+      - name: Install Gettext
+        uses: ltdorgtest/ci-common/.github/actions/install-gettext@main
+
+      - name: Get Other Caches from the versions.json file
+        id: gocv
+        uses: ltdorgtest/ci-common/.github/actions/get-other-caches-from-versions-file@main
+        with:
+          version: ${{ inputs.VERSION }}
+          versions-file: 'versions.json'
+
+      - name: Configure with '${{ inputs.LANGUAGE }}' preset for '${{ inputs.VERSION }}' version
+        uses: ltdorgtest/ci-common/.github/actions/cmake-configure@main
+        with:
+          config-preset: ${{ inputs.LANGUAGE }}
+          cache-version: ${{ inputs.VERSION }}
+          cache-version-compendium: ${{ steps.gocv.outputs.VERSION_COMPENDIUM }}
+          cache-auto-depend: 'OFF'
+          cache-mode-of-update: ${{ inputs.MODE_OF_UPDATE }}
+          cache-baseurl-href: ${{ inputs.BASEURL_HREF }}
+          cache-sphinx-builder: ${{ inputs.MDBOOK_RENDERER }}
+
+      - name: Build the 'prepare_repositories' target
+        uses: ltdorgtest/ci-common/.github/actions/cmake-build-target@main
+        with:
+          build-directory: out/build/${{ inputs.LANGUAGE }}
+          build-target: 'prepare_repositories'
+
+      - name: Build the 'install_requirements' target
+        uses: ltdorgtest/ci-common/.github/actions/cmake-build-target@main
+        with:
+          build-directory: out/build/${{ inputs.LANGUAGE }}
+          build-target: 'install_requirements'
+
+      - name: Build the 'mdbook_update_pot' target
+        uses: ltdorgtest/ci-common/.github/actions/cmake-build-target@main
+        with:
+          build-directory: out/build/${{ inputs.LANGUAGE }}
+          build-target: 'mdbook_update_pot'
+
+      - name: Build the 'gettext_update_po' target
+        uses: ltdorgtest/ci-common/.github/actions/cmake-build-target@main
+        with:
+          build-directory: out/build/${{ inputs.LANGUAGE }}
+          build-target: 'gettext_update_po'
+
+      - name: Build the 'mdbook_build_docs' target
+        uses: ltdorgtest/ci-common/.github/actions/cmake-build-target@main
+        with:
+          build-directory: out/build/${{ inputs.LANGUAGE }}
+          build-target: 'mdbook_build_docs'
+
+      - name: Upload Build Artifact for Deploying Pages
+        if: ${{ inputs.DEPLOY_PAGES == 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ inputs.VERSION }}-${{ inputs.LANGUAGE }}
+          path: './out/${{ inputs.MDBOOK_RENDERER }}'
