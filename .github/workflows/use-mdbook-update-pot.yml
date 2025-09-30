@@ -270,9 +270,7 @@ jobs:
           title: |
             🌐 pot(${{ inputs.VERSION }}): update .pot from mdBook
           body: |
-            Created by the GitHub Actions:
-
-            - workflow: ${{ github.server_url }}/${{ github.repository }}/actions/workflows/${{ github.workflow }}.yml
+            Created by: [${{ github.workflow }}.yml](${{ github.server_url }}/${{ github.repository }}/actions/workflows/${{ github.workflow }}.yml)
 
       - name: Check Outputs of the Pull Request
         if: ${{ inputs.CREATE_PR == 'true' && steps.acc.outputs.committed == 'true' }}
