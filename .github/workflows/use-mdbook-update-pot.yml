@@ -269,6 +269,10 @@ jobs:
           label: ${{ steps.gllpr.outputs.PULL_REQUEST_LABEL_LIST }}
           title: |
             🌐 pot(${{ inputs.VERSION }}): update .pot from mdBook
+          body: |
+            Created by the GitHub Actions:
+
+            - workflow: ${{ github.server_url }}/${{ github.repository }}/actions/workflows/${{ github.workflow }}.yml
 
       - name: Check Outputs of the Pull Request
         if: ${{ inputs.CREATE_PR == 'true' && steps.acc.outputs.committed == 'true' }}
