@@ -1,0 +1,275 @@
+# Distributed under the OSI-approved BSD 3-Clause License.
+# See accompanying file LICENSE-BSD for details.
+
+name: use-crowdin-update-readme
+
+on:
+  workflow_call:
+    inputs:
+      ENABLE:
+        type: string
+        required: false
+        default: 'true'
+        description: >
+          [Optional] Whether to enable the job (e.g., 'true' or 'false'). Defaults to 'true'.
+      RUNNER:
+        type: string
+        required: false
+        default: 'ubuntu-latest'
+        description: >
+          [Optional] The runner image for executing the job. Defaults to 'ubuntu-latest'.
+      CHECKOUT:
+        type: string
+        required: false
+        default: '${{ github.ref }}'
+        description: >
+          [Optional] The git reference to be checked out. Defaults to '\$\{\{ github.ref \}\}'
+      CROWDIN_VERSION:
+        type: string
+        required: false
+        default: ''
+        description: >
+          [Optional] The version of the Crowdin CLI command. Defaults to an empty string.
+      LANGUAGE:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] The language of the documentation.
+      LANGUAGE_SOURCE:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] The source language of the documentation.
+      ACTOR_NAME:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] The user name of the GitHub actor.
+      ACTOR_EMAIL:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] The user email of the GitHub actor.
+      CROWDIN_BRANCH_NAME:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] The branch name of the Crowdin project.
+      CROWDIN_PROJECT_ID:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] The numeric ID of the Crowdin project.
+      CROWDIN_BASE_URL:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] The base URL of Crowdin server for API requests execution.
+      GPG_FINGERPRINT:
+        type: string
+        required: true    # [Required]
+        description: >
+          [Required] The fingerprint used for identifying the GPG signing key.
+    secrets:
+      ACTOR_GITHUB_TOKEN:
+        required: true    # [Required]
+        description: >
+          [Required] The personal access token of the GitHub actor.
+      CROWDIN_PERSONAL_TOKEN:
+        required: true    # [Required]
+        description: >
+          [Required] The personal access token for Crowdin authentication.
+      GPG_PRIVATE_KEY:
+        required: true    # [Required]
+        description: >
+          [Required] The ASCII-armored GPG private key.
+      GPG_PASSPHRASE:
+        required: true    # [Required]
+        description: >
+          [Required] The passphrase of the GPG private key.
+
+jobs:
+  crowdin-update-readme:
+    if: ${{ inputs.ENABLE == 'true' }}
+    runs-on: ${{ inputs.RUNNER }}
+    steps:
+      - name: Print Contexts/Inputs/Secrets
+        shell: bash
+        run: |
+          echo "[Contexts]"
+          echo "github.job = ${{ github.job }}"
+          echo "github.ref = ${{ github.ref }}"
+          echo "github.ref_name = ${{ github.ref_name }}"
+          echo "github.event_name = ${{ github.event_name }}"
+          echo "github.event.action = ${{ github.event.action }}"
+          echo "github.event.number = ${{ github.event.number }}"
+          echo "github.workflow = ${{ github.workflow }}"
+          echo "github.workflow_ref = ${{ github.workflow_ref }}"
+          echo "github.run_id = ${{ github.run_id }}"
+          echo "github.run_number = ${{ github.run_number }}"
+          echo "github.run_attempt = ${{ github.run_attempt }}"
+          echo "github.server_url = ${{ github.server_url }}"
+          echo "github.repository = ${{ github.repository }}"
+          echo "github.workspace = ${{ github.workspace }}"
+          echo "[Inputs]"
+          echo "inputs.ENABLE = ${{ inputs.ENABLE }}"
+          echo "inputs.RUNNER = ${{ inputs.RUNNER }}"
+          echo "inputs.CHECKOUT = ${{ inputs.CHECKOUT }}"
+          echo "inputs.CROWDIN_VERSION = ${{ inputs.CROWDIN_VERSION }}"
+          echo "inputs.LANGUAGE = ${{ inputs.LANGUAGE }}"
+          echo "inputs.LANGUAGE_SOURCE = ${{ inputs.LANGUAGE_SOURCE }}"
+          echo "inputs.ACTOR_NAME = ${{ inputs.ACTOR_NAME }}"
+          echo "inputs.ACTOR_EMAIL = ${{ inputs.ACTOR_EMAIL }}"
+          echo "inputs.CROWDIN_BRANCH_NAME = ${{ inputs.CROWDIN_BRANCH_NAME }}"
+          echo "inputs.CROWDIN_PROJECT_ID = ${{ inputs.CROWDIN_PROJECT_ID }}"
+          echo "inputs.CROWDIN_BASE_URL = ${{ inputs.CROWDIN_BASE_URL }}"
+          echo "inputs.GPG_FINGERPRINT = ${{ inputs.GPG_FINGERPRINT }}"
+          echo "[Secrets]"
+          echo "secrets.ACTOR_GITHUB_TOKEN = ${{ secrets.ACTOR_GITHUB_TOKEN }}"
+          echo "secrets.CROWDIN_PERSONAL_TOKEN = ${{ secrets.CROWDIN_PERSONAL_TOKEN }}"
+          echo "secrets.GPG_PRIVATE_KEY = ${{ secrets.GPG_PRIVATE_KEY }}"
+          echo "secrets.GPG_PASSPHRASE = ${{ secrets.GPG_PASSPHRASE }}"
+
+      - name: Checkout to '${{ inputs.CHECKOUT }}'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.CHECKOUT }}
+          token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Import GPG key for Signing Commit
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          fingerprint: ${{ inputs.GPG_FINGERPRINT }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
+      - name: List all GPG keys
+        run: |
+          gpg --list-secret-keys
+
+      - name: Install Crowdin
+        uses: ltdorgtest/ci-common/.github/actions/install-crowdin@main
+        with:
+          crowdin-version: ${{ inputs.CROWDIN_VERSION }}
+
+      - name: Get CROWDIN_LANGUAGE_LIST from the languages.json file
+        id: gcll
+        uses: ltdorgtest/ci-common/.github/actions/get-crowdin-language-list-from-languages-file@main
+        with:
+          language: ${{ inputs.LANGUAGE }}
+          language-source: ${{ inputs.LANGUAGE_SOURCE }}
+
+      - name: Upload Sources of the '${{ inputs.CROWDIN_BRANCH_NAME }}' branch to Crowdin
+        continue-on-error: true
+        uses: ltdorgtest/ci-common/.github/actions/crowdin-upload-sources@main
+        with:
+          crowdin-branch-name: ${{ inputs.CROWDIN_BRANCH_NAME }}
+          crowdin-no-progress: true
+          crowdin-verbose: true
+        env:
+          CROWDIN_PROJECT_ID: ${{ inputs.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+          CROWDIN_BASE_URL: ${{ inputs.CROWDIN_BASE_URL }}
+
+      #
+      # If the '${{ inputs.CROWDIN_BRANCH_NAME }}' is 'check-xxx', then...
+      #
+
+      - name: Delete the '${{ inputs.CROWDIN_BRANCH_NAME }}' branch in Crowdin
+        if: ${{ startsWith(inputs.CROWDIN_BRANCH_NAME, 'check-') }}
+        uses: ltdorgtest/ci-common/.github/actions/crowdin-branch-delete@main
+        with:
+          crowdin-branch-name: ${{ inputs.CROWDIN_BRANCH_NAME }}
+        env:
+          CROWDIN_PROJECT_ID: ${{ inputs.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+          CROWDIN_BASE_URL: ${{ inputs.CROWDIN_BASE_URL }}
+
+      #
+      # If the '${{ inputs.CROWDIN_BRANCH_NAME }}' is NOT 'check-xxx', then...
+      #
+
+      - name: Download Translations of the '${{ inputs.CROWDIN_BRANCH_NAME }}' branch from Crowdin
+        if: ${{ !startsWith(inputs.CROWDIN_BRANCH_NAME, 'check-') && steps.gcll.outputs.CROWDIN_LANGUAGE_LIST != '' }}
+        uses: ltdorgtest/ci-common/.github/actions/crowdin-download-translations@main
+        with:
+          crowdin-branch-name: ${{ inputs.CROWDIN_BRANCH_NAME }}
+          crowdin-language-list: ${{ steps.gcll.outputs.CROWDIN_LANGUAGE_LIST }}
+          crowdin-export-only-approved: 'true'
+          crowdin-no-progress: 'true'
+          crowdin-verbose: 'true'
+        env:
+          CROWDIN_PROJECT_ID: ${{ inputs.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+          CROWDIN_BASE_URL: ${{ inputs.CROWDIN_BASE_URL }}
+
+      - name: Get CROWDIN_STATUS_PROGRESS of the '${{ inputs.CROWDIN_BRANCH_NAME }}' branch
+        id: gtpp
+        if: ${{ !startsWith(inputs.CROWDIN_BRANCH_NAME, 'check-') }}
+        uses: ltdorgtest/ci-common/.github/actions/get-crowdin-status-progress@main
+        with:
+          crowdin-branch-name: ${{ inputs.CROWDIN_BRANCH_NAME }}
+          crowdin-no-progress: 'true'
+          crowdin-verbose: 'true'
+        env:
+          CROWDIN_PROJECT_ID: ${{ inputs.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+          CROWDIN_BASE_URL: ${{ inputs.CROWDIN_BASE_URL }}
+
+      - name: Get the Current Job's Context
+        id: gcjc
+        uses: qoomon/actions--context@v4
+        with:
+          token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
+
+      - name: Check Outputs of the Current Job's Context
+        shell: bash
+        run: |
+          echo "Job Name:     ${{ steps.gcjc.outputs.job_name }}"
+          echo "Job ID:       ${{ steps.gcjc.outputs.job_id }}"
+          echo "Job URL:      ${{ steps.gcjc.outputs.job_url }}"
+          echo "Run ID:       ${{ steps.gcjc.outputs.run_id }}"
+          echo "Run Attempt:  ${{ steps.gcjc.outputs.run_attempt }}"
+          echo "Run Number:   ${{ steps.gcjc.outputs.run_number }}"
+          echo "Run URL:      ${{ steps.gcjc.outputs.run_url }}"
+
+      - name: Set up mutex for the 'main' branch
+        if: ${{ !startsWith(inputs.CROWDIN_BRANCH_NAME, 'check-') }}
+        uses: ben-z/gh-action-mutex@v1.0.0-alpha.9
+        with:
+          branch: 'mutex/main'
+          repo-token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
+
+      - name: Add and Commit Changes
+        id: acc
+        if: ${{ !startsWith(inputs.CROWDIN_BRANCH_NAME, 'check-') }}
+        uses: EndBug/add-and-commit@v9
+        with:
+          cwd: '.'
+          add: '.'
+          pull: '--rebase --autostash'
+          author_name: ${{ inputs.ACTOR_NAME }}
+          author_email: ${{ inputs.ACTOR_EMAIL }}
+          message: |
+            🌐 tr(readme): download '${{ inputs.LANGUAGE }}' translations from Crowdin
+
+            ${{ steps.gtpp.outputs.CROWDIN_STATUS_PROGRESS }}
+
+            Created by the GitHub Actions:
+
+            - File: ${{ github.server_url }}/${{ github.repository }}/actions/workflows/${{ github.workflow }}.yml
+            - Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            - Job: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/job/${{ steps.gcjc.outputs.job_id }}
+
+      - name: Check Outputs of the Commit
+        if: ${{ !startsWith(inputs.CROWDIN_BRANCH_NAME, 'check-') && steps.acc.outputs.committed == 'true' }}
+        shell: bash
+        run: |
+          echo "Commit's SHA = ${{ steps.acc.outputs.commit_long_sha }}"
+          echo "Commit's URL = ${{ github.server_url }}/${{ github.repository }}/commit/${{ steps.acc.outputs.commit_long_sha }}"
+          echo "Outputs of Ruuning command: git log --show-signature -1"
+          echo ""
+          git log --show-signature -1
