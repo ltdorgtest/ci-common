@@ -128,7 +128,7 @@ jobs:
           max_contributors: 32
           image_size: 64
         env:
-          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_PROJECT_ID: ${{ inputs.CROWDIN_PROJECT_ID }}
           CROWDIN_ORGANIZATION: ${{ secrets.CROWDIN_BASE_URL }}
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
