@@ -120,7 +120,7 @@ jobs:
           token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
 
       - name: Generate Crowdin Contributors
-        uses: andrii-bodnar/action-crowdin-contributors@v3
+        uses: andrii-bodnar/action-crowdin-contributors@v3.1.0
         with:
           svg: true
           svg_output_path: 'out/${{ inputs.DEPLOY_BRANCH }}/crowdin-contributors.svg'
