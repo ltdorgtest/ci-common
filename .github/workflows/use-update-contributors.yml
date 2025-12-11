@@ -129,7 +129,7 @@ jobs:
           image_size: 64
         env:
           CROWDIN_PROJECT_ID: ${{ inputs.CROWDIN_PROJECT_ID }}
-          CROWDIN_ORGANIZATION: ${{ secrets.CROWDIN_BASE_URL }}
+          CROWDIN_ORGANIZATION: ${{ inputs.CROWDIN_BASE_URL }}
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
       - name: Set up mutex for the '${{ inputs.DEPLOY_BRANCH }}' branch
