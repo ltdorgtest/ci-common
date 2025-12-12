@@ -120,13 +120,13 @@ jobs:
           token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
 
       - name: Generate Crowdin Contributors
-        uses: andrii-bodnar/action-crowdin-contributors@v3.1.0
+        uses: andrii-bodnar/action-crowdin-contributors@v3.1.1
         with:
           svg: true
           svg_output_path: 'out/${{ inputs.DEPLOY_BRANCH }}/crowdin-contributors.svg'
-          contributors_per_line: 8
-          max_contributors: 32
-          image_size: 64
+          # contributors_per_line: 8
+          # max_contributors: 32
+          # image_size: 64
         env:
           CROWDIN_PROJECT_ID: ${{ inputs.CROWDIN_PROJECT_ID }}
           CROWDIN_ORGANIZATION: ${{ inputs.CROWDIN_ORGANIZATION }}
