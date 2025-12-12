@@ -44,11 +44,11 @@ on:
         required: true    # [Required]
         description: >
           [Required] The numeric ID of the Crowdin project.
-      CROWDIN_BASE_URL:
+      CROWDIN_ORGANIZATION:
         type: string
         required: true    # [Required]
         description: >
-          [Required] The base URL of Crowdin server for API requests execution.
+          [Required] The organization name of the Crowdin Enterprise.
     secrets:
       ACTOR_GITHUB_TOKEN:
         required: true
@@ -90,7 +90,7 @@ jobs:
           echo "inputs.ACTOR_NAME = ${{ inputs.ACTOR_NAME }}"
           echo "inputs.ACTOR_EMAIL = ${{ inputs.ACTOR_EMAIL }}"
           echo "inputs.CROWDIN_PROJECT_ID = ${{ inputs.CROWDIN_PROJECT_ID }}"
-          echo "inputs.CROWDIN_BASE_URL = ${{ inputs.CROWDIN_BASE_URL }}"
+          echo "inputs.CROWDIN_ORGANIZATION = ${{ inputs.CROWDIN_ORGANIZATION }}"
           echo "[Secrets]"
           echo "secrets.ACTOR_GITHUB_TOKEN = ${{ secrets.ACTOR_GITHUB_TOKEN }}"
           echo "secrets.CROWDIN_PERSONAL_TOKEN = ${{ secrets.CROWDIN_PERSONAL_TOKEN }}"
@@ -129,7 +129,7 @@ jobs:
           image_size: 64
         env:
           CROWDIN_PROJECT_ID: ${{ inputs.CROWDIN_PROJECT_ID }}
-          CROWDIN_ORGANIZATION: ${{ inputs.CROWDIN_BASE_URL }}
+          CROWDIN_ORGANIZATION: ${{ inputs.CROWDIN_ORGANIZATION }}
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
       - name: Set up mutex for the '${{ inputs.DEPLOY_BRANCH }}' branch
