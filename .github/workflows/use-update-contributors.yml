@@ -125,7 +125,7 @@ jobs:
           svg: true
           svg_output_path: 'out/${{ inputs.DEPLOY_BRANCH }}/crowdin-contributors.svg'
           min_words_contributed: 0
-          max_contributors: 32
+          max_contributors: 35
           contributors_per_line: 6
           # include_languages: true
           # image_size: 64
