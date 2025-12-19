@@ -127,6 +127,7 @@ jobs:
           min_words_contributed: 0
           max_contributors: 35
           contributors_per_line: 7
+          excluded_users: localizethedocs
           # include_languages: true
           # image_size: 64
         env:
