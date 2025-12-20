@@ -140,21 +140,23 @@ jobs:
         shell: bash
         run: mkdir -p out/${{ inputs.DEPLOY_BRANCH }}
 
-      - name: Generate GitHub Contributors
-        uses: jaywcjlove/github-action-contributors@main
-        with:
-          filter-author: (renovate\[bot\]|renovate-bot|dependabot\[bot\]|ltdrobot)
-          output: out/${{ inputs.DEPLOY_BRANCH }}/github-contributors.svg
-          avatarSize: 50
-          svgWidth: 500
-          token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
-
       # - name: Generate GitHub Contributors
-      #   uses: wow-actions/contributors-list@v1
+      #   uses: jaywcjlove/github-action-contributors@main
       #   with:
-      #     svgPath: out/${{ inputs.DEPLOY_BRANCH }}/github-contributors.svg
-      #     round: true
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     filter-author: (renovate\[bot\]|renovate-bot|dependabot\[bot\]|ltdrobot)
+      #     output: out/${{ inputs.DEPLOY_BRANCH }}/github-contributors.svg
+      #     svgWidth: 500
+      #     avatarSize: 50
+      #     token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
+
+      - name: Generate GitHub Contributors
+        uses: wow-actions/contributors-list@v1
+        with:
+          svgPath: out/${{ inputs.DEPLOY_BRANCH }}/github-contributors.svg
+          svgWidth: 500
+          avatarSize: 50
+          round: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Generate Crowdin Contributors
         uses: andrii-bodnar/action-crowdin-contributors@v3
