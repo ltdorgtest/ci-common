@@ -29,6 +29,30 @@ on:
         required: true    # [Required]
         description: >
           [Required] The name of the branch to which the build artifacts will be deployed (e.g., 'pages').
+      CROWDIN_MIN_WORDS_CONTRIBUTED:
+        type: string
+        required: false
+        default: '0'
+        description: >
+          The
+      CROWDIN_MAX_CONTRIBUTORS:
+        type: string
+        required: false
+        default: '35'
+        description: >
+          The
+      CROWDIN_CONTRIBUTORS_PER_LINE:
+        type: string
+        required: false
+        default: '7'
+        description: >
+          The
+      CROWDIN_EXCLUDED_USERS:
+        type: string
+        required: false
+        default: 'localizethedocs'
+        description: >
+          The
       ACTOR_NAME:
         type: string
         required: true    # [Required]
@@ -87,6 +111,10 @@ jobs:
           echo "inputs.RUNNER = ${{ inputs.RUNNER }}"
           echo "inputs.CHECKOUT = ${{ inputs.CHECKOUT }}"
           echo "inputs.DEPLOY_BRANCH = ${{ inputs.DEPLOY_BRANCH }}"
+          echo "inputs.CROWDIN_MIN_WORDS_CONTRIBUTED = ${{ inputs.CROWDIN_MIN_WORDS_CONTRIBUTED }}"
+          echo "inputs.CROWDIN_MAX_CONTRIBUTORS = ${{ inputs.CROWDIN_MAX_CONTRIBUTORS }}"
+          echo "inputs.CROWDIN_CONTRIBUTORS_PER_LINE = ${{ inputs.CROWDIN_CONTRIBUTORS_PER_LINE }}"
+          echo "inputs.CROWDIN_EXCLUDED_USERS = ${{ inputs.CROWDIN_EXCLUDED_USERS }}"
           echo "inputs.ACTOR_NAME = ${{ inputs.ACTOR_NAME }}"
           echo "inputs.ACTOR_EMAIL = ${{ inputs.ACTOR_EMAIL }}"
           echo "inputs.CROWDIN_PROJECT_ID = ${{ inputs.CROWDIN_PROJECT_ID }}"
@@ -118,18 +146,25 @@ jobs:
           filter-author: (renovate\[bot\]|renovate-bot|dependabot\[bot\]|ltdrobot)
           output: out/${{ inputs.DEPLOY_BRANCH }}/github-contributors.svg
           avatarSize: 50
-          svgWidth: 400
+          svgWidth: 500
           token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
 
+      # - name: Generate GitHub Contributors
+      #   uses: wow-actions/contributors-list@v1
+      #   with:
+      #     svgPath: out/${{ inputs.DEPLOY_BRANCH }}/github-contributors.svg
+      #     round: true
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Generate Crowdin Contributors
-        uses: andrii-bodnar/action-crowdin-contributors@v3.2.0
+        uses: andrii-bodnar/action-crowdin-contributors@v3
         with:
           svg: true
           svg_output_path: 'out/${{ inputs.DEPLOY_BRANCH }}/crowdin-contributors.svg'
-          min_words_contributed: 0
-          max_contributors: 35
-          contributors_per_line: 7
-          excluded_users: localizethedocs
+          min_words_contributed: ${{ inputs.CROWDIN_MIN_WORDS_CONTRIBUTED }}
+          max_contributors: ${{ inputs.CROWDIN_MAX_CONTRIBUTORS }}
+          contributors_per_line: ${{ inputs.CROWDIN_CONTRIBUTORS_PER_LINE }}
+          excluded_users: ${{ inputs.CROWDIN_EXCLUDED_USERS }}
           # include_languages: true
           # image_size: 64
         env:
