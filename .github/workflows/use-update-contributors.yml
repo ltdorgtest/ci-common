@@ -156,7 +156,7 @@ jobs:
           svgWidth: 500
           avatarSize: 50
           round: true
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ACTOR_GITHUB_TOKEN }}
 
       - name: Generate Crowdin Contributors
         uses: andrii-bodnar/action-crowdin-contributors@v3
