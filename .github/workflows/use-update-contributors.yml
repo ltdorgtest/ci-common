@@ -108,7 +108,9 @@ jobs:
       #     round: true
       #     svgPath: 'out/${{ inputs.DEPLOY_BRANCH }}/github-contributors.svg'
 
-      - run: mkdir -p out/${{ inputs.DEPLOY_BRANCH }}
+      - name: Create 'out/${{ inputs.DEPLOY_BRANCH }}' directory
+        shell: bash
+        run: mkdir -p out/${{ inputs.DEPLOY_BRANCH }}
 
       - name: Generate GitHub Contributors
         uses: jaywcjlove/github-action-contributors@main
