@@ -24,6 +24,12 @@ on:
         default: '${{ github.ref }}'
         description: >
           [Optional] The git reference to be checked out. Defaults to '\$\{\{ github.ref \}\}'
+      FREE_SPACE:
+        type: string
+        required: false
+        default: 'false'
+        description: >
+          [Optional] Whether to free disk space before building (e.g., 'true' or 'false'). Defaults to 'false'.
       CMAKE_VERSION:
         type: string
         required: false
@@ -108,6 +114,7 @@ jobs:
           echo "[Inputs]"
           echo "inputs.ENABLE = ${{ inputs.ENABLE }}"
           echo "inputs.RUNNER = ${{ inputs.RUNNER }}"
+          echo "inputs.FREE_SPACE = ${{ inputs.FREE_SPACE }}"
           echo "inputs.CHECKOUT = ${{ inputs.CHECKOUT }}"
           echo "inputs.CMAKE_VERSION = ${{ inputs.CMAKE_VERSION }}"
           echo "inputs.CONDA_VERSION = ${{ inputs.CONDA_VERSION }}"
@@ -122,7 +129,15 @@ jobs:
           echo "[Secrets]"
           echo "secrets.ACTOR_GITHUB_TOKEN = ${{ secrets.ACTOR_GITHUB_TOKEN }}"
 
-      - name: Free Disk Space (Ubuntu)
+      - name: Checkout to '${{ inputs.CHECKOUT }}'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.CHECKOUT }}
+          token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
+          submodules: true
+
+      - name: Free Disk Space
+        if: ${{ inputs.FREE_SPACE == 'true' }}
         uses: jlumbroso/free-disk-space@main
         with:
           tool-cache: true
@@ -132,13 +147,6 @@ jobs:
           large-packages: true
           docker-images: true
           swap-storage: true
-
-      - name: Checkout to '${{ inputs.CHECKOUT }}'
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.CHECKOUT }}
-          token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
-          submodules: true
 
       - name: Install CMake
         uses: ltdorgtest/ci-common/.github/actions/install-cmake@main
