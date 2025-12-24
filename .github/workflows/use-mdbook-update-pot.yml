@@ -120,6 +120,17 @@ jobs:
           submodules: true
           fetch-depth: 0
 
+      - name: Free Disk Space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: false
+          swap-storage: true
+
       - name: Import GPG key for Signing Commit
         uses: crazy-max/ghaction-import-gpg@v6
         with:
