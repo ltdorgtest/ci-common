@@ -29,30 +29,48 @@ on:
         required: true    # [Required]
         description: >
           [Required] The name of the branch to which the build artifacts will be deployed (e.g., 'pages').
-      CROWDIN_MIN_WORDS_CONTRIBUTED:
+      GITHUB_TABLE_COL:
         type: string
         required: false
-        default: '0'
+        default: '8'
         description: >
-          The
-      CROWDIN_MAX_CONTRIBUTORS:
+          [Optional] The number of columns in the GitHub contributors table. Defaults to '8'.
+      GITHUB_TABLE_ROW:
         type: string
         required: false
-        default: '35'
+        default: '10'
         description: >
-          The
-      CROWDIN_CONTRIBUTORS_PER_LINE:
+          [Optional] The number of rows in the GitHub contributors table. Defaults to '10'.
+      GITHUB_EXCLUDED_USERS:
+        type: string
+        required: false
+        default: 'ltdhelper'
+        description: >
+          [Optional] Comma-separated list of GitHub users to exclude from the contributors list. Defaults to 'ltdhelper'.
+      CROWDIN_TABLE_COL:
         type: string
         required: false
         default: '7'
         description: >
-          The
+          [Optional] The number of columns in the Crowdin contributors table. Defaults to '7'.
+      CROWDIN_TABLE_ROW:
+        type: string
+        required: false
+        default: '5'
+        description: >
+          [Optional] The number of rows in the Crowdin contributors table. Defaults to '5'.
       CROWDIN_EXCLUDED_USERS:
         type: string
         required: false
         default: 'localizethedocs'
         description: >
-          The
+          [Optional] Comma-separated list of Crowdin users to exclude from the contributors list. Defaults to 'localizethedocs'.
+      CROWDIN_MIN_WORDS_CONTRIBUTED:
+        type: string
+        required: false
+        default: '0'
+        description: >
+          [Optional] The minimum number of words contributed to be included in the Crowdin contributors list. Defaults to '0'.
       ACTOR_NAME:
         type: string
         required: true    # [Required]
@@ -111,10 +129,13 @@ jobs:
           echo "inputs.RUNNER = ${{ inputs.RUNNER }}"
           echo "inputs.CHECKOUT = ${{ inputs.CHECKOUT }}"
           echo "inputs.DEPLOY_BRANCH = ${{ inputs.DEPLOY_BRANCH }}"
-          echo "inputs.CROWDIN_MIN_WORDS_CONTRIBUTED = ${{ inputs.CROWDIN_MIN_WORDS_CONTRIBUTED }}"
-          echo "inputs.CROWDIN_MAX_CONTRIBUTORS = ${{ inputs.CROWDIN_MAX_CONTRIBUTORS }}"
-          echo "inputs.CROWDIN_CONTRIBUTORS_PER_LINE = ${{ inputs.CROWDIN_CONTRIBUTORS_PER_LINE }}"
+          echo "inputs.GITHUB_TABLE_COL = ${{ inputs.GITHUB_TABLE_COL }}"
+          echo "inputs.GITHUB_TABLE_ROW = ${{ inputs.GITHUB_TABLE_ROW }}"
+          echo "inputs.GITHUB_EXCLUDED_USERS = ${{ inputs.GITHUB_EXCLUDED_USERS }}"
+          echo "inputs.CROWDIN_TABLE_COL = ${{ inputs.CROWDIN_TABLE_COL }}"
+          echo "inputs.CROWDIN_TABLE_ROW = ${{ inputs.CROWDIN_TABLE_ROW }}"
           echo "inputs.CROWDIN_EXCLUDED_USERS = ${{ inputs.CROWDIN_EXCLUDED_USERS }}"
+          echo "inputs.CROWDIN_MIN_WORDS_CONTRIBUTED = ${{ inputs.CROWDIN_MIN_WORDS_CONTRIBUTED }}"
           echo "inputs.ACTOR_NAME = ${{ inputs.ACTOR_NAME }}"
           echo "inputs.ACTOR_EMAIL = ${{ inputs.ACTOR_EMAIL }}"
           echo "inputs.CROWDIN_PROJECT_ID = ${{ inputs.CROWDIN_PROJECT_ID }}"
@@ -153,9 +174,11 @@ jobs:
         uses: wow-actions/contributors-list@v1.2.1
         with:
           svgPath: out/${{ inputs.DEPLOY_BRANCH }}/github-contributors.svg
-          svgWidth: 500
-          avatarSize: 50
           round: true
+          avatarSize: 50
+          svgWidth: $(( 50 * ${{ inputs.GITHUB_TABLE_COL }} ))
+          count: $(( ${{ inputs.GITHUB_TABLE_COL }} * ${{ inputs.GITHUB_TABLE_ROW }} ))
+          excludeUsers: ${{ inputs.GITHUB_EXCLUDED_USERS }}
           GITHUB_TOKEN: ${{ secrets.ACTOR_GITHUB_TOKEN }}
 
       - name: Generate Crowdin Contributors
@@ -164,11 +187,9 @@ jobs:
           svg: true
           svg_output_path: 'out/${{ inputs.DEPLOY_BRANCH }}/crowdin-contributors.svg'
           min_words_contributed: ${{ inputs.CROWDIN_MIN_WORDS_CONTRIBUTED }}
-          max_contributors: ${{ inputs.CROWDIN_MAX_CONTRIBUTORS }}
-          contributors_per_line: ${{ inputs.CROWDIN_CONTRIBUTORS_PER_LINE }}
+          max_contributors: $(( ${{ inputs.CROWDIN_TABLE_COL }} * ${{ inputs.CROWDIN_TABLE_ROW }} ))
+          contributors_per_line: ${{ inputs.CROWDIN_TABLE_COL }}
           excluded_users: ${{ inputs.CROWDIN_EXCLUDED_USERS }}
-          # include_languages: true
-          # image_size: 64
         env:
           CROWDIN_PROJECT_ID: ${{ inputs.CROWDIN_PROJECT_ID }}
           CROWDIN_ORGANIZATION: ${{ inputs.CROWDIN_ORGANIZATION }}
