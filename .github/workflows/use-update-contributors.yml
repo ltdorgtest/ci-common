@@ -174,6 +174,20 @@ jobs:
         shell: bash
         run: touch out/${{ inputs.DEPLOY_BRANCH }}/github-contributors.svg
 
+      - name: Print calculated values for contributors tables
+        shell: bash
+        run: |
+          echo "[GitHub Contributors Table]"
+          echo "GITHUB_TABLE_COL = ${{ inputs.GITHUB_TABLE_COL }}"
+          echo "GITHUB_TABLE_ROW = ${{ inputs.GITHUB_TABLE_ROW }}"
+          echo "svgWidth = $(( 100 * ${{ inputs.GITHUB_TABLE_COL }} ))"
+          echo "count = $(( ${{ inputs.GITHUB_TABLE_COL }} * ${{ inputs.GITHUB_TABLE_ROW }} ))"
+          echo ""
+          echo "[Crowdin Contributors Table]"
+          echo "CROWDIN_TABLE_COL = ${{ inputs.CROWDIN_TABLE_COL }}"
+          echo "CROWDIN_TABLE_ROW = ${{ inputs.CROWDIN_TABLE_ROW }}"
+          echo "max_contributors = $(( ${{ inputs.CROWDIN_TABLE_COL }} * ${{ inputs.CROWDIN_TABLE_ROW }} ))"
+
       - name: Generate GitHub Contributors
         uses: wow-actions/contributors-list@v1.2.1
         with:
