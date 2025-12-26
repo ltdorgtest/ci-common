@@ -174,19 +174,26 @@ jobs:
         shell: bash
         run: touch out/${{ inputs.DEPLOY_BRANCH }}/github-contributors.svg
 
-      - name: Print calculated values for contributors tables
+      - name: Calculate values for contributors tables
+        id: calc
         shell: bash
         run: |
           echo "[GitHub Contributors Table]"
-          echo "GITHUB_TABLE_COL = ${{ inputs.GITHUB_TABLE_COL }}"
-          echo "GITHUB_TABLE_ROW = ${{ inputs.GITHUB_TABLE_ROW }}"
-          echo "svgWidth = $(( 100 * ${{ inputs.GITHUB_TABLE_COL }} ))"
-          echo "count = $(( ${{ inputs.GITHUB_TABLE_COL }} * ${{ inputs.GITHUB_TABLE_ROW }} ))"
+          echo "GITHUB_TABLE_COL  = ${{ inputs.GITHUB_TABLE_COL }}"
+          echo "GITHUB_TABLE_ROW  = ${{ inputs.GITHUB_TABLE_ROW }}"
+          GITHUB_SVG_WIDTH=$(( 100 * ${{ inputs.GITHUB_TABLE_COL }} ))
+          GITHUB_COUNT=$(( ${{ inputs.GITHUB_TABLE_COL }} * ${{ inputs.GITHUB_TABLE_ROW }} ))
+          echo "GITHUB_SVG_WIDTH  = $GITHUB_SVG_WIDTH"
+          echo "GITHUB_COUNT      = $GITHUB_COUNT"
+          echo "GITHUB_SVG_WIDTH=$GITHUB_SVG_WIDTH" >> $GITHUB_OUTPUT
+          echo "GITHUB_COUNT=$GITHUB_COUNT" >> $GITHUB_OUTPUT
           echo ""
           echo "[Crowdin Contributors Table]"
-          echo "CROWDIN_TABLE_COL = ${{ inputs.CROWDIN_TABLE_COL }}"
-          echo "CROWDIN_TABLE_ROW = ${{ inputs.CROWDIN_TABLE_ROW }}"
-          echo "max_contributors = $(( ${{ inputs.CROWDIN_TABLE_COL }} * ${{ inputs.CROWDIN_TABLE_ROW }} ))"
+          echo "CROWDIN_TABLE_COL         = ${{ inputs.CROWDIN_TABLE_COL }}"
+          echo "CROWDIN_TABLE_ROW         = ${{ inputs.CROWDIN_TABLE_ROW }}"
+          CROWDIN_MAX_CONTRIBUTORS=$(( ${{ inputs.CROWDIN_TABLE_COL }} * ${{ inputs.CROWDIN_TABLE_ROW }} ))
+          echo "CROWDIN_MAX_CONTRIBUTORS  = $CROWDIN_MAX_CONTRIBUTORS"
+          echo "CROWDIN_MAX_CONTRIBUTORS=$CROWDIN_MAX_CONTRIBUTORS" >> $GITHUB_OUTPUT
 
       - name: Generate GitHub Contributors
         uses: wow-actions/contributors-list@v1.2.1
@@ -196,9 +203,8 @@ jobs:
           round: true
           avatarMargin: 0
           avatarSize: 100
-          # svgWidth: $(( 100 * ${{ inputs.GITHUB_TABLE_COL }} ))
-          svgWidth: 1500
-          count: $(( ${{ inputs.GITHUB_TABLE_COL }} * ${{ inputs.GITHUB_TABLE_ROW }} ))
+          svgWidth: ${{ steps.calc.outputs.GITHUB_SVG_WIDTH }}
+          count: ${{ steps.calc.outputs.GITHUB_COUNT }}
           excludeUsers: ${{ inputs.GITHUB_EXCLUDED_USERS }}
           GITHUB_TOKEN: ${{ secrets.ACTOR_GITHUB_TOKEN }}
 
@@ -208,7 +214,7 @@ jobs:
           svg: true
           svg_output_path: 'out/${{ inputs.DEPLOY_BRANCH }}/crowdin-contributors.svg'
           min_words_contributed: ${{ inputs.CROWDIN_MIN_WORDS_CONTRIBUTED }}
-          max_contributors: $(( ${{ inputs.CROWDIN_TABLE_COL }} * ${{ inputs.CROWDIN_TABLE_ROW }} ))
+          max_contributors: ${{ steps.calc.outputs.CROWDIN_MAX_CONTRIBUTORS }}
           contributors_per_line: ${{ inputs.CROWDIN_TABLE_COL }}
           excluded_users: ${{ inputs.CROWDIN_EXCLUDED_USERS }}
         env:
