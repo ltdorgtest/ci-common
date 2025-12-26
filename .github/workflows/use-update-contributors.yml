@@ -32,9 +32,9 @@ on:
       GITHUB_TABLE_COL:
         type: string
         required: false
-        default: '8'
+        default: '10'
         description: >
-          [Optional] The number of columns in the GitHub contributors table. Defaults to '8'.
+          [Optional] The number of columns in the GitHub contributors table. Defaults to '10'.
       GITHUB_TABLE_ROW:
         type: string
         required: false
