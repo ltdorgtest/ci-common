@@ -196,7 +196,8 @@ jobs:
           round: true
           avatarMargin: 0
           avatarSize: 100
-          svgWidth: $(( 100 * ${{ inputs.GITHUB_TABLE_COL }} ))
+          # svgWidth: $(( 100 * ${{ inputs.GITHUB_TABLE_COL }} ))
+          svgWidth: 1500
           count: $(( ${{ inputs.GITHUB_TABLE_COL }} * ${{ inputs.GITHUB_TABLE_ROW }} ))
           excludeUsers: ${{ inputs.GITHUB_EXCLUDED_USERS }}
           GITHUB_TOKEN: ${{ secrets.ACTOR_GITHUB_TOKEN }}
