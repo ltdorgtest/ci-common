@@ -180,8 +180,8 @@ jobs:
           noCommit: true
           svgPath: out/${{ inputs.DEPLOY_BRANCH }}/github-contributors.svg
           round: true
-          avatarSize: 50
-          svgWidth: $(( 50 * ${{ inputs.GITHUB_TABLE_COL }} ))
+          avatarSize: 100
+          svgWidth: $(( 100 * ${{ inputs.GITHUB_TABLE_COL }} ))
           count: $(( ${{ inputs.GITHUB_TABLE_COL }} * ${{ inputs.GITHUB_TABLE_ROW }} ))
           excludeUsers: ${{ inputs.GITHUB_EXCLUDED_USERS }}
           GITHUB_TOKEN: ${{ secrets.ACTOR_GITHUB_TOKEN }}
