@@ -174,7 +174,8 @@ jobs:
         uses: wow-actions/contributors-list@v1.2.1
         with:
           noCommit: true
-          svgPath: out/${{ inputs.DEPLOY_BRANCH }}/github-contributors.svg
+          # svgPath: out/${{ inputs.DEPLOY_BRANCH }}/github-contributors.svg
+          svgPath: github-contributors.svg
           round: true
           avatarSize: 50
           svgWidth: $(( 50 * ${{ inputs.GITHUB_TABLE_COL }} ))
