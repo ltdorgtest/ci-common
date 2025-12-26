@@ -32,15 +32,15 @@ on:
       GITHUB_TABLE_COL:
         type: string
         required: false
-        default: '15'
+        default: '10'
         description: >
-          [Optional] The number of columns in the GitHub contributors table. Defaults to '15'.
+          [Optional] The number of columns in the GitHub contributors table. Defaults to '10'.
       GITHUB_TABLE_ROW:
         type: string
         required: false
-        default: '10'
+        default: '6'
         description: >
-          [Optional] The number of rows in the GitHub contributors table. Defaults to '10'.
+          [Optional] The number of rows in the GitHub contributors table. Defaults to '6'.
       GITHUB_EXCLUDED_USERS:
         type: string
         required: false
