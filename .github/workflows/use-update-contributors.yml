@@ -170,12 +170,15 @@ jobs:
       #     avatarSize: 50
       #     token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
 
+      - name: Create empty SVG file for GitHub contributors
+        shell: bash
+        run: touch out/${{ inputs.DEPLOY_BRANCH }}/github-contributors.svg
+
       - name: Generate GitHub Contributors
         uses: wow-actions/contributors-list@v1.2.1
         with:
           noCommit: true
-          # svgPath: out/${{ inputs.DEPLOY_BRANCH }}/github-contributors.svg
-          svgPath: github-contributors.svg
+          svgPath: out/${{ inputs.DEPLOY_BRANCH }}/github-contributors.svg
           round: true
           avatarSize: 50
           svgWidth: $(( 50 * ${{ inputs.GITHUB_TABLE_COL }} ))
