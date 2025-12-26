@@ -173,6 +173,7 @@ jobs:
       - name: Generate GitHub Contributors
         uses: wow-actions/contributors-list@v1.2.1
         with:
+          noCommit: true
           svgPath: out/${{ inputs.DEPLOY_BRANCH }}/github-contributors.svg
           round: true
           avatarSize: 50
