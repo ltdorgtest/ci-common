@@ -44,9 +44,9 @@ on:
       GITHUB_EXCLUDED_USERS:
         type: string
         required: false
-        default: 'ltdhelper'
+        default: 'ltdrobot'
         description: >
-          [Optional] Comma-separated list of GitHub users to exclude from the contributors list. Defaults to 'ltdhelper'.
+          [Optional] Comma-separated list of GitHub users to exclude from the contributors list. Defaults to 'ltdrobot'.
       CROWDIN_TABLE_COL:
         type: string
         required: false
